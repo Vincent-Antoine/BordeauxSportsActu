@@ -1,5 +1,42 @@
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+  resource:
+    path: ../src/Controller/
+    namespace: App\Controller
+  type: attribute
+
+# Routes personnalisées
+app_homepage:
+  path: /
+  controller: App\Controller\HomeController::index
+
+app_resultats_index:
+  path: /resultats
+  controller: App\Controller\ResultatsController::index
+
+app_live_index:
+  path: /live
+  controller: App\Controller\LiveController::index
+
+app_blog_index:
+  path: /blog
+  controller: App\Controller\BlogController::index
+
+app_account_index:
+  path: /compte
+  controller: App\Controller\AccountController::index
+
+app_contact_index:
+  path: /contact
+  controller: App\Controller\ContactController::index
+
+app_about_us:
+  path: /qui-sommes-nous
+  controller: App\Controller\AboutUsController::index
+
+app_privacy_policy:
+  path: /politique-de-cookies
+  controller: App\Controller\PrivacyPolicyController::index
+
+app_mentions_legales:
+  path: /mentions-legales
+  controller: App\Controller\MentionsLegalesController::index

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Site</title>
+</head>
+<body>
+    <header class="bg-gray-800 text-white">
+        <div class="container mx-auto flex justify-between items-center py-4 px-4 lg:px-8">
+            <!-- Logo -->
+            <a href="{{ path('app_homepage') }}" class="text-2xl font-bold">Mon Site</a>
+
+            <!-- Hamburger Menu -->
+            <button 
+                class="lg:hidden block focus:outline-none"
+                data-collapse-toggle="mobile-menu" 
+                type="button" 
+                aria-controls="mobile-menu" 
+                aria-expanded="false" 
+                id="menu-toggle"
+                aria-label="Toggle navigation">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+
+            <!-- Navigation (Desktop) -->
+            <nav id="menu" class="hidden lg:block">
+                <ul class="lg:flex lg:space-x-6 items-center">
+                    <li><a href="{{ path('app_resultats_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Résultats</a></li>
+                    <li><a href="{{ path('app_live_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Live</a></li>
+                    <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Blog</a></li>
+                    <li><a href="{{ path('app_account_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Compte</a></li>
+                    <li><a href="{{ path('app_contact_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-gray-700">
+            <ul class="space-y-2 py-4 px-4">
+                <li><a href="{{ path('app_resultats_index') }}" class="hover:text-gray-400 block">Résultats</a></li>
+                <li><a href="{{ path('app_live_index') }}" class="hover:text-gray-400 block">Live</a></li>
+                <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-400 block">Blog</a></li>
+                <li><a href="{{ path('app_account_index') }}" class="hover:text-gray-400 block">Compte</a></li>
+                <li><a href="{{ path('app_contact_index') }}" class="hover:text-gray-400 block">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Inclure Flowbite JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+</body>
+</html>

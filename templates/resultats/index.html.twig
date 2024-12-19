@@ -1,0 +1,268 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats - Bordeaux Sports Actu{% endblock %}
+
+{% block body %}
+<div class="container mx-auto py-8 px-4 lg:px-8">
+    <!-- Page Title -->
+    <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-10">Résultats</h1>
+    <div class="text-end my-2 p-1">
+        <a href="{{ path('app_resultats_refresh') }}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+            Rafraîchir les Résultats
+        </a>
+    </div>
+
+    <!-- Football Results -->
+    <h2 class="text-2xl font-bold text-gray-700 mb-6">Football - Girondins de Bordeaux</h2>
+    <div class="overflow-x-auto shadow-lg rounded-lg mb-10">
+        <table class="w-full text-left bg-white border border-gray-200 rounded-lg">
+            <thead>
+                <tr class="bg-blue-600 text-white rounded-t-lg">
+                    <th class="py-3 px-4 border-b border-blue-700 text-sm lg:text-base">Date/Heure</th>
+                    <th class="py-3 px-4 border-b border-blue-700 text-sm lg:text-base">Équipe Domicile</th>
+                    <th class="py-3 px-4 border-b border-blue-700 text-sm lg:text-base">Score Domicile</th>
+                    <th class="py-3 px-4 border-b border-blue-700 text-sm lg:text-base">Équipe Extérieure</th>
+                    <th class="py-3 px-4 border-b border-blue-700 text-sm lg:text-base">Score Extérieur</th>
+                </tr>
+            </thead>
+            <tbody id="football-results">
+            {% for match in football_resultats|slice(0, 5) %}
+                <tr class="hover:bg-blue-50 transition-all duration-200">
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.date_heure }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.home_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-blue-600">{{ match.home_score }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.away_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-blue-600">{{ match.away_score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if football_resultats|length > 5 %}
+            <div class="text-center my-4">
+                <button id="show-all-football" class="bg-blue-500 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+                    Voir tout
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Rugby Results -->
+    <h2 class="text-2xl font-bold text-gray-700 mb-6">Rugby  - Unions Bordeaux Begles</h2>
+    <div class="overflow-x-auto shadow-lg rounded-lg mb-10">
+        <table class="w-full text-left bg-white border border-gray-200 rounded-lg">
+            <thead>
+                <tr class="bg-green-600 text-white rounded-t-lg">
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Date/Heure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Extérieure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Extérieur</th>
+                </tr>
+            </thead>
+            <tbody id="rugby-results">
+            {% for match in rugby_resultats|slice(0, 5) %}
+                <tr class="hover:bg-green-50 transition-all duration-200">
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.date_heure }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.home_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.home_score }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.away_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.away_score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if rugby_resultats|length > 5 %}
+            <div class="text-center my-4">
+                <button id="show-all-rugby" class="bg-green-500 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+                    Voir tout
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    <h2 class="text-2xl font-bold text-gray-700 mb-6">Rugby Féminin - Les Lionnes de Bordeaux</h2>
+    <div class="overflow-x-auto shadow-lg rounded-lg mb-10">
+        <table class="w-full text-left bg-white border border-gray-200 rounded-lg">
+            <thead>
+                <tr class="bg-green-600 text-white rounded-t-lg">
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Date/Heure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Extérieure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Extérieur</th>
+                </tr>
+            </thead>
+            <tbody id="rugby-results-f">
+            {% for match in rugby_f_resultats|slice(0, 5) %}
+                <tr class="hover:bg-green-50 transition-all duration-200">
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.date_heure }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.home_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.home_score }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.away_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.away_score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if rugby_f_resultats|length > 5 %}
+            <div class="text-center my-4">
+                <button id="show-all-rugby-f" class="bg-green-500 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+                    Voir tout
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    <h2 class="text-2xl font-bold text-gray-700 mb-6">Hockey sur glace - Boxers de Bordeaux</h2>
+    <div class="overflow-x-auto shadow-lg rounded-lg mb-10">
+        <table class="w-full text-left bg-white border border-gray-200 rounded-lg">
+            <thead>
+                <tr class="bg-green-600 text-white rounded-t-lg">
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Date/Heure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Extérieure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Extérieur</th>
+                </tr>
+            </thead>
+            <tbody id="hockey">
+            {% for match in hockey_resultats|slice(0, 5) %}
+                <tr class="hover:bg-green-50 transition-all duration-200">
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.date_heure }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.home_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.home_score }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.away_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.away_score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if hockey_resultats|length > 5 %}
+            <div class="text-center my-4">
+                <button id="show-all-hockey" class="bg-green-500 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+                    Voir tout
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    <h2 class="text-2xl font-bold text-gray-700 mb-6">Basketball - Jeunes de Saint-Augustin Bordeaux Métropole</h2>
+    <div class="overflow-x-auto shadow-lg rounded-lg mb-10">
+        <table class="w-full text-left bg-white border border-gray-200 rounded-lg">
+            <thead>
+                <tr class="bg-green-600 text-white rounded-t-lg">
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Date/Heure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Extérieure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Extérieur</th>
+                </tr>
+            </thead>
+            <tbody id="basketball">
+            {% for match in basketball_resultats|slice(0, 5) %}
+                <tr class="hover:bg-green-50 transition-all duration-200">
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.date_heure }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.home_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.home_score }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.away_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.away_score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if basketball_resultats|length > 5 %}
+            <div class="text-center my-4">
+                <button id="show-all-basketball" class="bg-green-500 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+                    Voir tout
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer Note -->
+    <div class="text-center mt-8">
+        <p class="text-gray-600 text-sm lg:text-base">
+            * Les résultats sont mis à jour régulièrement. Revenez bientôt pour plus de mises à jour.
+        </p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('show-all-football')?.addEventListener('click', () => {
+        const footballResults = {{ football_resultats|json_encode|raw }};
+        const tbody = document.getElementById('football-results');
+        tbody.innerHTML = footballResults.map(match => `
+            <tr class="hover:bg-blue-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-blue-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-blue-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-football').remove();
+    });
+
+    document.getElementById('show-all-rugby')?.addEventListener('click', () => {
+        const rugbyResults = {{ rugby_resultats|json_encode|raw }};
+        const tbody = document.getElementById('rugby-results');
+        tbody.innerHTML = rugbyResults.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-rugby').remove();
+    });
+
+    document.getElementById('show-all-rugby-f')?.addEventListener('click', () => {
+        const rugbyFResults = {{ rugby_f_resultats|json_encode|raw }};
+        const tbody = document.getElementById('rugby-results-f');
+        tbody.innerHTML = rugbyFResults.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-rugby-f').remove();
+    });
+
+    document.getElementById('show-all-hockey')?.addEventListener('click', () => {
+        const hockeyResultats = {{ hockey_resultats|json_encode|raw }};
+        const tbody = document.getElementById('hockey');
+        tbody.innerHTML = hockeyResultats.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-hockey').remove();
+    });
+
+    document.getElementById('show-all-basketball')?.addEventListener('click', () => {
+        const basketballResultats = {{ basketball_resultats|json_encode|raw }};
+        const tbody = document.getElementById('basketball');
+        tbody.innerHTML = basketballResultats.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-basketball').remove();
+    });
+</script>
+
+{% endblock %}
