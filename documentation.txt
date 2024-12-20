@@ -19,6 +19,10 @@ Service :
     - Le service permet également de regenerer les resultats grâce a une methode qui lance le script python
 
 Test :
-    - Fichier de test pour le Controller et pour le Service
+    - Fichier de test pour le Controller et pour le Service fait avec PHPUnit
 
 BDD actuellement vide mais crée et connectée
+
+CSS :
+    - Tailwind installé sur le projet
+    - Utilisation de la compilation des assets avec la commande "yarn encore dev" pour générer un fichier compiler pour le CSS et le JS
