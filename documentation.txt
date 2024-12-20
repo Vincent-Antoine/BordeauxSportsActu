@@ -26,3 +26,10 @@ BDD actuellement vide mais crée et connectée
 CSS :
     - Tailwind installé sur le projet
     - Utilisation de la compilation des assets avec la commande "yarn encore dev" pour générer un fichier compiler pour le CSS et le JS
+
+Upload d'image géré par le bundle VichUploader
+
+Création d'une entité Article avec en plus des routes pour 
+    - /articles = affiche tout les articles
+    - /articles/{slug} le slug sera le nom de l'articles
+    - /articles/new pour créer un nouvel article

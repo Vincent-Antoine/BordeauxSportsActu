@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block body %}
+<div class="container mx-auto my-8 px-4">
+    <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+        {% if article.imageName %}
+            <img 
+                src="{{ vich_uploader_asset(article, 'imageFile') }}" 
+                alt="{{ article.title }}" 
+                class="w-full h-64 object-cover">
+        {% else %}
+            <img 
+                src="/images/default-article.png" 
+                alt="Image par défaut" 
+                class="w-full h-64 object-cover">
+        {% endif %}
+
+        <div class="p-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ article.title }}</h1>
+            <p class="text-sm text-gray-600 mb-2">Catégorie : <span class="font-medium">{{ article.category }}</span></p>
+            <p class="text-sm text-gray-600 mb-6">Mis à jour le : <span class="font-medium">{{ article.updatedAt|date('d/m/Y H:i') }}</span></p>
+
+            <div class="text-center mt-4">
+                <a href="{{ path('article_index') }}" 
+                   class="inline-block bg-blue-500 text-white px-6 py-2 rounded shadow hover:bg-blue-600 transition duration-200">
+                    Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

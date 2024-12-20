@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des articles{% endblock %}
+
+{% block body %}
+<div class="container mx-auto my-8 px-4">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Liste des articles</h1>
+
+    <div class="flex justify-end mb-4">
+        <a href="{{ path('article_new') }}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+            Créer un nouvel article
+        </a>
+    </div>
+
+    {% if articles|length > 0 %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for article in articles %}
+                <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                    {% if article.imageName %}
+                        <img 
+                            src="{{ vich_uploader_asset(article, 'imageFile') }}" 
+                            alt="{{ article.title }}" 
+                            class="w-full h-48 object-cover">
+                    {% else %}
+                        <img 
+                            src="/images/default-article.png" 
+                            alt="Image par défaut" 
+                            class="w-full h-48 object-cover">
+                    {% endif %}
+                    <div class="p-4">
+                        <h2 class="text-lg font-semibold text-gray-800 truncate">{{ article.title }}</h2>
+                        <p class="text-sm text-gray-600 mt-2">Catégorie : {{ article.category }}</p>
+                        <div class="mt-4">
+                            <a href="{{ path('article_show', {'slug': article.slug}) }}" 
+                               class="inline-block bg-blue-500 text-white text-sm px-4 py-2 rounded hover:bg-blue-600">
+                                Lire l'article
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-blue-100 text-blue-700 p-4 rounded">
+            Aucun article pour le moment.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
