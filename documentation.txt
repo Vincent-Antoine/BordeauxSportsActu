@@ -1,0 +1,24 @@
+Route existante : 
+    - Resultats
+
+Script : 
+    - Scrapping grâce au script python scripts\scrape_resultats.py il récupere les informations des scores pour les équipes suivantes :
+        - UBB
+        - JSA Basket
+        - Hockey sur glace
+        - Girondins de Bordeaux
+        - Rugby feminin
+    - Le script utilise BeautifulSoup et selenium pour le scrapping il ecris les resultats dans scripts\public\data\resultats.json
+
+Controller : 
+    - Un seul controller actuellement qui permet de créer la page resultats
+
+Service : 
+    - Création d'un fichier de service pour que la logique métier soit utilisable dans plusieurs controller
+    - Le service récupere les informations du JSON pour les envoyer à la vue qui les traitera
+    - Le service permet également de regenerer les resultats grâce a une methode qui lance le script python
+
+Test :
+    - Fichier de test pour le Controller et pour le Service
+
+BDD actuellement vide mais crée et connectée
