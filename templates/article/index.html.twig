@@ -6,12 +6,6 @@
 <div class="container mx-auto my-8 px-4">
     <h1 class="text-3xl font-bold text-gray-800 mb-6">Liste des articles</h1>
 
-    <div class="flex justify-end mb-4">
-        <a href="{{ path('article_new') }}" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
-            Créer un nouvel article
-        </a>
-    </div>
-
     {% if articles|length > 0 %}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for article in articles %}
@@ -30,6 +24,9 @@
                     <div class="p-4">
                         <h2 class="text-lg font-semibold text-gray-800 truncate">{{ article.title }}</h2>
                         <p class="text-sm text-gray-600 mt-2">Catégorie : {{ article.category }}</p>
+                        <p class="text-gray-700 text-sm mt-2">
+                            {{ article.content|slice(0, 100) ~ '...' }}
+                        </p>
                         <div class="mt-4">
                             <a href="{{ path('article_show', {'slug': article.slug}) }}" 
                                class="inline-block bg-blue-500 text-white text-sm px-4 py-2 rounded hover:bg-blue-600">

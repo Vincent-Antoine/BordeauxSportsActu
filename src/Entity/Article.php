@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
@@ -32,6 +31,10 @@ class Article
     #[ORM\Column(length: 255)]
     private ?string $category = null;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $content = null;
+
+
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $updatedAt = null;
 
@@ -49,9 +52,6 @@ class Article
     {
         $this->title = $title;
 
-        // Mise à jour automatique du slug à chaque modification du titre
-        $this->slug = (new \Symfony\Component\String\Slugger\AsciiSlugger())->slug($title)->lower();
-
         return $this;
     }
 
@@ -59,12 +59,12 @@ class Article
     {
         return $this->slug;
     }
-    public function setSlug(SluggerInterface $slugger): void
+
+    public function setSlug(string $slug): self
     {
-        // Vérifie que le titre existe avant de générer le slug
-        if ($this->title) {
-            $this->slug = $slugger->slug($this->title)->lower();
-        }
+        $this->slug = $slug;
+
+        return $this;
     }
 
     public function getImageName(): ?string
@@ -89,7 +89,6 @@ class Article
         $this->imageFile = $imageFile;
 
         if ($imageFile) {
-            // Met à jour `updatedAt` à chaque fois qu'une nouvelle image est chargée
             $this->updatedAt = new \DateTimeImmutable();
         }
 
@@ -116,6 +115,17 @@ class Article
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(?string $content): self
+    {
+        $this->content = $content;
 
         return $this;
     }

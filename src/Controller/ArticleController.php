@@ -23,28 +23,6 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/articles/new', name: 'article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
-    {
-        $article = new Article();
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $article->setSlug($slugger); // Génération du slug à partir du titre
-
-            $entityManager->persist($article);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Article créé avec succès !');
-
-            return $this->redirectToRoute('article_index');
-        }
-
-        return $this->render('article/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
 
 
 
