@@ -40,6 +40,11 @@
                             <span class="block py-2 lg:py-0">Bienvenue, {{ app.user.userIdentifier }}</span>
                         </li>
                         <li>
+                            <a href="{{ path('app_profile') }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                                Mon profil
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ path('app_logout') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                                 Déconnexion
                             </a>
@@ -70,6 +75,11 @@
                 {% if app.user %}
                     <li>
                         <span class="block py-2">Bienvenue, {{ app.user.userIdentifier }}</span>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_profile') }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                            Mon profil
+                        </a>
                     </li>
                     <li>
                         <a href="{{ path('app_logout') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">

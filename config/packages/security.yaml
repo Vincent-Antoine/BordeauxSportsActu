@@ -20,7 +20,7 @@ security:
       logout:
         path: app_logout
         # where to redirect after logout
-        target: app_login # Redirige vers la page d'accueil après la déconnexion
+        target: app_profile # Redirige vers la page profil après la déconnexion
 
       remember_me:
         secret: "%kernel.secret%"
