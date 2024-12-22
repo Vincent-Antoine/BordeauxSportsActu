@@ -2,13 +2,13 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Site</title>
+    <title>Bordeaux Sports Actu</title>
 </head>
 <body>
     <header class="bg-gray-800 text-white">
         <div class="container mx-auto flex justify-between items-center py-4 px-4 lg:px-8">
             <!-- Logo -->
-            <a href="{{ path('app_homepage') }}" class="text-2xl font-bold">Bordeaux Sports Actu</a>
+            <a href="{{ path('app_home') }}" class="text-2xl font-bold">Bordeaux Sports Actu</a>
 
             <!-- Hamburger Menu -->
             <button 
@@ -25,13 +25,37 @@
             </button>
 
             <!-- Navigation (Desktop) -->
-            <nav id="menu" class="hidden lg:block">
+            <nav id="menu" class="hidden lg:flex lg:items-center lg:space-x-6">
                 <ul class="lg:flex lg:space-x-6 items-center">
                     <li><a href="{{ path('app_resultats_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Résultats</a></li>
                     <li><a href="{{ path('app_live_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Live</a></li>
                     <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Blog</a></li>
-                    <li><a href="{{ path('app_account_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Compte</a></li>
                     <li><a href="{{ path('app_contact_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Contact</a></li>
+                </ul>
+
+                <!-- Auth Links -->
+                <ul class="lg:flex lg:space-x-6 items-center">
+                    {% if app.user %}
+                        <li>
+                            <span class="block py-2 lg:py-0">Bienvenue, {{ app.user.userIdentifier }}</span>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_logout') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                Déconnexion
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{ path('app_login') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                Connexion
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_register') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                Créer un compte
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
@@ -42,8 +66,28 @@
                 <li><a href="{{ path('app_resultats_index') }}" class="hover:text-gray-400 block">Résultats</a></li>
                 <li><a href="{{ path('app_live_index') }}" class="hover:text-gray-400 block">Live</a></li>
                 <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-400 block">Blog</a></li>
-                <li><a href="{{ path('app_account_index') }}" class="hover:text-gray-400 block">Compte</a></li>
                 <li><a href="{{ path('app_contact_index') }}" class="hover:text-gray-400 block">Contact</a></li>
+                {% if app.user %}
+                    <li>
+                        <span class="block py-2">Bienvenue, {{ app.user.userIdentifier }}</span>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_logout') }}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                            Déconnexion
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ path('app_login') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            Connexion
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_register') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                            Créer un compte
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </header>

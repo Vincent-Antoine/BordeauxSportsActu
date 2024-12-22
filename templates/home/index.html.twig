@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<div class="container mx-auto my-8 px-4">
+    <header class="text-center mb-6">
+        <h1 class="text-4xl font-bold text-blue-600">{{ title }}</h1>
+        <p class="text-gray-700 text-lg mt-2">{{ description }}</p>
+    </header>
+
+    <section>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Sports populaires</h2>
+        <ul class="list-disc pl-8">
+            {% for sport in sports %}
+                <li class="text-lg text-gray-700">{{ sport }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <footer class="mt-10 text-center text-gray-600">
+        <p>&copy; {{ "now"|date("Y") }} Bordeaux Sports Actu. Tous droits réservés.</p>
+    </footer>
+</div>
+{% endblock %}
