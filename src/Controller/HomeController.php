@@ -13,8 +13,7 @@ class HomeController extends AbstractController
     {
         return $this->render('home/index.html.twig', [
             'title' => 'Bienvenue sur Bordeaux Sports Actu',
-            'description' => 'Votre source d’actualité sportive à Bordeaux et ses alentours.',
-            'sports' => ['Football', 'Rugby', 'Basketball', 'Handball', 'Athlétisme'],
+            'description' => 'Retrouvez les dernières actualités sportives de Bordeaux.',
         ]);
     }
 }

@@ -10,12 +10,35 @@
     </header>
 
     <section>
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Sports populaires</h2>
-        <ul class="list-disc pl-8">
-            {% for sport in sports %}
-                <li class="text-lg text-gray-700">{{ sport }}</li>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Clubs sportifs de Bordeaux</h2>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+            {% set clubs = [
+                {'name': 'Boxers Bordeaux', 'logo': 'Boxers_Bordeaux.png', 'id': 'hockey'},
+                {'name': 'Girondins Bordeaux', 'logo': 'Girondins_Bordeaux.png', 'id': 'football-results'},
+                {'name': 'JSA Bordeaux Basket', 'logo': 'JSA_Bordeaux_Basket.png', 'id': 'basketball'},
+                {'name': 'Stade Bordelais ASPTT Rugby Lionnes', 'logo': 'Stade_Bordelais_ASPTT_Rugby_Lionnes.png', 'id': 'rugby-results-f'},
+                {'name': 'Union Bordeaux Bègles', 'logo': 'Union_Bordeaux_Bègles.png', 'id': 'rugby-results'}
+            ] %}
+
+            {% for club in clubs %}
+                <div class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center">
+                    <!-- Logo -->
+                    <div class="w-32 h-32 flex items-center justify-center">
+                        <img src="{{ asset('medias/logo/' ~ club.logo) }}" alt="Logo {{ club.name }}" class="w-28 h-28 object-contain">
+                    </div>
+
+                    <!-- Nom du club -->
+                    <h3 class="text-lg font-semibold text-gray-800 mt-4">{{ club.name }}</h3>
+
+                    <!-- Bouton redirection -->
+                    <a href="{{ path('app_resultats_index') }}#{{ club.id }}" 
+                       class="mt-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                        Voir les scores
+                    </a>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     </section>
 
     <footer class="mt-10 text-center text-gray-600">
