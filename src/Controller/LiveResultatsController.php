@@ -18,44 +18,52 @@ class LiveResultatsController extends AbstractController
         $this->resultatsLiveService = $resultatsLiveService;
     }
 
-    #[Route('/live', name: 'app_resultats_live_index')]
+    #[Route('/live', name: 'app_resultats_live')]
     public function index(): Response
     {
-        try {
-            $liveMatch = $this->resultatsLiveService->getLiveMatch();
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'Impossible de récupérer les résultats.');
-            $liveMatch = null;
+        $filePath = $this->getParameter('kernel.project_dir') . '/scripts/resultats_live.json';
+
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('Fichier JSON introuvable.');
         }
 
+        $liveMatches = json_decode(file_get_contents($filePath), true);
+
         return $this->render('resultats/live/index.html.twig', [
-            'live_match' => $liveMatch,
+            'live_matches' => $liveMatches, // Transmettez bien la variable au template
         ]);
     }
+
 
     #[Route('/live/fragment', name: 'app_resultats_live_fragment', methods: ['GET'])]
     public function refreshLiveMatchFragment(): Response
     {
-        try {
-            // Exécuter le script Python pour mettre à jour les données
-            $success = $this->resultatsLiveService->refreshResults();
+        // Exécutez le script Python pour mettre à jour le JSON
+        $success = $this->resultatsLiveService->refreshResults();
 
-            if (!$success) {
-                throw new \Exception('Erreur lors de l\'exécution du script Python.');
-            }
-
-            // Récupérer les données mises à jour
-            $liveMatch = $this->resultatsLiveService->getLiveMatch();
-
-            // Renvoyer les données mises à jour
-            return $this->render('resultats/live/_live_match.html.twig', [
-                'live_match' => $liveMatch,
-            ]);
-        } catch (\Exception $e) {
-            return $this->render('resultats/live/_empty_live_match.html.twig', [
-                'error_message' => 'Revenez plus tard pour suivre les matchs en direct.',
-            ]);
+        if (!$success) {
+            throw new \RuntimeException('Erreur lors de l\'exécution du script Python.');
         }
+
+        // Chemin vers le fichier JSON
+        $filePath = $this->getParameter('kernel.project_dir') . '/scripts/resultats_live.json';
+
+        // Vérifiez si le fichier JSON existe
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('Le fichier JSON des résultats en direct est introuvable.');
+        }
+
+        // Chargez et décodez le fichier JSON
+        $liveMatches = json_decode(file_get_contents($filePath), true);
+
+        if ($liveMatches === null) {
+            throw new \RuntimeException('Le fichier JSON est mal formaté.');
+        }
+
+        // Renvoyez la vue partielle pour la mise à jour
+        return $this->render('resultats/live/_live_match.html.twig', [
+            'live_matches' => $liveMatches,
+        ]);
     }
 
 

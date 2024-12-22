@@ -14,30 +14,30 @@
     </div>
 
     <!-- Live Match Results -->
-    {% if live_match %}
-    <div id="live-match" class="bg-white shadow-lg rounded-lg p-6 mb-10">
-    <h2 class="text-2xl font-bold text-gray-700 mb-4">Match en Direct</h2>
-    <div class="flex justify-between items-center">
-        <div class="text-lg font-medium text-gray-800">
-            <span id="home-team" class="text-blue-600">{{ live_match.home_team }}</span> vs 
-            <span id="away-team" class="text-red-600">{{ live_match.away_team }}</span>
+    <div id="live-matches">
+    {% for sport, data in live_matches %}
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-10">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Match en Direct - {{ sport|capitalize }}</h2>
+            {% if data.message is defined %}
+                <p class="text-gray-600">{{ data.message }}</p>
+            {% else %}
+                <div class="flex justify-between items-center">
+                    <div class="text-lg font-medium text-gray-800">
+                        <span class="text-blue-600">{{ data.home_team }}</span> vs 
+                        <span class="text-red-600">{{ data.away_team }}</span>
+                    </div>
+                    <div class="text-lg font-bold text-gray-800">
+                        <span>{{ data.home_score }}</span> - 
+                        <span>{{ data.away_score }}</span>
+                    </div>
+                </div>
+                <div class="text-gray-600 mt-2">
+                    Temps de jeu : <span>{{ data.match_time }}</span>
+                </div>
+            {% endif %}
         </div>
-        <div class="text-lg font-bold text-gray-800">
-            <span id="home-score">{{ live_match.home_score }}</span> - 
-            <span id="away-score">{{ live_match.away_score }}</span>
-        </div>
-    </div>
-    <div class="text-gray-600 mt-2">
-        Temps de jeu : <span id="match-time">{{ live_match.match_time }}</span>
-    </div>
+    {% endfor %}
 </div>
-
-{% else %}
-    <div class="bg-gray-100 shadow-lg rounded-lg p-6 text-center mb-10">
-        <h2 class="text-2xl font-bold text-gray-700 mb-4">Aucun match en direct</h2>
-        <p class="text-gray-600">Revenez plus tard pour suivre les matchs en direct.</p>
-    </div>
-{% endif %}
 
 
     <!-- Footer Note -->
@@ -51,42 +51,36 @@
 <script>
 // Script JavaScript pour rafraîchir automatiquement la div 'live-match'
 document.addEventListener("DOMContentLoaded", function () {
-    // Fonction pour rafraîchir le contenu de la div 'live-match'
-    function refreshLiveMatch() {
-        // URL pour récupérer le fragment HTML
+    function refreshLiveMatches() {
         const refreshUrl = "/live/fragment";
 
-        // Effectuer une requête AJAX pour récupérer le contenu mis à jour
         fetch(refreshUrl, {
             headers: {
-                "X-Requested-With": "XMLHttpRequest", // Indique une requête AJAX
+                "X-Requested-With": "XMLHttpRequest",
             },
         })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Erreur lors du chargement des résultats");
                 }
-                return response.text(); // Récupérer la réponse sous forme de texte
+                return response.text();
             })
             .then((html) => {
-                // Mettre à jour uniquement la div avec l'ID 'live-match'
-                const liveMatchDiv = document.getElementById("live-match");
-                if (liveMatchDiv) {
-                    liveMatchDiv.outerHTML = html; // Remplacer tout le contenu
+                const liveMatchesDiv = document.getElementById("live-matches");
+                if (liveMatchesDiv) {
+                    liveMatchesDiv.outerHTML = html;
                 }
-                console.log("raffraichis"); // Afficher un message dans la console
             })
             .catch((error) => {
                 console.error("Erreur lors du rafraîchissement :", error);
             });
     }
 
-    // Rafraîchir toutes les 30 secondes
-    setInterval(refreshLiveMatch, 30000);
-
-    // Lancer une première fois au chargement de la page
-    refreshLiveMatch();
+    // Rafraîchir toutes les 15 secondes
+    setInterval(refreshLiveMatches, 15000);
+    refreshLiveMatches();
 });
+
 
 </script>
 
