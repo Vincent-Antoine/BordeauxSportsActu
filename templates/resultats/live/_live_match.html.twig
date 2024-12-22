@@ -1,0 +1,16 @@
+<div id="live-match" class="bg-white shadow-lg rounded-lg p-6 mb-10">
+    <h2 class="text-2xl font-bold text-gray-700 mb-4">Match en Direct</h2>
+    <div class="flex justify-between items-center">
+        <div class="text-lg font-medium text-gray-800">
+            <span id="home-team" class="text-blue-600">{{ live_match.home_team }}</span> vs 
+            <span id="away-team" class="text-red-600">{{ live_match.away_team }}</span>
+        </div>
+        <div class="text-lg font-bold text-gray-800">
+            <span id="home-score">{{ live_match.home_score }}</span> - 
+            <span id="away-score">{{ live_match.away_score }}</span>
+        </div>
+    </div>
+    <div class="text-gray-600 mt-2">
+        Temps de jeu : <span id="match-time">{{ live_match.match_time }}</span>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats - PSG Match Live{% endblock %}
+
+{% block body %}
+<div class="container mx-auto py-8 px-4 lg:px-8">
+    <!-- Page Title -->
+    <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-10">Résultats en Direct</h1>
+    <div class="text-end my-2 p-1">
+        <a href="{{ path('app_resultats_live_refresh') }}" 
+           class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+            Rafraîchir les Résultats
+        </a>
+    </div>
+
+    <!-- Live Match Results -->
+    {% if live_match %}
+    <div id="live-match" class="bg-white shadow-lg rounded-lg p-6 mb-10">
+    <h2 class="text-2xl font-bold text-gray-700 mb-4">Match en Direct</h2>
+    <div class="flex justify-between items-center">
+        <div class="text-lg font-medium text-gray-800">
+            <span id="home-team" class="text-blue-600">{{ live_match.home_team }}</span> vs 
+            <span id="away-team" class="text-red-600">{{ live_match.away_team }}</span>
+        </div>
+        <div class="text-lg font-bold text-gray-800">
+            <span id="home-score">{{ live_match.home_score }}</span> - 
+            <span id="away-score">{{ live_match.away_score }}</span>
+        </div>
+    </div>
+    <div class="text-gray-600 mt-2">
+        Temps de jeu : <span id="match-time">{{ live_match.match_time }}</span>
+    </div>
+</div>
+
+{% else %}
+    <div class="bg-gray-100 shadow-lg rounded-lg p-6 text-center mb-10">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4">Aucun match en direct</h2>
+        <p class="text-gray-600">Revenez plus tard pour suivre les matchs en direct.</p>
+    </div>
+{% endif %}
+
+
+    <!-- Footer Note -->
+    <div class="text-center mt-8">
+        <p class="text-gray-600 text-sm lg:text-base">
+            * Les résultats en direct sont mis à jour automatiquement.
+        </p>
+    </div>
+</div>
+
+<script>
+// Script JavaScript pour rafraîchir automatiquement la div 'live-match'
+document.addEventListener("DOMContentLoaded", function () {
+    // Fonction pour rafraîchir le contenu de la div 'live-match'
+    function refreshLiveMatch() {
+        // URL pour récupérer le fragment HTML
+        const refreshUrl = "/live/fragment";
+
+        // Effectuer une requête AJAX pour récupérer le contenu mis à jour
+        fetch(refreshUrl, {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest", // Indique une requête AJAX
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Erreur lors du chargement des résultats");
+                }
+                return response.text(); // Récupérer la réponse sous forme de texte
+            })
+            .then((html) => {
+                // Mettre à jour uniquement la div avec l'ID 'live-match'
+                const liveMatchDiv = document.getElementById("live-match");
+                if (liveMatchDiv) {
+                    liveMatchDiv.outerHTML = html; // Remplacer tout le contenu
+                }
+                console.log("raffraichis"); // Afficher un message dans la console
+            })
+            .catch((error) => {
+                console.error("Erreur lors du rafraîchissement :", error);
+            });
+    }
+
+    // Rafraîchir toutes les 30 secondes
+    setInterval(refreshLiveMatch, 30000);
+
+    // Lancer une première fois au chargement de la page
+    refreshLiveMatch();
+});
+
+</script>
+
+
+{% endblock %}
