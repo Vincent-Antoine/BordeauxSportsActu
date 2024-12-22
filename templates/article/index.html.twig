@@ -37,6 +37,11 @@
                 </div>
             {% endfor %}
         </div>
+
+        <!-- Pagination placée en dehors de la boucle -->
+        <div class="pagination mt-4 text-center">
+            {{ knp_pagination_render(articles) }}
+        </div>
     {% else %}
         <div class="bg-blue-100 text-blue-700 p-4 rounded">
             Aucun article pour le moment.

@@ -18,8 +18,8 @@ app_live_index:
   controller: App\Controller\LiveController::index
 
 app_blog_index:
-  path: /blog
-  controller: App\Controller\BlogController::index
+  path: /articles
+  controller: App\Controller\ArticleController::index
 
 app_account_index:
   path: /compte

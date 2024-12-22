@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon Profil{% endblock %}
+
+{% block body %}
+<div class="container mx-auto my-8 px-4">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Modifier mon Profil</h1>
+
+    {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+        <div class="bg-white shadow-md rounded-lg p-6 space-y-4">
+            {{ form_row(form.email) }}
+            {{ form_row(form.username) }}
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Sauvegarder</button>
+        </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

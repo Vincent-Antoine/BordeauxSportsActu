@@ -21,10 +21,31 @@
             </div>
 
             <div>
-                {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'appearance-none rounded-md shadow-sm w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500'}}) }}
-                {{ form_errors(registrationForm.plainPassword) }}
-            </div>
+    {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'appearance-none rounded-md shadow-sm w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500', 'id': 'password-input'}}) }}
+    {{ form_errors(registrationForm.plainPassword) }}
+    
+    <p class="text-sm text-gray-500 mt-1">Le mot de passe doit contenir au moins :</p>
+    <ul id="password-requirements" class="list-disc list-inside text-sm">
+        <li id="length-requirement" class="text-red-500 flex items-center">
+            <span class="mr-2">❌</span> 8 caractères
+        </li>
+        <li id="uppercase-requirement" class="text-red-500 flex items-center">
+            <span class="mr-2">❌</span> Une majuscule
+        </li>
+        <li id="number-requirement" class="text-red-500 flex items-center">
+            <span class="mr-2">❌</span> Un chiffre
+        </li>
+    </ul>
+</div>
+
+
+<div>
+    {{ form_label(registrationForm.username, 'Nom d\'utilisateur', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_widget(registrationForm.username, {'attr': {'class': 'appearance-none rounded-md shadow-sm w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500'}}) }}
+    {{ form_errors(registrationForm.username) }}
+</div>
+
 
             <div>
                 <div class="flex items-center">
@@ -48,4 +69,48 @@
         </p>
     </div>
 </div>
+
+<script>
+       document.addEventListener('DOMContentLoaded', () => {
+    const passwordInput = document.getElementById('registration_form_plainPassword');
+    if (!passwordInput) return; // Évite l'erreur si l'élément est absent
+
+    const lengthRequirement = document.getElementById('length-requirement');
+    const uppercaseRequirement = document.getElementById('uppercase-requirement');
+    const numberRequirement = document.getElementById('number-requirement');
+
+    passwordInput.addEventListener('input', () => {
+        const value = passwordInput.value;
+
+        // Vérifie la longueur
+        if (value.length >= 8) {
+            lengthRequirement.classList.replace('text-red-500', 'text-green-500');
+            lengthRequirement.querySelector('span').textContent = '✔️';
+        } else {
+            lengthRequirement.classList.replace('text-green-500', 'text-red-500');
+            lengthRequirement.querySelector('span').textContent = '❌';
+        }
+
+        // Vérifie la présence d'une majuscule
+        if (/[A-Z]/.test(value)) {
+            uppercaseRequirement.classList.replace('text-red-500', 'text-green-500');
+            uppercaseRequirement.querySelector('span').textContent = '✔️';
+        } else {
+            uppercaseRequirement.classList.replace('text-green-500', 'text-red-500');
+            uppercaseRequirement.querySelector('span').textContent = '❌';
+        }
+
+        // Vérifie la présence d'un chiffre
+        if (/\d/.test(value)) {
+            numberRequirement.classList.replace('text-red-500', 'text-green-500');
+            numberRequirement.querySelector('span').textContent = '✔️';
+        } else {
+            numberRequirement.classList.replace('text-green-500', 'text-red-500');
+            numberRequirement.querySelector('span').textContent = '❌';
+        }
+    });
+});
+
+    </script>
+
 {% endblock %}

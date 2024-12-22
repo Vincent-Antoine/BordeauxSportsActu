@@ -4,46 +4,61 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
+            ->add('username', TextType::class, [
+                'label' => 'Nom d\'utilisateur',
                 'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                    new Assert\NotBlank(['message' => 'Le nom d\'utilisateur ne peut pas être vide.']),
+                    new Assert\Length([
+                        'min' => 3,
+                        'minMessage' => 'Le nom d\'utilisateur doit contenir au moins {{ limit }} caractères.',
                     ]),
+                ],
+                'attr' => ['class' => 'appearance-none rounded-md shadow-sm w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500'],
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Adresse e-mail',
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'L\'adresse e-mail ne peut pas être vide.']),
+                    new Assert\Email(['message' => 'Veuillez entrer une adresse e-mail valide.']),
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
+                'label' => 'Mot de passe',
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
+                    new Assert\NotBlank(['message' => 'Le mot de passe ne peut pas être vide.']),
+                    new Assert\Length([
+                        'min' => 8,
+                        'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
                     ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
+                    new Assert\Regex([
+                        'pattern' => '/(?=.*[A-Z])(?=.*\d).+/',
+                        'message' => 'Le mot de passe doit contenir au moins une majuscule et un chiffre.',
                     ]),
                 ],
+                'attr' => ['autocomplete' => 'new-password'],
             ])
-        ;
+            ->add('agreeTerms', CheckboxType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new Assert\IsTrue([
+                        'message' => 'Vous devez accepter nos conditions générales.',
+                    ]),
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
