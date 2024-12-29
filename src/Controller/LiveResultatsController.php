@@ -21,18 +21,34 @@ class LiveResultatsController extends AbstractController
     #[Route('/live', name: 'app_resultats_live')]
     public function index(): Response
     {
+        // Chemin vers le fichier JSON
         $filePath = $this->getParameter('kernel.project_dir') . '/scripts/resultats_live.json';
 
-        if (!file_exists($filePath)) {
-            throw $this->createNotFoundException('Fichier JSON introuvable.');
+        // Exécuter le script Python pour générer ou mettre à jour le JSON
+        $success = $this->resultatsLiveService->refreshResults();
+
+        if (!$success) {
+            throw new \RuntimeException('Erreur lors de l\'exécution du script Python.');
         }
 
+        // Vérifiez si le fichier JSON existe après l'exécution
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('Le fichier JSON des résultats en direct est introuvable.');
+        }
+
+        // Chargez et décodez le fichier JSON
         $liveMatches = json_decode(file_get_contents($filePath), true);
 
+        if ($liveMatches === null) {
+            throw new \RuntimeException('Le fichier JSON est mal formaté.');
+        }
+
+        // Afficher la vue principale
         return $this->render('resultats/live/index.html.twig', [
-            'live_matches' => $liveMatches, // Transmettez bien la variable au template
+            'live_matches' => $liveMatches,
         ]);
     }
+
 
 
     #[Route('/live/fragment', name: 'app_resultats_live_fragment', methods: ['GET'])]
@@ -76,7 +92,6 @@ class LiveResultatsController extends AbstractController
         if (!$success) {
             $this->addFlash('error', 'Erreur lors de la mise à jour des résultats en direct.');
         } else {
-            $this->addFlash('success', 'Les résultats en direct ont été mis à jour avec succès.');
         }
 
         return $this->redirectToRoute('app_resultats_live');

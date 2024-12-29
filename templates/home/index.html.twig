@@ -12,6 +12,12 @@
     <section>
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Clubs sportifs de Bordeaux</h2>
 
+        <p class="mb-4">Les resultats en live des clubs sportifs de Bordeaux. En cliquant <a class="group text-pink-500 transition-all duration-300 ease-in-out" href="{{ path('app_resultats_live') }}">
+  <span class="bg-left-bottom bg-gradient-to-r from-pink-500 to-pink-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
+ici</span>
+</a>.
+</p>
+
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             {% set clubs = [
                 {'name': 'Boxers Bordeaux', 'logo': 'Boxers_Bordeaux.png', 'id': 'hockey'},
