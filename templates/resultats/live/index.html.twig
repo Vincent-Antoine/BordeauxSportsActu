@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Résultats - PSG Match Live{% endblock %}
+{% block title %}Résultats - Match Live{% endblock %}
 
 {% block body %}
 <div class="container mx-auto py-8 px-4 lg:px-8">
     <!-- Page Title -->
     <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-10">Résultats en Direct</h1>
     <div class="text-end my-2 p-1">
-        <a href="{{ path('app_resultats_live_refresh') }}" 
+        {# <a href="{{ path('app_resultats_live_refresh') }}" 
            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
             Rafraîchir les Résultats
-        </a>
+        </a> #}
     </div>
 
     <!-- Live Match Results -->
     <div id="live-matches">
     {% for sport, data in live_matches %}
         <div class="bg-white shadow-lg rounded-lg p-6 mb-10">
-            <h2 class="text-2xl font-bold text-gray-700 mb-4">Match en Direct - {{ sport|capitalize }}</h2>
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">Match en Direct - {{ sport }}</h2>
             {% if data.message is defined %}
                 <p class="text-gray-600">{{ data.message }}</p>
             {% else %}
@@ -76,8 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Rafraîchir toutes les 15 secondes
-    setInterval(refreshLiveMatches, 15000);
+    // Rafraîchir toutes les 30 secondes
+    setInterval(refreshLiveMatches, 30000);
     refreshLiveMatches();
 });
 

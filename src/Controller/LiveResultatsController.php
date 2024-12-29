@@ -79,6 +79,6 @@ class LiveResultatsController extends AbstractController
             $this->addFlash('success', 'Les résultats en direct ont été mis à jour avec succès.');
         }
 
-        return $this->redirectToRoute('app_resultats_live_index');
+        return $this->redirectToRoute('app_resultats_live');
     }
 }

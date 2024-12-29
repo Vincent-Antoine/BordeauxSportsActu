@@ -10,6 +10,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time 
 
 def fetch_flashscore(url):
     try:
@@ -24,9 +25,13 @@ def fetch_flashscore(url):
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         driver.get(url)
 
+        # Attendre que les matchs soient visibles
         WebDriverWait(driver, 15).until(
             EC.presence_of_all_elements_located((By.CLASS_NAME, "event__match"))
         )
+
+        # Ajouter un délai explicite pour garantir le chargement complet de la page
+        time.sleep(5)  # Délai de 5 secondes
 
         html_content = driver.page_source
         driver.quit()

@@ -33,3 +33,6 @@ Création d'une entité Article avec en plus des routes pour
     - /articles = affiche tout les articles
     - /articles/{slug} le slug sera le nom de l'articles
     - /articles/new pour créer un nouvel article
+
+
+/!\    PISTE : UTILISER LE FLUX RSS POUR SCRAPPER 
