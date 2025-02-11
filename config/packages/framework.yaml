@@ -5,6 +5,15 @@ framework:
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 
+    # Cache HTTP activé pour optimiser les performances
+    cache:
+        app: cache.adapter.filesystem
+
+    # Activation du cache HTTP pour stocker les réponses et optimiser les requêtes
+    http_cache:
+        enabled: true
+        debug: false
+
     #esi: true
     #fragments: true
 

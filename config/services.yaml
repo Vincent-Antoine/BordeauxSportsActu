@@ -22,3 +22,8 @@ services:
   App\Service\LiveResultatsService:
     arguments:
       $projectDir: "%kernel.project_dir%"
+
+  # EventListener pour activer un cache global sur toutes les pages
+  App\EventListener\CacheResponseListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.response }
