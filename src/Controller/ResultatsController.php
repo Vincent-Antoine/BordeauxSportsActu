@@ -23,7 +23,6 @@ class ResultatsController extends AbstractController
         try {
             $results = $this->resultatsService->getResults();
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Impossible de récupérer les résultats.');
             $results = [
                 'football' => [],
                 'rugby' => [],
@@ -48,9 +47,7 @@ class ResultatsController extends AbstractController
         $success = $this->resultatsService->refreshResults();
 
         if (!$success) {
-            $this->addFlash('error', 'Erreur lors de la mise à jour des résultats.');
         } else {
-            $this->addFlash('success', 'Les résultats ont été mis à jour avec succès.');
         }
 
         return $this->redirectToRoute('app_resultats_index');

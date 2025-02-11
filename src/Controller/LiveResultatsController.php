@@ -90,7 +90,6 @@ class LiveResultatsController extends AbstractController
         $success = $this->resultatsLiveService->refreshResults();
 
         if (!$success) {
-            $this->addFlash('error', 'Erreur lors de la mise à jour des résultats en direct.');
         } else {
         }
 
