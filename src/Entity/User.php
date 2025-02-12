@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -37,6 +38,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserFavoriteSport::class, cascade: ['persist', 'remove'])]
+    private Collection $favoriteSports;
+
+    public function __construct()
+    {
+        $this->favoriteSports = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,7 +59,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -62,7 +70,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(?string $username): static
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -84,9 +91,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
@@ -96,7 +101,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
@@ -111,7 +115,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -120,7 +123,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+    }
+
+    public function getFavoriteSports(): Collection
+    {
+        return $this->favoriteSports;
+    }
+
+    public function addFavoriteSport(UserFavoriteSport $favoriteSport): self
+    {
+        if (!$this->favoriteSports->contains($favoriteSport)) {
+            $this->favoriteSports->add($favoriteSport);
+        }
+        return $this;
+    }
+
+    public function removeFavoriteSport(UserFavoriteSport $favoriteSport): self
+    {
+        $this->favoriteSports->removeElement($favoriteSport);
+        return $this;
     }
 }

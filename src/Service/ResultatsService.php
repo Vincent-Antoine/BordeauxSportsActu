@@ -36,6 +36,19 @@ class ResultatsService
         ];
     }
 
+    public function getResultsForSport(string $sport): array
+    {
+        if (!file_exists($this->dataPath)) {
+            throw new FileNotFoundException(sprintf('Fichier non trouvé : %s', $this->dataPath));
+        }
+
+        $jsonContent = file_get_contents($this->dataPath);
+        $data = json_decode($jsonContent, true);
+
+        return $data[$sport] ?? [];
+    }
+
+
     public function refreshResults(): bool
     {
         if (!file_exists($this->scriptPath)) {
