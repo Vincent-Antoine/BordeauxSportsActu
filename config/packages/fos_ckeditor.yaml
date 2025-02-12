@@ -1,0 +1,16 @@
+fos_ck_editor:
+    default_config: default
+    configs:
+        default:
+            toolbar: 'standard'
+            uiColor: '#ffffff'
+            # Vous pouvez ajouter d'autres options ici, par exemple :
+            # language: 'fr'
+            # extraPlugins: '...,...'
+            # removePlugins: '...,...'
+            # etc.
+
+twig:
+    form_themes:
+        - 'bootstrap_5_layout.html.twig'
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'

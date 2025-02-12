@@ -7,12 +7,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+
+// Import du type CKEditor
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class ArticleCrudController extends AbstractCrudController
 {
@@ -27,7 +30,6 @@ class ArticleCrudController extends AbstractCrudController
     {
         return Article::class;
     }
-
 
     public function configureFields(string $pageName): iterable
     {
@@ -44,8 +46,12 @@ class ArticleCrudController extends AbstractCrudController
                     'Culture' => 'culture',
                     'Autres' => 'autres',
                 ]),
-            TextareaField::new('content', 'Contenu'),
-
+            // Le champ CKEditor
+            TextareaField::new('content')
+                ->setFormType(CKEditorType::class)
+                ->setFormTypeOptions([
+                    'config_name' => 'default', // pour utiliser la config "default" ci-dessus
+                ]),
             Field::new('imageFile', 'Image de l\'article (upload)')
                 ->setFormType(FileType::class)
                 ->setRequired($pageName === 'new'),
@@ -61,6 +67,7 @@ class ArticleCrudController extends AbstractCrudController
             return;
         }
 
+        // Génération du slug si absent
         if (!$entityInstance->getSlug()) {
             $slug = $this->slugger->slug($entityInstance->getTitle())->lower();
             $entityInstance->setSlug($slug);
