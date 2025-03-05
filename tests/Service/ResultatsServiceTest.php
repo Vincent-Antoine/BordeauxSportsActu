@@ -47,6 +47,7 @@ class ResultatsServiceTest extends TestCase
             'rugby_f' => [],
             'hockey' => [],
             'basket' => [],
+            'volley' => [],
         ];
         file_put_contents($dataPath, json_encode($mockData));
 

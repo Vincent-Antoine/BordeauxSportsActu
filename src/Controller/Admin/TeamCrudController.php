@@ -31,6 +31,7 @@ class TeamCrudController extends AbstractCrudController
                     'Rugby féminin' => 'rugby_f',
                     'Hockey' => 'hockey',
                     'Basketball' => 'basket',
+                    'Volley' => 'volley',
                     
                 ])
                 ->setRequired(false),

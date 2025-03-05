@@ -1,29 +1,63 @@
+# config/services.yaml
+
+parameters:
+    project_dir: '%kernel.project_dir%'
+
+imports:
+  - { resource: clubs.yaml }  # Importe le fichier clubs.yaml où se trouve la liste des clubs
+
 services:
-  # default configuration for services in *this* file
+  # Configuration par défaut pour les services dans ce fichier
   _defaults:
-    autowire: true # Automatically injects dependencies in your services.
-    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    autowire: true
+    autoconfigure: true
+    public: false
 
-  # makes classes in src/ available to be used as services
-  # this creates a service per class whose id is the fully-qualified class name
+  # Rend toutes les classes du dossier src/ disponibles en tant que services
+  # Cela crée un service par classe dont l'ID est le nom de la classe entièrement qualifié
   App\:
-    resource: "../src/"
+    resource: '../src/'
     exclude:
-      - "../src/DependencyInjection/"
-      - "../src/Entity/"
-      - "../src/Kernel.php"
+      - '../src/DependencyInjection/'
+      - '../src/Entity/'
+      - '../src/Kernel.php'
 
-  # Specific configuration for ResultatsService
+  # Alias pour injecter correctement le LoggerInterface
+  Psr\Log\LoggerInterface: '@logger'
+
+  ######################################################
+  # Configuration spécifique pour ClubUrlProvider
+  ######################################################
+  App\Service\ClubUrlProvider:
+    arguments:
+      $clubUrls: '%clubs_mapping%'  # On injecte le mapping depuis clubs.yaml
+
+  ######################################################
+  # Configuration spécifique pour MatchResultsService
+  ######################################################
+  App\Service\MatchResultsService:
+    arguments:
+      $logger: '@logger'
+      # si tu as besoin du projectDir, décommente la ligne ci-dessous :
+      # $projectDir: '%kernel.project_dir%'
+
+  ######################################################
+  # Configuration spécifique pour ResultatsService (si tu l'utilises encore)
+  ######################################################
   App\Service\ResultatsService:
     arguments:
-      $projectDir: "%kernel.project_dir%"
+      $projectDir: '%kernel.project_dir%'
 
-  # Specific configuration for LiveResultatsService
+  ######################################################
+  # Configuration spécifique pour LiveResultatsService (si tu l'utilises encore)
+  ######################################################
   App\Service\LiveResultatsService:
     arguments:
-      $projectDir: "%kernel.project_dir%"
+      $projectDir: '%kernel.project_dir%'
 
-  # EventListener pour activer un cache global sur toutes les pages
+  ######################################################
+  # EventListener (exemple) pour activer un cache global
+  ######################################################
   App\EventListener\CacheResponseListener:
     tags:
       - { name: kernel.event_listener, event: kernel.response }

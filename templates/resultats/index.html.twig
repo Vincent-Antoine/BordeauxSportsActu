@@ -114,6 +114,39 @@
         {% endif %}
     </div>
 
+    <h2 class="text-2xl font-bold text-gray-700 mb-6">Volley Féminin - Burdies</h2>
+    <div class="overflow-x-auto shadow-lg rounded-lg mb-10">
+        <table class="w-full text-left bg-white border border-gray-200 rounded-lg">
+            <thead>
+                <tr class="bg-green-600 text-white rounded-t-lg">
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Date/Heure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Extérieure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Extérieur</th>
+                </tr>
+            </thead>
+            <tbody id="volley-results-f">
+            {% for match in volley_resultats|slice(0, 5) %}
+                <tr class="hover:bg-green-50 transition-all duration-200">
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.date_heure }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.home_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.home_score }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.away_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.away_score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if volley_resultats|length > 5 %}
+            <div class="text-center my-4">
+                <button id="show-all-volley-f" class="bg-green-500 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+                    Voir tout
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
     <h2 class="text-2xl font-bold text-gray-700 mb-6">Hockey sur glace - Boxers de Bordeaux</h2>
     <div class="overflow-x-auto shadow-lg rounded-lg mb-10">
         <table class="w-full text-left bg-white border border-gray-200 rounded-lg">
@@ -232,6 +265,21 @@
             </tr>
         `).join('');
         document.getElementById('show-all-rugby-f').remove();
+    });
+
+    document.getElementById('show-all-volley-f')?.addEventListener('click', () => {
+        const volleyResults = {{ volley_resultats|json_encode|raw }};
+        const tbody = document.getElementById('volley-results-f');
+        tbody.innerHTML = volleyResults.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-volley-f').remove();
     });
 
     document.getElementById('show-all-hockey')?.addEventListener('click', () => {

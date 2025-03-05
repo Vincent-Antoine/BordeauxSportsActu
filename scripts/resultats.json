@@ -1,0 +1,146 @@
+[
+    {
+        "journee": "Journée 1",
+        "date": "2024-09-22T15:30:00.000Z",
+        "local_team": "ETOILE SP EYSINAISE",
+        "visitor_team": "Équipe visiteuse inconnue",
+        "local_score": 10,
+        "visitor_score": 30,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 2",
+        "date": "2024-09-29T15:30:00.000Z",
+        "local_team": "RUGBY CLUB DE TRELISSAC",
+        "visitor_team": "ETOILE SP EYSINAISE",
+        "local_score": 41,
+        "visitor_score": 20,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 3",
+        "date": "2024-10-06T15:30:00.000Z",
+        "local_team": "ETOILE SP EYSINAISE",
+        "visitor_team": "R C LEGE CAP FERRET",
+        "local_score": 12,
+        "visitor_score": 33,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 4",
+        "date": "2024-10-20T15:30:00.000Z",
+        "local_team": "CLUB OMNISPORTS COURONNAIS",
+        "visitor_team": "ETOILE SP EYSINAISE",
+        "local_score": 31,
+        "visitor_score": 24,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 5",
+        "date": "2024-10-27T15:30:00.000Z",
+        "local_team": "ETOILE SP EYSINAISE",
+        "visitor_team": "R C CUBZAGUAIS",
+        "local_score": 16,
+        "visitor_score": 10,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 6",
+        "date": "2024-11-03T15:00:00.000Z",
+        "local_team": "S A MONTPONNAIS",
+        "visitor_team": "ETOILE SP EYSINAISE",
+        "local_score": 8,
+        "visitor_score": 20,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 7",
+        "date": "2024-11-17T15:30:00.000Z",
+        "local_team": "ETOILE SP EYSINAISE",
+        "visitor_team": "RUGBY ASSOCIATION PAYS ISLE DRONNE 33",
+        "local_score": 14,
+        "visitor_score": 13,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 8",
+        "date": "2024-11-24T15:30:00.000Z",
+        "local_team": "UNION RUGBY CLUBS XV AMBARES, ST LOUBES, IZON",
+        "visitor_team": "ETOILE SP EYSINAISE",
+        "local_score": 28,
+        "visitor_score": 15,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 10",
+        "date": "2024-12-15T15:30:00.000Z",
+        "local_team": "Équipe locale inconnue",
+        "visitor_team": "ETOILE SP EYSINAISE",
+        "local_score": 39,
+        "visitor_score": 13,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 11",
+        "date": "2025-01-12T15:30:00.000Z",
+        "local_team": "ETOILE SP EYSINAISE",
+        "visitor_team": "RUGBY CLUB DE TRELISSAC",
+        "local_score": 22,
+        "visitor_score": 26,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 12",
+        "date": "2025-01-19T15:30:00.000Z",
+        "local_team": "R C LEGE CAP FERRET",
+        "visitor_team": "ETOILE SP EYSINAISE",
+        "local_score": 61,
+        "visitor_score": 8,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 13",
+        "date": "2025-02-02T15:30:00.000Z",
+        "local_team": "ETOILE SP EYSINAISE",
+        "visitor_team": "CLUB OMNISPORTS COURONNAIS",
+        "local_score": 13,
+        "visitor_score": 39,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 14",
+        "date": "2025-02-09T15:30:00.000Z",
+        "local_team": "R C CUBZAGUAIS",
+        "visitor_team": "ETOILE SP EYSINAISE",
+        "local_score": 27,
+        "visitor_score": 15,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 15",
+        "date": "2025-02-16T15:30:00.000Z",
+        "local_team": "ETOILE SP EYSINAISE",
+        "visitor_team": "S A MONTPONNAIS",
+        "local_score": 44,
+        "visitor_score": 7,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 16",
+        "date": "2025-03-02T15:30:00.000Z",
+        "local_team": "RUGBY ASSOCIATION PAYS ISLE DRONNE 33",
+        "visitor_team": "ETOILE SP EYSINAISE",
+        "local_score": 20,
+        "visitor_score": 17,
+        "etat": "Score validé"
+    },
+    {
+        "journee": "Journée 17",
+        "date": "2025-03-09T15:30:00.000Z",
+        "local_team": "ETOILE SP EYSINAISE",
+        "visitor_team": "UNION RUGBY CLUBS XV AMBARES, ST LOUBES, IZON",
+        "local_score": 0,
+        "visitor_score": 0,
+        "etat": "Planifiée"
+    }
+]

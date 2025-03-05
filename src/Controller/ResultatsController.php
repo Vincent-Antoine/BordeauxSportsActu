@@ -29,6 +29,7 @@ class ResultatsController extends AbstractController
                 'rugby_f' => [],
                 'hockey' => [],
                 'basket' => [],
+                'volley' => [],
             ];
         }
 
@@ -38,6 +39,7 @@ class ResultatsController extends AbstractController
             'rugby_f_resultats' => $results['rugby_f'],
             'hockey_resultats' => $results['hockey'],
             'basketball_resultats' => $results['basket'],
+            'volley_resultats'=> $results['volley'],
         ]);
     }
 

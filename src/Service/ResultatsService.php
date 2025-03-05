@@ -33,6 +33,7 @@ class ResultatsService
             'rugby_f' => $data['rugby_f'] ?? [],
             'hockey' => $data['hockey'] ?? [],
             'basket' => $data['basket'] ?? [],
+            'volley' => $data['volley'] ?? [],
         ];
     }
 

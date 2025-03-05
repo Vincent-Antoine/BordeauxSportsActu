@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats des matchs{% endblock %}
+
+{% block body %}
+    <style>
+        h1 {
+            color: #333;
+        }
+        select {
+            padding: 10px;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            max-width: 90%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td img {
+            vertical-align: middle;
+            margin-right: 10px;
+            border-radius: 5px;
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+
+    <script>
+        async function fetchResults() {
+            const club = document.getElementById("club-select").value;
+            if (!club) return;
+
+            document.getElementById("results").innerHTML = "<p>Chargement des résultats...</p>";
+
+            try {
+                // On appelle la route Symfony /api/results
+                const response = await fetch("/api/results?club=" + encodeURIComponent(club));
+                
+                if (!response.ok) {
+                    document.getElementById("results").innerHTML = "<p style='color: red;'>Erreur lors de la récupération des résultats</p>";
+                    return;
+                }
+
+                const data = await response.json();
+                
+                if (!Array.isArray(data) || data.length === 0) {
+                    // data pourrait être {error: "..."} ou []
+                    if (data.error) {
+                        document.getElementById("results").innerHTML = `<p style="color:red;">${data.error}</p>`;
+                    } else {
+                        document.getElementById("results").innerHTML = "<p>Aucun résultat trouvé pour ce club.</p>";
+                    }
+                    return;
+                }
+
+                let output = `<h2>Résultats pour ${club}</h2>`;
+                output += `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Journée</th>
+                                <th>Date</th>
+                                <th>Équipe Locale</th>
+                                <th>Score</th>
+                                <th>Équipe Visiteuse</th>
+                                <th>État</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                data.forEach(match => {
+                    const dateObj = new Date(match.date);
+                    const dateFormatted = (dateObj.toString() !== "Invalid Date")
+                        ? dateObj.toLocaleDateString()
+                        : match.date; // fallback si la date est invalide
+
+                    // On gère le logo local. Si "local_logo" est null/undefined, on met un placeholder
+                    const localLogo = match.local_logo ? match.local_logo : 'placeholder.png';
+                    // Idem pour le logo visiteur
+                    const visitorLogo = match.visitor_logo ? match.visitor_logo : 'placeholder.png';
+
+                    output += `
+                        <tr>
+                            <td>${match.journee}</td>
+                            <td>${dateFormatted}</td>
+                            <td>
+                                <img src="${localLogo}" alt="Logo ${match.local_team}" />
+                                ${match.local_team}
+                            </td>
+                            <td>${match.local_score} - ${match.visitor_score}</td>
+                            <td>
+                                <img src="${visitorLogo}" alt="Logo ${match.visitor_team}" />
+                                ${match.visitor_team}
+                            </td>
+                            <td>${match.etat}</td>
+                        </tr>`;
+                });
+
+                output += `</tbody></table>`;
+                document.getElementById("results").innerHTML = output;
+            } catch (error) {
+                document.getElementById("results").innerHTML = "<p style='color: red;'>Erreur lors de la récupération des résultats.</p>";
+                console.error(error);
+            }
+        }
+    </script>
+
+    <h1>Résultats des matchs</h1>
+    <div class="container mx-auto flex flex-col">
+    <label for="club-select">Sélectionnez un club :</label>
+    <select id="club-select" onchange="fetchResults()" class="border-solid border">
+        <option value="">-- Sélectionnez un club --</option>
+        <!-- Tu peux mettre ici la liste directement, ou la générer dynamiquement en Twig -->
+        <option value="Club Municipal de Floirac">Club Municipal de Floirac</option>
+        <option value="Entente SP Bruges Blanquefort">Entente SP Bruges Blanquefort</option>
+        <option value="Stade Bordelais">Stade Bordelais</option>
+        <option value="Étoile SP Eysinaise">Étoile SP Eysinaise</option>
+        <option value="CA Lormont Hauts de Garonne">CA Lormont Hauts de Garonne</option>
+        <option value="AS Merignac Rugby">AS Merignac Rugby</option>
+        <option value="Drop de Beton">Drop de Beton</option>
+        <option value="Pessac Rugby">Pessac Rugby</option>
+        <option value="St Medard En Jalles RC">St Medard En Jalles RC</option>
+        <option value="RC Gradignan">RC Gradignan</option>
+        <option value="Rassemblement RCV LBR">Rassemblement RCV LBR</option>
+        <option value="RC Cadaujacais">RC Cadaujacais</option>
+        <option value="Rugby Club Parempuyre">Rugby Club Parempuyre</option>
+        <option value="Rugby Club de La Pimpine">Rugby Club de La Pimpine</option>
+        <option value="AS St Aubin de Medoc">AS St Aubin de Medoc</option>
+        <option value="Union Rugby Clubs XV Ambares">Union Rugby Clubs XV Ambares</option>
+        <option value="Rugby Club Martignas Illac">Rugby Club Martignas Illac</option>
+        <option value="Cl At Bordeaux Begles Gironde">Cl At Bordeaux Begles Gironde</option>
+        <option value="RC Cestadais">RC Cestadais</option>
+        <option value="Entente Ambares et Saint Loubes">Entente Ambares et Saint Loubes</option>
+        <option value="Leognan Rugby">Leognan Rugby</option>
+    </select>
+    <div id="results" class="mx-auto"></div>
+    </div>
+{% endblock %}

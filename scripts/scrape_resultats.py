@@ -206,6 +206,7 @@ def main():
         "rugby": "https://www.flashscore.fr/equipe/bordeaux-begles/hzHredXK/resultats/",
         "rugby_f": "https://www.flashscore.fr/equipe/stade-bordelais/6kHcQsxn/resultats/",
         "hockey": "https://www.flashscore.fr/equipe/bordeaux/n9V6xiyI/resultats/",
+        "volley": "https://www.flashscore.fr/equipe/bordeaux/pYHXelap/resultats/",
         "basket": "https://www.jsa-bmb.fr/"
     }
 
@@ -219,7 +220,8 @@ def main():
     flashscore_urls = [
         ("rugby",    urls["rugby"]),
         ("rugby_f",  urls["rugby_f"]),
-        ("hockey",   urls["hockey"])
+        ("hockey",   urls["hockey"]),
+        ("volley",   urls["volley"])
     ]
     flashscore_data = scrape_flashscore_for_sports(flashscore_urls)
 
@@ -229,7 +231,8 @@ def main():
         "basket": basket_data,
         "rugby":   flashscore_data.get("rugby", []),
         "rugby_f": flashscore_data.get("rugby_f", []),
-        "hockey":  flashscore_data.get("hockey", [])
+        "hockey":  flashscore_data.get("hockey", []),
+        "volley":  flashscore_data.get("volley", [])
     }
 
     # Enregistrement en JSON

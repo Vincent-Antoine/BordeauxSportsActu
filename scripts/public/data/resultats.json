@@ -1,6 +1,20 @@
 {
     "football": [
         {
+            "date_heure": "22.02.2025",
+            "home_team": "Voltigeurs de Chateaubriant",
+            "away_team": "Bordeaux",
+            "home_score": "2",
+            "away_score": "1"
+        },
+        {
+            "date_heure": "15.02.2025",
+            "home_team": "Bourges Foot 18",
+            "away_team": "Bordeaux",
+            "home_score": "4",
+            "away_score": "3"
+        },
+        {
             "date_heure": "08.02.2025",
             "home_team": "Bordeaux",
             "away_team": "Dinan-Léhon",
@@ -125,20 +139,6 @@
             "away_team": "Voltigeurs de Chateaubriant",
             "home_score": "2",
             "away_score": "2"
-        },
-        {
-            "date_heure": "14.09.2024",
-            "home_team": "Bordeaux",
-            "away_team": "Bourges Foot 18",
-            "home_score": "0",
-            "away_score": "0"
-        },
-        {
-            "date_heure": "07.09.2024",
-            "home_team": "Dinan",
-            "away_team": "Léhon - Bordeaux",
-            "home_score": "2",
-            "away_score": "1"
         }
     ],
     "basket": [
@@ -246,9 +246,44 @@
             "away_team": "JSA BMB",
             "home_score": "80",
             "away_score": "74"
+        },
+        {
+            "date_heure": "22 février 202520h00",
+            "home_team": "AUCH BASKET CLUB",
+            "away_team": "JSA BMB",
+            "home_score": "92",
+            "away_score": "66"
+        },
+        {
+            "date_heure": "1 mars 202520h00",
+            "home_team": "NANTES BASKET HERMINE",
+            "away_team": "JSA BMB",
+            "home_score": "74",
+            "away_score": "64"
         }
     ],
     "rugby": [
+        {
+            "date_heure": "01.03. 21:05",
+            "home_team": "USA Perpignan",
+            "away_team": "Bordeaux Bègles",
+            "home_score": "17",
+            "away_score": "29"
+        },
+        {
+            "date_heure": "23.02. 21:05",
+            "home_team": "Bordeaux Bègles",
+            "away_team": "ASM Clermont",
+            "home_score": "22",
+            "away_score": "18"
+        },
+        {
+            "date_heure": "15.02. 14:30",
+            "home_team": "Aviron Bayonnais",
+            "away_team": "Bordeaux Bègles",
+            "home_score": "36",
+            "away_score": "32"
+        },
         {
             "date_heure": "25.01. 21:15",
             "home_team": "Bordeaux Bègles",
@@ -367,30 +402,23 @@
             "away_team": "Racing 92",
             "home_score": "52",
             "away_score": "34"
-        },
-        {
-            "date_heure": "14.09.2024",
-            "home_team": "Lyon OU",
-            "away_team": "Bordeaux Bègles",
-            "home_score": "28",
-            "away_score": "26"
-        },
-        {
-            "date_heure": "07.09.2024",
-            "home_team": "Bordeaux Bègles",
-            "away_team": "Stade Français",
-            "home_score": "46",
-            "away_score": "26"
-        },
-        {
-            "date_heure": "28.06.2024",
-            "home_team": "Stade Toulousain",
-            "away_team": "Bordeaux Bègles",
-            "home_score": "59",
-            "away_score": "3"
         }
     ],
     "rugby_f": [
+        {
+            "date_heure": "02.03. 15:00",
+            "home_team": "Toulouse F",
+            "away_team": "Stade Bordelais F",
+            "home_score": "22",
+            "away_score": "26"
+        },
+        {
+            "date_heure": "23.02. 14:30",
+            "home_team": "Stade Bordelais F",
+            "away_team": "Romagnat F",
+            "home_score": "34",
+            "away_score": "10"
+        },
         {
             "date_heure": "26.01. 15:00",
             "home_team": "Stade Bordelais F",
@@ -470,6 +498,48 @@
         }
     ],
     "hockey": [
+        {
+            "date_heure": "04.03. 20:15",
+            "home_team": "Marseille",
+            "away_team": "Bordeaux",
+            "home_score": "1",
+            "away_score": "4"
+        },
+        {
+            "date_heure": "01.03. 18:30",
+            "home_team": "Bordeaux",
+            "away_team": "Marseille",
+            "home_score": "1",
+            "away_score": "2"
+        },
+        {
+            "date_heure": "28.02. 20:15",
+            "home_team": "Bordeaux",
+            "away_team": "Marseille",
+            "home_score": "3",
+            "away_score": "0"
+        },
+        {
+            "date_heure": "21.02. 20:30",
+            "home_team": "Bordeaux",
+            "away_team": "Briancon",
+            "home_score": "8",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "19.02. 20:00",
+            "home_team": "Nice",
+            "away_team": "Bordeaux",
+            "home_score": "0",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "14.02. 20:15",
+            "home_team": "Bordeaux",
+            "away_team": "Cergy-Pontoise",
+            "home_score": "5",
+            "away_score": "4"
+        },
         {
             "date_heure": "11.02. 20:00",
             "home_team": "Rouen",
@@ -567,48 +637,148 @@
             "away_team": "Marseille",
             "home_score": "4",
             "away_score": "3"
-        },
+        }
+    ],
+    "volley": [
         {
-            "date_heure": "13.12.2024",
-            "home_team": "Angers",
-            "away_team": "Bordeaux",
-            "home_score": "3",
-            "away_score": "2"
-        },
-        {
-            "date_heure": "10.12.2024",
-            "home_team": "Bordeaux",
-            "away_team": "Chamonix Mont-Blanc",
-            "home_score": "4",
-            "away_score": "1"
-        },
-        {
-            "date_heure": "08.12.2024",
-            "home_team": "Gap",
-            "away_team": "Bordeaux",
+            "date_heure": "01.03. 19:00",
+            "home_team": "Bordeaux F",
+            "away_team": "Nantes F",
             "home_score": "1",
-            "away_score": "2"
+            "away_score": "3"
         },
         {
-            "date_heure": "06.12.2024Après TAB",
-            "home_team": "Bordeaux",
-            "away_team": "Anglet",
+            "date_heure": "22.02. 19:00",
+            "home_team": "Pays d'Aix Venelles F",
+            "away_team": "Bordeaux F",
             "home_score": "2",
             "away_score": "3"
         },
         {
-            "date_heure": "01.12.2024",
-            "home_team": "Briancon",
-            "away_team": "Bordeaux",
-            "home_score": "1",
-            "away_score": "2"
+            "date_heure": "15.02. 19:00",
+            "home_team": "Bordeaux F",
+            "away_team": "Le Cannet F",
+            "home_score": "3",
+            "away_score": "0"
         },
         {
-            "date_heure": "29.11.2024",
-            "home_team": "Marseille",
-            "away_team": "Bordeaux",
+            "date_heure": "11.02. 20:00",
+            "home_team": "Bordeaux F",
+            "away_team": "Quimper F",
             "home_score": "2",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "08.02. 20:00",
+            "home_team": "Mulhouse F",
+            "away_team": "Bordeaux F",
+            "home_score": "3",
             "away_score": "1"
+        },
+        {
+            "date_heure": "01.02. 19:00",
+            "home_team": "Bordeaux F",
+            "away_team": "RC Cannes F",
+            "home_score": "3",
+            "away_score": "0"
+        },
+        {
+            "date_heure": "25.01. 20:00",
+            "home_team": "Marcq-en-Barœul F",
+            "away_team": "Bordeaux F",
+            "home_score": "2",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "18.01. 19:30",
+            "home_team": "Terville Florange F",
+            "away_team": "Bordeaux F",
+            "home_score": "0",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "14.01. 20:00",
+            "home_team": "Bordeaux F",
+            "away_team": "Le Cannet F",
+            "home_score": "3",
+            "away_score": "0"
+        },
+        {
+            "date_heure": "11.01. 19:00",
+            "home_team": "Bordeaux F",
+            "away_team": "Quimper F",
+            "home_score": "3",
+            "away_score": "1"
+        },
+        {
+            "date_heure": "29.12.2024",
+            "home_team": "Chamalières F",
+            "away_team": "Bordeaux F",
+            "home_score": "3",
+            "away_score": "1"
+        },
+        {
+            "date_heure": "18.12.2024",
+            "home_team": "Bordeaux F",
+            "away_team": "Béziers F",
+            "home_score": "1",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "14.12.2024",
+            "home_team": "France Avenir 2024 F",
+            "away_team": "Bordeaux F",
+            "home_score": "0",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "07.12.2024",
+            "home_team": "Bordeaux F",
+            "away_team": "Pays d'Aix Venelles F",
+            "home_score": "2",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "30.11.2024",
+            "home_team": "Le Cannet F",
+            "away_team": "Bordeaux F",
+            "home_score": "1",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "23.11.2024",
+            "home_team": "Bordeaux F",
+            "away_team": "Vandoeuvre Nancy F",
+            "home_score": "1",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "16.11.2024",
+            "home_team": "Nantes F",
+            "away_team": "Bordeaux F",
+            "home_score": "3",
+            "away_score": "0"
+        },
+        {
+            "date_heure": "09.11.2024",
+            "home_team": "Bordeaux F",
+            "away_team": "Mulhouse F",
+            "home_score": "1",
+            "away_score": "3"
+        },
+        {
+            "date_heure": "02.11.2024",
+            "home_team": "Bordeaux F",
+            "away_team": "Chamalières F",
+            "home_score": "3",
+            "away_score": "1"
+        },
+        {
+            "date_heure": "26.10.2024",
+            "home_team": "Béziers F",
+            "away_team": "Bordeaux F",
+            "home_score": "3",
+            "away_score": "2"
         }
     ]
 }
