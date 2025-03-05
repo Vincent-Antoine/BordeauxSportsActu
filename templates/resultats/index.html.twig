@@ -7,10 +7,10 @@
     <!-- Page Title -->
     <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-10">Résultats</h1>
     <div class="text-end my-2 p-1">
-        {# <a href="{{ path('app_resultats_refresh') }}" 
+        <a href="{{ path('app_resultats_refresh') }}" 
            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
             Rafraîchir les Résultats
-        </a> #}
+        </a>
     </div>
 
     <!-- Football Results -->
@@ -213,6 +213,51 @@
         {% endif %}
     </div>
 
+<h2 class="text-2xl font-bold text-gray-700 mb-6">Basketball - Ambitions Girondines</h2>
+<div class="overflow-x-auto shadow-lg rounded-lg mb-10">
+    <table class="w-full text-left bg-white border border-gray-200 rounded-lg">
+        <thead>
+            <tr class="bg-green-600 text-white rounded-t-lg">
+                <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Date/Heure</th>
+                <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Domicile</th>
+                <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Domicile</th>
+                <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Extérieure</th>
+                <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Extérieur</th>
+            </tr>
+        </thead>
+        <tbody id="basketball-ambitions-results">
+        {% for match in matches|slice(0, 5) %}
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">
+                    {{ match.date|date('d/m/Y H:i') }}
+                </td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">
+                    {{ match.teams[0] }}
+                </td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">
+                    {{ match.results[0].score }}
+                </td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">
+                    {{ match.teams[1] }}
+                </td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">
+                    {{ match.results[1].score }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if matches|length > 5 %}
+        <div class="text-center my-4">
+            <button id="show-all-basketball-ambitions" class="bg-green-500 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+                Voir tout
+            </button>
+        </div>
+    {% endif %}
+</div>
+
+
+
     <!-- Footer Note -->
     <div class="text-center mt-8">
         <p class="text-gray-600 text-sm lg:text-base">
@@ -222,6 +267,22 @@
 </div>
 
 <script>
+
+document.getElementById('show-all-basketball-ambitions')?.addEventListener('click', () => {
+    const basketballAmbitionsResults = {{ matches|json_encode|raw }};
+    const tbody = document.getElementById('basketball-ambitions-results');
+    tbody.innerHTML = basketballAmbitionsResults.map(match => `
+        <tr class="hover:bg-green-50 transition-all duration-200">
+            <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${new Date(match.date).toLocaleDateString('fr-FR')} ${new Date(match.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</td>
+            <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.teams[0]}</td>
+            <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.results[0].score}</td>
+            <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.teams[1]}</td>
+            <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.results[1].score}</td>
+        </tr>
+    `).join('');
+    document.getElementById('show-all-basketball-ambitions').remove();
+});
+
     document.getElementById('show-all-football')?.addEventListener('click', () => {
         const footballResults = {{ football_resultats|json_encode|raw }};
         const tbody = document.getElementById('football-results');
