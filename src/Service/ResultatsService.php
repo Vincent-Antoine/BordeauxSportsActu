@@ -111,13 +111,13 @@ class ResultatsService
             $response = $this->client->get($url);
             $data = json_decode($response->getBody()->getContents(), true);
 
-            $matches = [];
+            $basket_ambitions_girondines_resultats = [];
 
             if (isset($data['data']['results']) && is_array($data['data']['results'])) {
                 foreach ($data['data']['results'] as $match) {
                     foreach ($match['teams'] as $team) {
                         if ($team['clubSlug'] === $clubSlug) {
-                            $matches[] = [
+                            $basket_ambitions_girondines_resultats[] = [
                                 'match_name' => $match['name'],
                                 'date' => $match['date'],
                                 'teams' => array_map(fn($t) => $t['name'], $match['teams']),
@@ -133,7 +133,7 @@ class ResultatsService
                 }
             }
 
-            return $matches;
+            return $basket_ambitions_girondines_resultats;
 
         } catch (GuzzleException $e) {
             $this->logger->error('Erreur lors de la récupération des données depuis Scorenco.', [

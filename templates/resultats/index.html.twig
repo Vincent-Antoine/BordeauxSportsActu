@@ -226,7 +226,7 @@
             </tr>
         </thead>
         <tbody id="basketball-ambitions-results">
-        {% for match in matches|slice(0, 5) %}
+        {% for match in basket_ambitions_girondines_resultats|slice(0, 5) %}
             <tr class="hover:bg-green-50 transition-all duration-200">
                 <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">
                     {{ match.date|date('d/m/Y H:i') }}
@@ -247,7 +247,7 @@
         {% endfor %}
         </tbody>
     </table>
-    {% if matches|length > 5 %}
+    {% if basket_ambitions_girondines_resultats|length > 5 %}
         <div class="text-center my-4">
             <button id="show-all-basketball-ambitions" class="bg-green-500 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
                 Voir tout
@@ -269,7 +269,7 @@
 <script>
 
 document.getElementById('show-all-basketball-ambitions')?.addEventListener('click', () => {
-    const basketballAmbitionsResults = {{ matches|json_encode|raw }};
+    const basketballAmbitionsResults = {{ basket_ambitions_girondines_resultats|json_encode|raw }};
     const tbody = document.getElementById('basketball-ambitions-results');
     tbody.innerHTML = basketballAmbitionsResults.map(match => `
         <tr class="hover:bg-green-50 transition-all duration-200">

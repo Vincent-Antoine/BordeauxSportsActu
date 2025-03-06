@@ -32,7 +32,8 @@ class TeamCrudController extends AbstractCrudController
                     'Hockey' => 'hockey',
                     'Basketball' => 'basket',
                     'Volley' => 'volley',
-                    
+                    'Basketball-Ambitions-Girondines' => 'basket-ambitions-girondines',
+
                 ])
                 ->setRequired(false),
         ];

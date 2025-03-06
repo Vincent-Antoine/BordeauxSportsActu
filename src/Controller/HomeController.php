@@ -78,6 +78,7 @@ class HomeController extends AbstractController
                     'hockey' => [],
                     'basket' => [],
                     'volley' => [],
+                    'basket-ambitions-girondines' => [],
                 ];
             }
         }

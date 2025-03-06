@@ -28,7 +28,7 @@ class ResultatsController extends AbstractController
             $results = $this->resultatsService->getResults();
 
             // Récupération des matchs du club "Ambitions Girondines" via l'API Scorenco
-            $matches = $this->resultatsService->getClubMatches('ambitions-girondines');
+            $basket_ambitions_girondines_resultats = $this->resultatsService->getClubMatches('ambitions-girondines');
         } catch (\Exception $e) {
             $this->logger->error('Erreur lors de la récupération des résultats', [
                 'error' => $e->getMessage(),
@@ -43,7 +43,9 @@ class ResultatsController extends AbstractController
                 'basket' => [],
                 'volley' => [],
             ];
-            $matches = [];
+            $basket_ambitions_girondines_resultats = [
+                'basket-ambitions-girondines' => [],
+            ];
         }
 
         return $this->render('resultats/index.html.twig', [
@@ -53,7 +55,7 @@ class ResultatsController extends AbstractController
             'hockey_resultats' => $results['hockey'],
             'basketball_resultats' => $results['basket'],
             'volley_resultats' => $results['volley'],
-            'matches' => $matches, // Ajout des matchs
+            'basket_ambitions_girondines_resultats' => $basket_ambitions_girondines_resultats,
         ]);
     }
 
