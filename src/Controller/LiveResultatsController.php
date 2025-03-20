@@ -22,7 +22,7 @@ class LiveResultatsController extends AbstractController
     public function index(): Response
     {
         // Chemin vers le fichier JSON
-        $filePath = $this->getParameter('kernel.project_dir') . '/scripts/resultats_live.json';
+        $filePath = $this->getParameter('kernel.project_dir') . '/scripts/public/data/resultats_live.json';
 
         // Exécuter le script Python pour générer ou mettre à jour le JSON
         $success = $this->resultatsLiveService->refreshResults();
@@ -62,7 +62,7 @@ class LiveResultatsController extends AbstractController
         }
 
         // Chemin vers le fichier JSON
-        $filePath = $this->getParameter('kernel.project_dir') . '/scripts/resultats_live.json';
+        $filePath = $this->getParameter('kernel.project_dir') . '/scripts/public/data/resultats_live.json';
 
         // Vérifiez si le fichier JSON existe
         if (!file_exists($filePath)) {

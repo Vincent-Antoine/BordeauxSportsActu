@@ -13,7 +13,7 @@ class LiveResultatsService
 
     public function __construct(string $projectDir, LoggerInterface $logger)
     {
-        $this->dataPath = $projectDir . '/scripts/resultats_live.json';
+        $this->dataPath = $projectDir . '/scripts/public/data/resultats_live.json';
         $this->scriptPath = $projectDir . '/scripts/scrape_live_resultats.py';
         $this->logger = $logger;
     }

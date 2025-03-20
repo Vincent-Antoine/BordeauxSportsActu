@@ -62,15 +62,22 @@ class ResultatsController extends AbstractController
     #[Route('/resultats/refresh', name: 'app_resultats_refresh')]
     public function refresh(): RedirectResponse
     {
+            var_dump('0');
+
         try {
+            var_dump('1');
             $success = $this->resultatsService->refreshResults();
 
             if ($success) {
                 $this->addFlash('success', 'Les résultats ont été mis à jour avec succès.');
+                var_dump('ok');
             } else {
                 $this->addFlash('error', 'Erreur lors de la mise à jour des résultats.');
+                 var_dump('pas ok');
             }
         } catch (\Exception $e) {
+                        var_dump('2');
+
             $this->logger->error('Erreur lors de la mise à jour des résultats', [
                 'error' => $e->getMessage(),
             ]);

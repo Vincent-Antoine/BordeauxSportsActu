@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats - Bordeaux Sports Actu{% endblock %}
+
+{% block body %}
+<div class="container mx-auto py-8 px-4 lg:px-8">
+    <!-- Page Title -->
+    <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-10">Résultats</h1>
+
+    <!-- Football Results -->
+    <div class="scorenco-widget" data-widget-type="team" data-widget-id="54396" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
+  <div class="ldsdr"></div>
+  Score'n'co - Vincent Comparato
+  </div>
+  <style>.ldsdr{display:inline-block;width:80px;height:80px}.ldsdr:after{content:" ";display:block;width:64px;height:64px;margin:8px;border-radius:50%;border:6px solid #1E457B;border-color:#1E457B transparent;animation:ldsdr 1.2s linear infinite}@keyframes ldsdr{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
+
+
+    <!-- Rugby Results -->
+    <div class="scorenco-widget" data-widget-type="team" data-widget-id="54398" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
+  <div class="ldsdr"></div>
+  Score'n'co - Vincent Comparato
+  </div>
+  <style>.ldsdr{display:inline-block;width:80px;height:80px}.ldsdr:after{content:" ";display:block;width:64px;height:64px;margin:8px;border-radius:50%;border:6px solid #1E457B;border-color:#1E457B transparent;animation:ldsdr 1.2s linear infinite}@keyframes ldsdr{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
+
+
+    <h2 class="text-2xl font-bold text-gray-700 mb-6">Rugby Féminin - Les Lionnes de Bordeaux</h2>
+    <div class="overflow-x-auto shadow-lg rounded-lg mb-10">
+        <table class="w-full text-left bg-white border border-gray-200 rounded-lg">
+            <thead>
+                <tr class="bg-green-600 text-white rounded-t-lg">
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Date/Heure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Domicile</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Équipe Extérieure</th>
+                    <th class="py-3 px-4 border-b border-green-700 text-sm lg:text-base">Score Extérieur</th>
+                </tr>
+            </thead>
+            <tbody id="rugby-results-f">
+            {% for match in rugby_f_resultats|slice(0, 5) %}
+                <tr class="hover:bg-green-50 transition-all duration-200">
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.date_heure }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.home_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.home_score }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">{{ match.away_team }}</td>
+                    <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">{{ match.away_score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if rugby_f_resultats|length > 5 %}
+            <div class="text-center my-4">
+                <button id="show-all-rugby-f" class="bg-green-500 hover:bg-green-700 text-white px-6 py-2 rounded-lg shadow-md transition-all duration-200">
+                    Voir tout
+                </button>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="scorenco-widget" data-widget-type="team" data-widget-id="54399" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
+  <div class="ldsdr"></div>
+  Score'n'co - Vincent Comparato
+  </div>
+  <style>.ldsdr{display:inline-block;width:80px;height:80px}.ldsdr:after{content:" ";display:block;width:64px;height:64px;margin:8px;border-radius:50%;border:6px solid #1E457B;border-color:#1E457B transparent;animation:ldsdr 1.2s linear infinite}@keyframes ldsdr{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
+  <script async defer src="https://widgets.scorenco.com/host/widgets.js"></script>
+
+    <div class="scorenco-widget" data-widget-type="team" data-widget-id="54400" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
+  <div class="ldsdr"></div>
+  Score'n'co - Vincent Comparato
+  </div>
+  <style>.ldsdr{display:inline-block;width:80px;height:80px}.ldsdr:after{content:" ";display:block;width:64px;height:64px;margin:8px;border-radius:50%;border:6px solid #1E457B;border-color:#1E457B transparent;animation:ldsdr 1.2s linear infinite}@keyframes ldsdr{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
+
+
+    <div class="scorenco-widget" data-widget-type="team" data-widget-id="54401" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
+  <div class="ldsdr"></div>
+  Score'n'co - Vincent Comparato
+  </div>
+  <style>.ldsdr{display:inline-block;width:80px;height:80px}.ldsdr:after{content:" ";display:block;width:64px;height:64px;margin:8px;border-radius:50%;border:6px solid #1E457B;border-color:#1E457B transparent;animation:ldsdr 1.2s linear infinite}@keyframes ldsdr{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
+
+
+<div class="scorenco-widget" data-widget-type="team" data-widget-id="54402" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
+  <div class="ldsdr"></div>
+  Score'n'co - Vincent Comparato
+  </div>
+  <style>.ldsdr{display:inline-block;width:80px;height:80px}.ldsdr:after{content:" ";display:block;width:64px;height:64px;margin:8px;border-radius:50%;border:6px solid #1E457B;border-color:#1E457B transparent;animation:ldsdr 1.2s linear infinite}@keyframes ldsdr{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
+
+
+
+
+    <!-- Footer Note -->
+    <div class="text-center mt-8">
+        <p class="text-gray-600 text-sm lg:text-base">
+            * Les résultats sont mis à jour régulièrement. Revenez bientôt pour plus de mises à jour.
+        </p>
+    </div>
+</div>
+
+<script>
+
+document.getElementById('show-all-basketball-ambitions')?.addEventListener('click', () => {
+    const basketballAmbitionsResults = {{ basket_ambitions_girondines_resultats|json_encode|raw }};
+    const tbody = document.getElementById('basketball-ambitions-results');
+    tbody.innerHTML = basketballAmbitionsResults.map(match => `
+        <tr class="hover:bg-green-50 transition-all duration-200">
+            <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${new Date(match.date).toLocaleDateString('fr-FR')} ${new Date(match.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</td>
+            <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.teams[0]}</td>
+            <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.results[0].score}</td>
+            <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.teams[1]}</td>
+            <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.results[1].score}</td>
+        </tr>
+    `).join('');
+    document.getElementById('show-all-basketball-ambitions').remove();
+});
+
+    document.getElementById('show-all-football')?.addEventListener('click', () => {
+        const footballResults = {{ football_resultats|json_encode|raw }};
+        const tbody = document.getElementById('football-results');
+        tbody.innerHTML = footballResults.map(match => `
+            <tr class="hover:bg-blue-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-blue-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-blue-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-football').remove();
+    });
+
+    document.getElementById('show-all-rugby')?.addEventListener('click', () => {
+        const rugbyResults = {{ rugby_resultats|json_encode|raw }};
+        const tbody = document.getElementById('rugby-results');
+        tbody.innerHTML = rugbyResults.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-rugby').remove();
+    });
+
+    document.getElementById('show-all-rugby-f')?.addEventListener('click', () => {
+        const rugbyFResults = {{ rugby_f_resultats|json_encode|raw }};
+        const tbody = document.getElementById('rugby-results-f');
+        tbody.innerHTML = rugbyFResults.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-rugby-f').remove();
+    });
+
+    document.getElementById('show-all-volley-f')?.addEventListener('click', () => {
+        const volleyResults = {{ volley_resultats|json_encode|raw }};
+        const tbody = document.getElementById('volley-results-f');
+        tbody.innerHTML = volleyResults.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-volley-f').remove();
+    });
+
+    document.getElementById('show-all-hockey')?.addEventListener('click', () => {
+        const hockeyResultats = {{ hockey_resultats|json_encode|raw }};
+        const tbody = document.getElementById('hockey');
+        tbody.innerHTML = hockeyResultats.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-hockey').remove();
+    });
+
+    document.getElementById('show-all-basketball')?.addEventListener('click', () => {
+        const basketballResultats = {{ basketball_resultats|json_encode|raw }};
+        const tbody = document.getElementById('basketball');
+        tbody.innerHTML = basketballResultats.map(match => `
+            <tr class="hover:bg-green-50 transition-all duration-200">
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.date_heure}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.home_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.home_score}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-sm lg:text-base">${match.away_team}</td>
+                <td class="py-3 px-4 border-b border-gray-200 text-center text-sm lg:text-base font-medium text-green-600">${match.away_score}</td>
+            </tr>
+        `).join('');
+        document.getElementById('show-all-basketball').remove();
+    });
+</script>
+
+{% endblock %}
