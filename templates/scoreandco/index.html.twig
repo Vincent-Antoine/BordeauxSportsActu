@@ -3,63 +3,160 @@
 {% block title %}Résultats des clubs bordelais{% endblock %}
 
 {% block body %}
-<div class="container py-5">
-    <h1 class="mb-4 text-center">📊 Résultats des clubs bordelais</h1>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">📊 Résultats des clubs bordelais</h1>
 
-    {% for clubName, matchs in results %}
-        <h2 class="mt-5 mb-3 text-primary border-bottom pb-2">{{ clubName }}</h2>
+    <div x-data="{ activeTab: 0 }">
+        <!-- Onglets -->
+        <div class="flex flex-wrap border-b border-gray-300 mb-6">
+            {% for clubName, matchs in results %}
+                <button
+                    @click="activeTab = {{ loop.index0 }}"
+                    :class="activeTab === {{ loop.index0 }} ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'"
+                    class="px-4 py-2 text-sm font-semibold focus:outline-none"
+                >
+                    {{ clubName }}
+                </button>
+            {% endfor %}
+            <button
+                @click="activeTab = {{ results|length }}"
+                :class="activeTab === {{ results|length }} ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'"
+                class="px-4 py-2 text-sm font-semibold focus:outline-none"
+            >
+                Rugby Amateur
+            </button>
+        </div>
 
-        {% if matchs is empty %}
-            <div class="alert alert-warning">Aucun match trouvé.</div>
-        {% else %}
-            <div class="row row-cols-1 row-cols-md-2 g-4">
-                {% for match in matchs %}
-                    {% set home = match.teams[0] ?? null %}
-                    {% set away = match.teams[1] ?? null %}
+        <!-- Onglets des clubs pros -->
+        {% for clubName, matchs in results %}
+            <div x-show="activeTab === {{ loop.index0 }}">
+                {% set sortedMatchs = matchs|sort((a, b) => b.date <=> a.date) %}
+                {% if sortedMatchs is empty %}
+                    <p class="text-red-600">Aucun match trouvé.</p>
+                {% else %}
+                    <div class="grid md:grid-cols-2 gap-6">
+                        {% for match in sortedMatchs %}
+                            {% set home = match.teams[0] ?? null %}
+                            {% set away = match.teams[1] ?? null %}
+                            {% set homeScore = home.score is defined ? home.score : 0 %}
+                            {% set awayScore = away.score is defined ? away.score : 0 %}
+                            {% set resultat = homeScore > awayScore ? 'victoire' : (homeScore < awayScore ? 'défaite' : 'égalité') %}
+                            {% set resultatCouleur = resultat == 'victoire' ? 'text-green-600' : (resultat == 'défaite' ? 'text-red-600' : 'text-gray-500') %}
 
-                    <div class="col">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div class="d-flex align-items-center">
+                            <div class="bg-white shadow rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center">
                                         {% if home and home.logo is defined %}
-                                            <img src="{{ home.logo }}" alt="logo {{ home.name_in_competition|default('Équipe domicile') }}" class="me-2" style="height: 40px;">
+                                            <img src="{{ home.logo }}" alt="logo" class="h-10 w-auto mr-3 rounded">
                                         {% endif %}
-                                        <strong>{{ home.name_in_competition|default('Équipe domicile') }}</strong>
+                                        <div>
+                                            <p class="font-medium text-gray-800">{{ home.name_in_competition|default('Équipe domicile') }}</p>
+                                            <p class="text-sm text-gray-500">{{ homeScore }}</p>
+                                        </div>
                                     </div>
-                                    <span class="badge bg-secondary">vs</span>
-                                    <div class="d-flex align-items-center">
-                                        <strong>{{ away.name_in_competition|default('Équipe extérieure') }}</strong>
+
+                                    <span class="text-gray-400 font-bold text-sm">vs</span>
+
+                                    <div class="flex items-center">
+                                        <div class="text-right mr-3">
+                                            <p class="font-medium text-gray-800">{{ away.name_in_competition|default('Équipe extérieure') }}</p>
+                                            <p class="text-sm text-gray-500">{{ awayScore }}</p>
+                                        </div>
                                         {% if away and away.logo is defined %}
-                                            <img src="{{ away.logo }}" alt="logo {{ away.name_in_competition|default('Équipe extérieure') }}" class="ms-2" style="height: 40px;">
+                                            <img src="{{ away.logo }}" alt="logo" class="h-10 w-auto rounded">
                                         {% endif %}
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span class="badge bg-primary">Score : {{ home.score is defined ? home.score : 'N/A' }} - {{ away.score is defined ? away.score : 'N/A' }}</span>
-                                    <span class="badge bg-light text-dark">
-                                        {% if match.date is defined %}
-                                            {{ match.date|date('d/m/Y') }}
-                                        {% else %}
-                                            Date inconnue
-                                        {% endif %}
-                                    </span>
+                                <div class="text-sm text-gray-600 mb-2">
+                                    🏟 {{ match.place.name ?? 'Lieu inconnu' }}
                                 </div>
 
-                                <p class="card-text text-muted mb-0">
-                                    {% if match.place is defined and match.place.name is defined %}
-                                        🏟 {{ match.place.name }}
-                                    {% else %}
-                                        🏟 Lieu inconnu
-                                    {% endif %}
-                                </p>
+                                <div class="flex justify-between text-sm">
+                                    <span>📅 {{ match.date|date('d/m/Y') }}</span>
+                                    <span class="{{ resultatCouleur }} font-semibold capitalize">Résultat : {{ resultat }}</span>
+                                </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                {% endif %}
             </div>
-        {% endif %}
-    {% endfor %}
+        {% endfor %}
+
+        <!-- Onglet Rugby Amateur -->
+        <div x-show="activeTab === {{ results|length }}">
+            <div class="my-4">
+                <label for="club-select" class="block font-medium text-gray-700">Sélectionnez un club :</label>
+                <select id="club-select" onchange="fetchRugbyResults()" class="mt-1 block w-full p-2 border rounded shadow">
+                    <option value="">-- Sélectionnez un club --</option>
+                    {% for club in rugbyClubs %}
+                        <option value="{{ club }}">{{ club }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div id="rugby-results" class="bg-white p-4 rounded shadow text-sm text-gray-700">
+                <p class="text-gray-500">Veuillez sélectionner un club pour voir les résultats.</p>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Alpine.js -->
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<!-- JS AJAX Rugby -->
+<script>
+async function fetchRugbyResults() {
+    const club = document.getElementById("club-select").value;
+    const container = document.getElementById("rugby-results");
+
+    if (!club) {
+        container.innerHTML = "<p class='text-gray-500'>Veuillez sélectionner un club.</p>";
+        return;
+    }
+
+    container.innerHTML = "<p>Chargement...</p>";
+
+    try {
+        const res = await fetch("/api/results?club=" + encodeURIComponent(club));
+        const data = await res.json();
+
+        if (!Array.isArray(data) || data.length === 0 || data.error) {
+            container.innerHTML = `<p class='text-red-600'>${data.error ?? "Aucun résultat trouvé."}</p>`;
+            return;
+        }
+
+        let html = `<table class="w-full mt-4 border text-sm text-left">
+            <thead class="bg-indigo-600 text-white">
+                <tr>
+                    <th class="p-2">Journée</th>
+                    <th class="p-2">Date</th>
+                    <th class="p-2">Équipe Locale</th>
+                    <th class="p-2">Score</th>
+                    <th class="p-2">Équipe Visiteuse</th>
+                    <th class="p-2">État</th>
+                </tr>
+            </thead><tbody>`;
+
+        data.forEach(match => {
+            const date = new Date(match.date).toLocaleDateString("fr-FR");
+            html += `<tr class="border-t">
+                <td class="p-2">${match.journee}</td>
+                <td class="p-2">${date}</td>
+                <td class="p-2 flex items-center gap-2"><img src="${match.local_logo ?? 'placeholder.png'}" class="h-6 w-6 rounded" /> ${match.local_team}</td>
+                <td class="p-2 text-center">${match.local_score} - ${match.visitor_score}</td>
+                <td class="p-2 flex items-center gap-2"><img src="${match.visitor_logo ?? 'placeholder.png'}" class="h-6 w-6 rounded" /> ${match.visitor_team}</td>
+                <td class="p-2">${match.etat}</td>
+            </tr>`;
+        });
+
+        html += "</tbody></table>";
+        container.innerHTML = html;
+    } catch (e) {
+        container.innerHTML = "<p class='text-red-600'>Erreur lors du chargement.</p>";
+        console.error(e);
+    }
+}
+</script>
 {% endblock %}

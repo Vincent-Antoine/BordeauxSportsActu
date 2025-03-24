@@ -44,9 +44,9 @@ services:
   ######################################################
   # Configuration spécifique pour ResultatsService (si tu l'utilises encore)
   ######################################################
-  App\Service\ResultatsService:
-    arguments:
-      $projectDir: '%kernel.project_dir%'
+  # App\Service\ResultatsService:
+  #   arguments:
+  #     $projectDir: '%kernel.project_dir%'
 
   ######################################################
   # Configuration spécifique pour LiveResultatsService (si tu l'utilises encore)
