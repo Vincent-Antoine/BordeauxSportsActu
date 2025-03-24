@@ -20,9 +20,19 @@ class ResultatsScoreAndCoController extends AbstractController
             72716   => 'UBB Rugby',
             84369   => 'Burdies Volley',
             276898  => 'Les Boxers Hockey sur glace',
+            50140   => 'Stade Bordelais Feminine',
         ];
 
         $results = $resultatsService->getAllResults($clubList);
+
+        // ➕ Récupération des classements
+        $rankings = [];
+        foreach (array_keys($clubList) as $clubId) {
+            $ranking = $resultatsService->getRanking($clubId);
+            if (!empty($ranking)) {
+                $rankings[$clubId] = $ranking;
+            }
+        }
 
         // Liste des clubs de rugby amateur à afficher dans le <select>
         $rugbyClubs = [
@@ -52,6 +62,8 @@ class ResultatsScoreAndCoController extends AbstractController
         return $this->render('scoreandco/index.html.twig', [
             'results' => $results,
             'rugbyClubs' => $rugbyClubs,
+            'rankings' => $rankings,
+            'clubList' => $clubList, // utile dans le template pour afficher les noms
         ]);
     }
 }

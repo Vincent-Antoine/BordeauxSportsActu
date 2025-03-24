@@ -9,35 +9,35 @@
         <p class="text-gray-700 text-lg mt-2">{{ description }}</p>
     </header>
 
-
-{% for article in articles|slice(0,1)  %}
-                <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                    {% if article.imageName %}
-                        <img 
-                            src="{{ vich_uploader_asset(article, 'imageFile') }}" 
-                            alt="{{ article.title }}" 
-                            class="w-full h-48 object-cover">
-                    {% else %}
-                        <img 
-                            src="/images/default-article.png" 
-                            alt="Image par défaut" 
-                            class="w-full h-48 object-cover">
-                    {% endif %}
-                    <div class="p-4">
-                        <h2 class="text-lg font-semibold text-gray-800 truncate">{{ article.title }}</h2>
-                        <p class="text-sm text-gray-600 mt-2">Catégorie : {{ article.category }}</p>
-                        <p class="text-gray-700 text-sm mt-2">
-                            {{ article.content|slice(0, 100) ~ '...' }}
-                        </p>
-                        <div class="mt-4">
-                            <a href="{{ path('article_show', {'slug': article.slug}) }}" 
-                               class="inline-block bg-blue-500 text-white text-sm px-4 py-2 rounded hover:bg-blue-600">
-                                Lire l'article
-                            </a>
-                        </div>
-                    </div>
+    {% for article in articles|slice(0,1) %}
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            {% if article.imageName %}
+                <img 
+                    src="{{ vich_uploader_asset(article, 'imageFile') }}" 
+                    alt="{{ article.title }}" 
+                    class="w-full h-48 object-cover">
+            {% else %}
+                <img 
+                    src="/images/default-article.png" 
+                    alt="Image par défaut" 
+                    class="w-full h-48 object-cover">
+            {% endif %}
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 truncate">{{ article.title }}</h2>
+                <p class="text-sm text-gray-600 mt-2">Catégorie : {{ article.category }}</p>
+                <p class="text-gray-700 text-sm mt-2">
+                    {{ article.content|slice(0, 100) ~ '...' }}
+                </p>
+                <div class="mt-4">
+                    <a href="{{ path('article_show', {'slug': article.slug}) }}" 
+                       class="inline-block bg-blue-500 text-white text-sm px-4 py-2 rounded hover:bg-blue-600">
+                        Lire l'article
+                    </a>
                 </div>
-            {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
     <section>
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Mes équipes favorites</h2>
 
@@ -64,16 +64,12 @@
 
                     <!-- Nom de l'équipe -->
                     <h3 class="text-lg font-semibold text-gray-800 mt-4">{{ team.name }}</h3>
-
-                    
                 </div>
             {% else %}
                 <p class="text-center text-gray-600 col-span-5">Aucune équipe favorite ajoutée. Affichage de toutes les équipes.</p>
             {% endfor %}
         </div>
     </section>
-
-  
 
     <!-- Résultats des équipes favorites -->
     <section class="mt-10">
@@ -97,10 +93,31 @@
                                 {% if results is not empty %}
                                     {% for result in results|slice(0, 5) %}
                                         <tr class="text-center">
-                                            <td class="py-2 px-4 border">{{ result.date_heure }}</td>
-                                            <td class="py-2 px-4 border">{{ result.home_team }}</td>
-                                            <td class="py-2 px-4 border font-bold">{{ result.home_score }} - {{ result.away_score }}</td>
-                                            <td class="py-2 px-4 border">{{ result.away_team }}</td>
+                                            <td class="py-2 px-4 border">
+                                                {% if result.date is defined %}
+                                                    {{ result.date|date('d/m/Y') }}
+                                                    {% if result.time is defined %}
+                                                        à {{ result.time|date('H:i') }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    Inconnue
+                                                {% endif %}
+                                            </td>
+<td class="py-2 px-4 border flex items-center gap-2 justify-center">
+    {% if result.home_logo %}
+        <img src="{{ result.home_logo }}" alt="logo" class="h-6 w-6 rounded">
+    {% endif %}
+    {{ result.home_team ?? 'N/A' }}
+</td>
+                                            <td class="py-2 px-4 border font-bold">
+                                                {{ result.home_score ?? '?' }} - {{ result.away_score ?? '?' }}
+                                            </td>
+<td class="py-2 px-4 border flex items-center gap-2 justify-center">
+    {% if result.away_logo %}
+        <img src="{{ result.away_logo }}" alt="logo" class="h-6 w-6 rounded">
+    {% endif %}
+    {{ result.away_team ?? 'N/A' }}
+</td>
                                         </tr>
                                     {% endfor %}
                                 {% else %}

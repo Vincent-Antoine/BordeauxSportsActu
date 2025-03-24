@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ArticleRepository;
 
-
-
 class HomeController extends AbstractController
 {
     private ResultatsService $resultatsService;
@@ -22,64 +20,73 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(ArticleRepository $articleRepository, TeamRepository $teamRepository, UserFavoriteSportRepository $favoriteRepository): Response
-    {
-
+    public function index(
+        ArticleRepository $articleRepository,
+        TeamRepository $teamRepository,
+        UserFavoriteSportRepository $favoriteRepository
+    ): Response {
         $articles = $articleRepository->findBy([], ['updatedAt' => 'DESC'], 3);
-
         $user = $this->getUser();
-        $favoriteTeams = [];
 
-        // Récupération des équipes favorites si l'utilisateur est connecté
-        if ($user) {
-            $favoriteTeams = $favoriteRepository->findBy(['user' => $user]);
-        }
+        // IDs Scorenco des clubs pros
+        $clubProIds = [
+            33519   => 'Ambitions Girondines - Féminines',
+            108012  => 'Jeunes de Saint-Augustin Bordeaux Métropole',
+            48043   => 'Girondins de Bordeaux',
+            72716   => 'Union Bordeaux Bègles',
+            84369   => 'Bordeaux-Mérignac Volley Birdies',
+            276898  => 'Boxers Bordeaux',
+            50140  => 'Stade Bordelais F',
+        ];
 
-        // Si l'utilisateur n'a pas d'équipes favorites, afficher toutes les équipes
-        if (empty($favoriteTeams)) {
-            $teams = $teamRepository->findAll();
-        } else {
-            // Récupérer uniquement les équipes favorites
-            $teams = array_map(fn($favorite) => $favorite->getTeam(), $favoriteTeams);
-        }
+        $clubNameToId = array_flip($clubProIds);
 
         $teamsWithResults = [];
+        $resultsToShow = [];
 
-        foreach ($teams as $team) {
-            if ($team->getSport()) {
-                $teamResults = $this->resultatsService->getResultsForSport($team->getSport());
-                $teamsWithResults[] = [
-                    'team' => $team,
-                    'results' => $teamResults,
-                ];
+ 
+
+        if ($user) {
+            $favoriteEntities = $favoriteRepository->findBy(['user' => $user]);
+
+            if (!empty($favoriteEntities)) {
+                foreach ($favoriteEntities as $fav) {
+                    $team = $fav->getTeam();
+                    $teamName = $team->getName();
+
+                    if (isset($clubNameToId[$teamName])) {
+                        $clubId = $clubNameToId[$teamName];
+                        $results = $this->resultatsService->getResults($clubId);
+                        $resultsToShow[$teamName] = $results;
+                    }
+
+
+                    $teamsWithResults[] = [
+                        'team' => $team,
+                        'results' => $resultsToShow[$teamName] ?? [],
+                        
+                    ];
+                    
+                }
             }
         }
 
-        // Définir les résultats à afficher
-        if (!empty($favoriteTeams)) {
-            // Récupérer uniquement les résultats des équipes favorites
-            $favoriteResults = [];
-            foreach ($favoriteTeams as $favorite) {
-                $sport = $favorite->getTeam()->getSport();
-                if (!isset($favoriteResults[$sport])) {
-                    $favoriteResults[$sport] = $this->resultatsService->getResultsForSport($sport);
-                }
+        // Aucun favori → afficher tous les clubs pros
+        if (empty($resultsToShow)) {
+            foreach ($clubProIds as $clubId => $clubName) {
+                $resultsToShow[$clubName] = $this->resultatsService->getResults($clubId);
             }
-            $resultsToShow = $favoriteResults;
-        } else {
-            // Afficher les résultats de tous les sports si aucun favori
-            try {
-                $resultsToShow = $this->resultatsService->getResults();
-            } catch (\Exception $e) {
-                $resultsToShow = [
-                    'football' => [],
-                    'rugby' => [],
-                    'rugby_f' => [],
-                    'hockey' => [],
-                    'basket' => [],
-                    'volley' => [],
-                    'basket-ambitions-girondines' => [],
-                ];
+            // Toutes les équipes en base (pour logos)
+            $teams = $teamRepository->findAll();
+            foreach ($teams as $team) {
+                $name = $team->getName();
+
+                if (isset($resultsToShow[$name])) {
+                    $teamsWithResults[] = [
+                        'team' => $team,
+                        'results' => $resultsToShow[$name],
+                    ];
+                }
             }
         }
 
