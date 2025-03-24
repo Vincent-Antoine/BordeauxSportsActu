@@ -18,7 +18,7 @@ class ScorencoService
     /**
      * Récupère les derniers matchs pour plusieurs clubs (avec cache de 5 min)
      */
-    public function getMatchsForClubs(array $clubList, int $limit = 3): array
+    public function getMatchsForClubs(array $clubList, int $limit = 10): array
     {
         $results = [];
 
