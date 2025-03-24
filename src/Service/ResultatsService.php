@@ -2,81 +2,144 @@
 
 namespace App\Service;
 
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
-use Symfony\Component\HttpClient\HttpClient;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Psr\Log\LoggerInterface;
 
 class ResultatsService
 {
-    private $client;
-    private $cache;
+    private string $dataPath;
+    private string $scriptPath;
+    private LoggerInterface $logger;
+    private Client $client;
 
-    public function __construct(CacheInterface $cache)
+    public function __construct(string $projectDir, LoggerInterface $logger)
     {
-        $this->client = HttpClient::create();
-        $this->cache = $cache;
+        $this->dataPath = $projectDir . '/scripts/public/data/resultats.json';
+        $this->scriptPath = $projectDir . '/scripts/scrape_resultats.py';
+        $this->logger = $logger;
+        $this->client = new Client([
+            'timeout' => 5.0,
+        ]);
     }
 
-    public function getResults(int $clubId): array
+    /**
+     * Récupère les résultats depuis le fichier JSON.
+     */
+    public function getResults(): array
     {
-        $query = <<<'GRAPHQL'
-        query GetMatchs($teamId: Int, $dateFilter: Int, $limit: Int, $cacheTTL: Int = 30) {
-            competitions_event_detail_by_team_id(
-                args: {date_filter: $dateFilter, id: $teamId}
-                limit: $limit
-            ) {
-                id
-                status
-                date
-                time
-                url
-                teams
-                level_name
-                place {
-                    id
-                    name
+        if (!file_exists($this->dataPath)) {
+            $this->logger->error('Fichier de résultats non trouvé.', ['path' => $this->dataPath]);
+            throw new FileNotFoundException(sprintf('Fichier non trouvé : %s', $this->dataPath));
+        }
+
+        $jsonContent = file_get_contents($this->dataPath);
+        $data = json_decode($jsonContent, true);
+
+        return [
+            'football' => $data['football'] ?? [],
+            'rugby' => $data['rugby'] ?? [],
+            'rugby_f' => $data['rugby_f'] ?? [],
+            'hockey' => $data['hockey'] ?? [],
+            'basket' => $data['basket'] ?? [],
+            'volley' => $data['volley'] ?? [],
+        ];
+    }
+
+    /**
+     * Récupère les résultats pour un sport spécifique.
+     */
+    public function getResultsForSport(string $sport): array
+    {
+        if (!file_exists($this->dataPath)) {
+            $this->logger->error('Fichier de résultats non trouvé.', ['path' => $this->dataPath]);
+            throw new FileNotFoundException(sprintf('Fichier non trouvé : %s', $this->dataPath));
+        }
+
+        $jsonContent = file_get_contents($this->dataPath);
+        $data = json_decode($jsonContent, true);
+
+        return $data[$sport] ?? [];
+    }
+
+    /**
+     * Rafraîchit les résultats en exécutant un script Python.
+     */
+    public function refreshResults(): bool
+    {
+        if (!file_exists($this->scriptPath)) {
+            $this->logger->error('Le script Python est introuvable.', [
+                'scriptPath' => $this->scriptPath,
+            ]);
+            throw new FileNotFoundException(sprintf('Script non trouvé : %s', $this->scriptPath));
+        }
+
+        // Exécuter le script Python
+        $output = [];
+        $returnCode = 0;
+
+        // Utiliser python ou python3 selon l'OS
+        $pythonCommand = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 'python' : 'python3';
+        $command = "$pythonCommand " . escapeshellarg($this->scriptPath);
+
+        exec($command, $output, $returnCode);
+
+        $this->logger->info('Exécution du script Python', [
+            'command' => $command,
+            'output' => $output,
+            'returnCode' => $returnCode,
+        ]);
+
+        if ($returnCode !== 0) {
+            $this->logger->error('Erreur lors de l\'exécution du script Python.', [
+                'output' => $output,
+                'returnCode' => $returnCode,
+            ]);
+        }
+
+        return $returnCode === 0;
+    }
+
+    /**
+     * Récupère les matchs d'un club donné depuis l'API Scorenco.
+     */
+    public function getClubMatches(string $clubSlug): array
+    {
+        try {
+            $url = 'https://scorenco.com/backend/v1/widgets/61766f7f62ce960a1e6bc3c5/data/?format=json';
+            $response = $this->client->get($url);
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            $basket_ambitions_girondines_resultats = [];
+
+            if (isset($data['data']['results']) && is_array($data['data']['results'])) {
+                foreach ($data['data']['results'] as $match) {
+                    foreach ($match['teams'] as $team) {
+                        if ($team['clubSlug'] === $clubSlug) {
+                            $basket_ambitions_girondines_resultats[] = [
+                                'match_name' => $match['name'],
+                                'date' => $match['date'],
+                                'teams' => array_map(fn($t) => $t['name'], $match['teams']),
+                                'results' => array_map(fn($t) => [
+                                    'team' => $t['name'],
+                                    'score' => $t['score'] ?? 'N/A',
+                                    'result' => $t['result'] ?? 'N/A',
+                                ], $match['teams'])
+                            ];
+                            break;
+                        }
+                    }
                 }
             }
-        }
-        GRAPHQL;
 
-        $variables = [
-            'teamId' => $clubId,
-            'dateFilter' => -1,
-            'limit' => 10,
-        ];
+            return $basket_ambitions_girondines_resultats;
 
-        $cacheKey = 'scorenco_' . $clubId;
-
-        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($query, $variables) {
-            $item->expiresAfter(300); // Cache 5 min
-
-            $response = $this->client->request('POST', 'https://graphql.scorenco.com/v1/graphql', [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'x-hasura-role' => 'anonymous',
-                    'x-hasura-locale' => 'fr-FR',
-                ],
-                'json' => [
-                    'query' => $query,
-                    'variables' => $variables,
-                    'operationName' => 'GetMatchs',
-                ],
+        } catch (GuzzleException $e) {
+            $this->logger->error('Erreur lors de la récupération des données depuis Scorenco.', [
+                'error' => $e->getMessage()
             ]);
-
-            $data = $response->toArray();
-
-            return $data['data']['competitions_event_detail_by_team_id'] ?? [];
-        });
-    }
-
-    // 🔧 NOUVELLE MÉTHODE
-    public function getAllResults(array $clubList): array
-    {
-        $results = [];
-        foreach ($clubList as $id => $name) {
-            $results[$name] = $this->getResults($id);
+            return ['error' => 'Erreur lors de la récupération des données : ' . $e->getMessage()];
         }
-        return $results;
     }
 }
