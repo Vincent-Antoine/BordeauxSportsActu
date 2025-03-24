@@ -16,8 +16,8 @@ URLS = {
     "Hockey - Boxers de Bordeaux": "https://www.flashscore.fr/equipe/bordeaux/n9V6xiyI/"
 }
 
-# Durée maximale d'attente pour que les éléments soient présents (en secondes)
-TIMEOUT = 1
+# Durée maximale d'attente
+TIMEOUT = 5
 
 def scrape_all_matches(url_dict):
     """
@@ -25,14 +25,13 @@ def scrape_all_matches(url_dict):
     Retourne un dictionnaire avec les résultats ou les messages d'erreur.
     """
 
-    # Configuration de Chrome (mode headless)
+    # Configuration de Chrome
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--blink-settings=imagesEnabled=false")
-
 
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
@@ -45,28 +44,36 @@ def scrape_all_matches(url_dict):
         for sport, url in url_dict.items():
             print(f"--- Scraping {sport} ---")
             try:
-                # Ouvre l'URL
                 driver.get(url)
-                
-                # Attend la présence d'au moins un élément de classe "event__match"
+
+                # Attente de l’apparition des blocs de match
                 WebDriverWait(driver, TIMEOUT).until(
                     EC.presence_of_all_elements_located((By.CLASS_NAME, "event__match"))
                 )
 
-                # Vérifie s'il y a un match en direct ("event__match--live")
+                # Vérification des matchs live
                 live_match = driver.find_elements(By.CLASS_NAME, "event__match--live")
                 if not live_match:
                     all_results[sport] = {"message": "Aucun match en live actuellement"}
                     continue
 
-                # Si on a trouvé un match live, on récupère les informations
-                match_time = driver.find_element(By.CLASS_NAME, "event__stage--block").text
-                home_team = driver.find_element(By.CLASS_NAME, "event__homeParticipant")\
-                                  .find_element(By.TAG_NAME, "span").text
-                away_team = driver.find_element(By.CLASS_NAME, "event__awayParticipant")\
-                                  .find_element(By.TAG_NAME, "span").text
-                home_score = driver.find_element(By.CLASS_NAME, "event__score--home").text
-                away_score = driver.find_element(By.CLASS_NAME, "event__score--away").text
+                # Traitement spécial pour l’UBB (rugby)
+                if sport == "Rugby - UBB":
+                    match_time = driver.find_element(By.CLASS_NAME, "event__stage--block").text
+                    home_team = driver.find_element(By.CLASS_NAME, "event__participant--home").text
+                    away_team = driver.find_element(By.CLASS_NAME, "event__participant--away").text
+                    home_score = driver.find_element(By.CLASS_NAME, "event__score--home").text
+                    away_score = driver.find_element(By.CLASS_NAME, "event__score--away").text
+
+                else:
+                    # Structure classique (football et autres)
+                    match_time = driver.find_element(By.CLASS_NAME, "event__stage--block").text
+                    home_team = driver.find_element(By.CLASS_NAME, "event__homeParticipant")\
+                                      .find_element(By.TAG_NAME, "span").text
+                    away_team = driver.find_element(By.CLASS_NAME, "event__awayParticipant")\
+                                      .find_element(By.TAG_NAME, "span").text
+                    home_score = driver.find_element(By.CLASS_NAME, "event__score--home").text
+                    away_score = driver.find_element(By.CLASS_NAME, "event__score--away").text
 
                 all_results[sport] = {
                     "match_time": match_time,
@@ -77,21 +84,18 @@ def scrape_all_matches(url_dict):
                 }
 
             except Exception as e:
-                print(f"Erreur lors du scraping pour {sport} : {e}")
-                all_results[sport] = {"message": "Erreur lors du scraping"}
+                error_type = type(e).__name__
+                error_msg = str(e)
+                full_error = f"{error_type} - {error_msg}"
+                print(f"Erreur lors du scraping pour {sport} : {full_error}")
+                all_results[sport] = {"message": full_error}
 
     finally:
-        # Quoi qu'il arrive (même en cas d'erreur), on ferme le driver
         driver.quit()
 
     return all_results
 
 def save_to_json(data):
-    """
-    Sauvegarde les données 'data' au format JSON dans le fichier 'resultats_live.json'
-    situé dans le même répertoire que ce script.
-    """
-    # Chemin absolu du répertoire courant (emplacement du script)
     project_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(project_dir, "resultats_live.json")
 

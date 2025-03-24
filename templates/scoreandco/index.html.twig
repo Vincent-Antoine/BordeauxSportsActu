@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats des clubs bordelais{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h1 class="mb-4 text-center">📊 Résultats des clubs bordelais</h1>
+
+    {% for clubName, matchs in results %}
+        <h2 class="mt-5 mb-3 text-primary border-bottom pb-2">{{ clubName }}</h2>
+
+        {% if matchs is empty %}
+            <div class="alert alert-warning">Aucun match trouvé.</div>
+        {% else %}
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% for match in matchs %}
+                    {% set home = match.teams[0] ?? null %}
+                    {% set away = match.teams[1] ?? null %}
+
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="d-flex align-items-center">
+                                        {% if home and home.logo is defined %}
+                                            <img src="{{ home.logo }}" alt="logo {{ home.name_in_competition|default('Équipe domicile') }}" class="me-2" style="height: 40px;">
+                                        {% endif %}
+                                        <strong>{{ home.name_in_competition|default('Équipe domicile') }}</strong>
+                                    </div>
+                                    <span class="badge bg-secondary">vs</span>
+                                    <div class="d-flex align-items-center">
+                                        <strong>{{ away.name_in_competition|default('Équipe extérieure') }}</strong>
+                                        {% if away and away.logo is defined %}
+                                            <img src="{{ away.logo }}" alt="logo {{ away.name_in_competition|default('Équipe extérieure') }}" class="ms-2" style="height: 40px;">
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="badge bg-primary">Score : {{ home.score is defined ? home.score : 'N/A' }} - {{ away.score is defined ? away.score : 'N/A' }}</span>
+                                    <span class="badge bg-light text-dark">
+                                        {% if match.date is defined %}
+                                            {{ match.date|date('d/m/Y') }}
+                                        {% else %}
+                                            Date inconnue
+                                        {% endif %}
+                                    </span>
+                                </div>
+
+                                <p class="card-text text-muted mb-0">
+                                    {% if match.place is defined and match.place.name is defined %}
+                                        🏟 {{ match.place.name }}
+                                    {% else %}
+                                        🏟 Lieu inconnu
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
