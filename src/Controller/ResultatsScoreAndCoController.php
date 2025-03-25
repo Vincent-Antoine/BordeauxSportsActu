@@ -23,16 +23,34 @@ class ResultatsScoreAndCoController extends AbstractController
             50140   => 'Stade Bordelais Feminine',
         ];
 
+        $clubListIdClub = [
+            33519   => 560453,
+            108012  => 560512,
+            48043   => 543558,
+            72716   => 558964,
+            84369   => 603224,
+            276898  => 603179,
+            50140   => 567862,
+        ];
+
+
+
         $results = $resultatsService->getAllResults($clubList);
+
+
 
         // ➕ Récupération des classements
         $rankings = [];
-        foreach (array_keys($clubList) as $clubId) {
-            $ranking = $resultatsService->getRanking($clubId);
+
+
+        foreach ($clubListIdClub as $resultTeamId => $rankingTeamId) {
+            $ranking = $resultatsService->getRanking($rankingTeamId);
             if (!empty($ranking)) {
-                $rankings[$clubId] = $ranking;
+                $rankings[$resultTeamId] = $ranking;
             }
         }
+
+
 
         // Liste des clubs de rugby amateur à afficher dans le <select>
         $rugbyClubs = [

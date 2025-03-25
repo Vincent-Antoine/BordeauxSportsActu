@@ -83,6 +83,16 @@ class ResultatsService
 
             $matches = $data['data']['competitions_event_detail_by_team_id'] ?? [];
 
+            // 🧪 DEBUG : Affiche toutes les équipes pour extraire team_in_season_id
+        foreach ($matches as $match) {
+            $teams = $match['teams'] ?? [];
+
+            foreach ($teams as $team) {
+                // var_dump("🧪 Équipe détectée (team_id = " . ($team['team_id'] ?? 'N/A') . ")");
+                // var_dump($team);
+            }
+        }
+
             // ➜ On convertit au bon format pour le template
             $formatted = [];
             foreach ($matches as $match) {
