@@ -6,6 +6,10 @@ use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\Team;
+
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[Vich\Uploadable]
@@ -37,6 +41,38 @@ class Article
 
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\ManyToMany(targetEntity: Team::class)]
+    private Collection $teams;
+
+    public function __construct()
+    {
+        $this->teams = new ArrayCollection();
+    }
+
+    // Getter
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    // Ajouter une équipe
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+        }
+
+        return $this;
+    }
+
+    // Retirer une équipe
+    public function removeTeam(Team $team): self
+    {
+        $this->teams->removeElement($team);
+
+        return $this;
+    }
 
     public function getId(): ?int
     {

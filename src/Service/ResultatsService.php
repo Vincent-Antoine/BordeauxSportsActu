@@ -84,14 +84,14 @@ class ResultatsService
             $matches = $data['data']['competitions_event_detail_by_team_id'] ?? [];
 
             // 🧪 DEBUG : Affiche toutes les équipes pour extraire team_in_season_id
-        foreach ($matches as $match) {
-            $teams = $match['teams'] ?? [];
+            foreach ($matches as $match) {
+                $teams = $match['teams'] ?? [];
 
-            foreach ($teams as $team) {
-                // var_dump("🧪 Équipe détectée (team_id = " . ($team['team_id'] ?? 'N/A') . ")");
-                // var_dump($team);
+                foreach ($teams as $team) {
+                    // var_dump("🧪 Équipe détectée (team_id = " . ($team['team_id'] ?? 'N/A') . ")");
+                    // var_dump($team);
+                }
             }
-        }
 
             // ➜ On convertit au bon format pour le template
             $formatted = [];
@@ -242,6 +242,80 @@ class ResultatsService
             'volley' => $data['volley'] ?? [],
         ];
     }
+
+    public function getStandings(array $teamInSeasonIds): array
+    {
+        $standings = [];
+
+        foreach ($teamInSeasonIds as $teamName => $teamInSeasonId) {
+            $query = <<<'GRAPHQL'
+        query GetStandings($teamInSeasonId: Int) {
+            competitions_competition_ranking_by_team_in_season_id(args: {team_in_season_id: $teamInSeasonId}) {
+                id
+                name
+                rankings {
+                    id
+                    name_in_competition
+                    name_in_club
+                    pts
+                    rank
+                    played
+                    win
+                    lost
+                    logo
+                    url
+                    serie
+                }
+            }
+        }
+        GRAPHQL;
+
+            $variables = [
+                'teamInSeasonId' => $teamInSeasonId
+            ];
+
+            $cacheKey = 'scorenco_standings_' . $teamInSeasonId;
+
+            $result = $this->cache->get($cacheKey, function (ItemInterface $item) use ($query, $variables) {
+                $item->expiresAfter(300); // 5 minutes
+
+                $response = $this->client->request('POST', 'https://graphql.scorenco.com/v1/graphql', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'x-hasura-role' => 'anonymous',
+                        'x-hasura-locale' => 'fr-FR',
+                    ],
+                    'json' => [
+                        'query' => $query,
+                        'variables' => $variables,
+                        'operationName' => 'GetStandings',
+                    ],
+                ]);
+
+                $data = $response->toArray(false);
+                return $data['data']['competitions_competition_ranking_by_team_in_season_id'][0]['rankings'] ?? [];
+            });
+
+            // On prend la première entrée du classement (celle de l'équipe concernée)
+            $main = array_filter($result, fn($entry) => isset($entry['rank']));
+
+            if (!empty($main)) {
+                $entry = array_values($main)[0];
+                $standings[$teamName] = [
+                    'position' => $entry['rank'],
+                    'points' => $entry['pts'],
+                    'played' => $entry['played'],
+                    'win' => $entry['win'],
+                    'lost' => $entry['lost'],
+                    'name' => $entry['name_in_competition'] ?? $entry['name_in_club'],
+                    'logo' => $entry['logo'] ?? null,
+                ];
+            }
+        }
+
+        return $standings;
+    }
+
 
     /**
      * Ancienne méthode : résultats pour un sport spécifique (depuis le JSON)

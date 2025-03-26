@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendrier{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h1 class="fw-bold display-6 mb-3">{{ calendar.monthName|capitalize }} {{ calendar.year }}</h1>
+
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ path('app_calendar', { month: prevMonth, year: prevYear }) }}" class="btn btn-outline-primary">
+                ⬅ Mois précédent
+            </a>
+            <a href="{{ path('app_calendar', { month: nextMonth, year: nextYear }) }}" class="btn btn-outline-primary">
+                Mois suivant ➡
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-bordered calendar-table text-center align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mer</th>
+                    <th>Jeu</th>
+                    <th>Ven</th>
+                    <th class="text-primary">Sam</th>
+                    <th class="text-danger">Dim</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% set day = 1 %}
+                    {% set today = "now"|date("Y-m-d") %}
+                    {% for i in 1..(calendar.startDay - 1) %}
+                        <td class="bg-light"></td>
+                    {% endfor %}
+
+                    {% for i in calendar.startDay..42 %}
+                        {% if day > calendar.daysInMonth %}
+                            <td class="bg-light"></td>
+                        {% else %}
+                            {% set currentDate = date(calendar.year ~ '-' ~ calendar.month ~ '-' ~ day) %}
+                            <td class="p-0">
+                                <a href="{{ path('app_calendar_day', { date: currentDate|date('Y-m-d') }) }}"
+                                   class="d-flex justify-content-center align-items-center text-decoration-none
+                                          calendar-cell {% if currentDate|date('Y-m-d') == today %} today {% endif %}">
+                                    {{ day }}
+                                </a>
+                            </td>
+                            {% set day = day + 1 %}
+                        {% endif %}
+
+                        {% if loop.index % 7 == 0 %}
+                            </tr><tr>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .calendar-table td {
+        height: 80px;
+        min-width: 80px;
+        vertical-align: middle;
+    }
+
+    .calendar-cell {
+        height: 100%;
+        width: 100%;
+        padding: 10px;
+        color: #212529;
+        border-radius: 6px;
+        transition: background-color 0.2s ease;
+    }
+
+    .calendar-cell:hover {
+        background-color: #f1f1f1;
+    }
+
+    .calendar-cell.today {
+        background-color: #198754;
+        color: white !important;
+        font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+        .calendar-table td {
+            height: 50px;
+            min-width: 50px;
+        }
+    }
+</style>
+{% endblock %}

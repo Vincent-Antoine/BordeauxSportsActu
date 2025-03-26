@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du {{ date|date('d/m/Y') }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="mb-4">Détail du jour : {{ date|date('l d F Y')|capitalize }}</h1>
+
+    <div class="alert alert-info">
+        👉 Ici, tu peux afficher les événements, notes, rendez-vous, etc.
+    </div>
+
+    <a href="{{ path('app_calendar', { month: date|date('n'), year: date|date('Y') }) }}" class="btn btn-primary">
+        🔙 Retour au calendrier
+    </a>
+</div>
+{% endblock %}

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class ArticleController extends AbstractController
 {
     #[Route('/articles', name: 'article_index', methods: ['GET'])]

@@ -13,6 +13,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+
 
 // Import du type CKEditor
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
@@ -46,6 +48,11 @@ class ArticleCrudController extends AbstractCrudController
                     'Culture' => 'culture',
                     'Autres' => 'autres',
                 ]),
+            AssociationField::new('teams', 'Clubs associés')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                ])
+                ->setHelp('Sélectionne un ou plusieurs clubs à associer à cet article.'),
             // Le champ CKEditor
             TextareaField::new('content')
                 ->setFormType(CKEditorType::class)

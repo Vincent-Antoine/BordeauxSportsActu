@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<div class="container mx-auto my-8 px-4">
+    <header class="text-center mb-6">
+        <h1 class="text-4xl font-bold text-blue-600">{{ title }}</h1>
+        <p class="text-gray-700 text-lg mt-2">{{ description }}</p>
+    </header>
+
+    {% for article in articles|slice(0,1) %}
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            {% if article.imageName %}
+                <img 
+                    src="{{ vich_uploader_asset(article, 'imageFile') }}" 
+                    alt="{{ article.title }}" 
+                    class="w-full h-48 object-cover">
+            {% else %}
+                <img 
+                    src="/images/default-article.png" 
+                    alt="Image par défaut" 
+                    class="w-full h-48 object-cover">
+            {% endif %}
+            <div class="p-4">
+                <h2 class="text-lg font-semibold text-gray-800 truncate">{{ article.title }}</h2>
+                <p class="text-sm text-gray-600 mt-2">Catégorie : {{ article.category }}</p>
+                <p class="text-gray-700 text-sm mt-2">
+                    {{ article.content|slice(0, 100) ~ '...' }}
+                </p>
+                <div class="mt-4">
+                    <a href="{{ path('article_show', {'slug': article.slug}) }}" 
+                       class="inline-block bg-blue-500 text-white text-sm px-4 py-2 rounded hover:bg-blue-600">
+                        Lire l'article
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <section>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Mes équipes favorites</h2>
+
+        <p class="mb-4">
+            Les résultats en live des clubs sportifs de Bordeaux. En cliquant 
+            <a class="group text-pink-500 transition-all duration-300 ease-in-out" href="{{ path('scoreandco') }}">
+                <span class="bg-left-bottom bg-gradient-to-r from-pink-500 to-pink-500 bg-[length:0%_2px] bg-no-repeat 
+                group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">ici</span>
+            </a>.
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+            {% for teamData in teamsWithResults %}
+                {% set team = teamData.team %}
+                <div class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center">
+                    <!-- Logo -->
+                    <div class="w-32 h-32 flex items-center justify-center">
+                        {% if team.image %}
+                            <img src="{{ asset('uploads/teams/' ~ team.image) }}" alt="Logo {{ team.name }}" class="w-28 h-28 object-contain">
+                        {% else %}
+                            <span class="text-gray-500 text-sm">Aucune image</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Nom de l'équipe -->
+                    <h3 class="text-lg font-semibold text-gray-800 mt-4">{{ team.name }}</h3>
+                </div>
+            {% else %}
+                <p class="text-center text-gray-600 col-span-5">Aucune équipe favorite ajoutée. Affichage de toutes les équipes.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Résultats des équipes favorites -->
+    <section class="mt-10">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Derniers résultats</h2>
+
+        {% if resultsToShow is not empty %}
+            {% for sport_name, results in resultsToShow %}
+                <div class="mt-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{ sport_name|capitalize }}</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full bg-white border border-gray-200 shadow-md">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-2 px-4 border">Date</th>
+                                    <th class="py-2 px-4 border">Équipe domicile</th>
+                                    <th class="py-2 px-4 border">Score</th>
+                                    <th class="py-2 px-4 border">Équipe extérieure</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if results is not empty %}
+                                    {% for result in results|slice(0, 5) %}
+                                        <tr class="text-center">
+                                            <td class="py-2 px-4 border">
+                                                {% if result.date is defined %}
+                                                    {{ result.date|date('d/m/Y') }}
+                                                    {% if result.time is defined %}
+                                                        à {{ result.time|date('H:i') }}
+                                                    {% endif %}
+                                                {% else %}
+                                                    Inconnue
+                                                {% endif %}
+                                            </td>
+<td class="py-2 px-4 border flex items-center gap-2 justify-center">
+    {% if result.home_logo %}
+        <img src="{{ result.home_logo }}" alt="logo" class="h-6 w-6 rounded">
+    {% endif %}
+    {{ result.home_team ?? 'N/A' }}
+</td>
+                                            <td class="py-2 px-4 border font-bold">
+                                                {{ result.home_score ?? '?' }} - {{ result.away_score ?? '?' }}
+                                            </td>
+<td class="py-2 px-4 border flex items-center gap-2 justify-center">
+    {% if result.away_logo %}
+        <img src="{{ result.away_logo }}" alt="logo" class="h-6 w-6 rounded">
+    {% endif %}
+    {{ result.away_team ?? 'N/A' }}
+</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-gray-500">Aucun résultat disponible</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center text-gray-500">Aucun résultat disponible pour vos équipes favorites.</p>
+        {% endif %}
+    </section>
+
+    <footer class="mt-10 text-center text-gray-600">
+        <p>&copy; {{ "now"|date("Y") }} Bordeaux Sports Actu. Tous droits réservés.</p>
+    </footer>
+</div>
+{% endblock %}

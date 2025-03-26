@@ -66,7 +66,6 @@ class ResultatsScoreAndCoController extends AbstractController
             "RC Gradignan",
             "Rassemblement RCV LBR",
             "RC Cadaujacais",
-            "Rugby Club Parempuyre",
             "Rugby Club de La Pimpine",
             "AS St Aubin de Medoc",
             "Union Rugby Clubs XV Ambares",
