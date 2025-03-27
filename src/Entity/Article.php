@@ -50,6 +50,12 @@ class Article
         $this->teams = new ArrayCollection();
     }
 
+    public function __toString(): string
+{
+    return $this->title ?? 'Article';
+}
+
+
     // Getter
     public function getTeams(): Collection
     {

@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ArticleRepository;
 use LDAP\Result;
+use App\Repository\PortraitRepository;
+
 
 class HomeController extends AbstractController
 {
@@ -25,11 +27,18 @@ class HomeController extends AbstractController
         ArticleRepository $articleRepository,
         TeamRepository $teamRepository,
         UserFavoriteSportRepository $favoriteRepository,
-        ResultatsService $resultatsService
+        ResultatsService $resultatsService,
+        PortraitRepository $portraitRepository
+        
     ): Response {
         $user = $this->getUser();
-        $articles = [];
+        $articles = []; 
+
+        $favoriteEntities = []; 
+
         $articlesFromFavoriteTeams = [];
+
+        $portrait = $portraitRepository->findActivePortrait();
 
         // Gestion des articles selon l'utilisateur
         if ($user) {
@@ -108,6 +117,7 @@ class HomeController extends AbstractController
 
         if ($user) {
             $favoriteEntities = $favoriteRepository->findBy(['user' => $user]);
+            
 
             if (!empty($favoriteEntities)) {
                 foreach ($favoriteEntities as $fav) {
@@ -174,6 +184,10 @@ class HomeController extends AbstractController
             'rankings' => $rankings, // ⬅️ assure-toi de bien passer la bonne variable ici
             'articles' => $articles,
             'clubProIds' => $clubProIds, // ✅ ceci est requis pour la boucle Twig
+            'portrait' => $portrait,
+            'favoriteTeams' => $favoriteEntities
+
+
         ]);
     }
 }

@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Courgette&display=swap');
+
+
 /* Pagination */
+
+
 
 .page-item {
   display: inline-block;
