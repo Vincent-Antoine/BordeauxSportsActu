@@ -7,16 +7,16 @@
 {% block body %}
 
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">📊 Résultats des clubs bordelais</h1>
+    <h1 class="text-3xl  mb-8 text-center text-gray-800">📊 Résultats des clubs bordelais</h1>
 
     <div x-data="{ activeTab: 0 }">
         <!-- Onglets -->
-        <div class="flex flex-wrap border-b border-gray-300 mb-6">
+        <div class="flex flex-wrap border-b bg-gray-100 mb-6">
             {% for clubName, matchs in results %}
                 <button
                     @click="activeTab = {{ loop.index0 }}"
                     :class="activeTab === {{ loop.index0 }} ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'"
-                    class="px-4 py-2 text-sm font-semibold focus:outline-none"
+                    class="px-4 py-2 text-sm  focus:outline-none"
                 >
                     {{ clubName }}
                 </button>
@@ -24,7 +24,7 @@
             <button
                 @click="activeTab = {{ results|length }}"
                 :class="activeTab === {{ results|length }} ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'"
-                class="px-4 py-2 text-sm font-semibold focus:outline-none"
+                class="px-4 py-2 text-sm  focus:outline-none"
             >
                 Rugby Amateur
             </button>
@@ -39,7 +39,7 @@
                     <p class="text-red-600">Aucun match trouvé pour {{ clubName }}.</p>
                 {% else %}
                     <div class="overflow-x-auto mb-6">
-                        <table class="w-full bg-white border border-gray-200 shadow-md text-sm">
+                        <table class="w-full bg-white border border-gray-100  shadow-md text-sm">
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="py-2 px-4 border">Date</th>
@@ -67,7 +67,7 @@
                                             {% endif %}
                                             {{ match.home_team ?? 'N/A' }}
                                         </td>
-                                        <td class="py-2 px-4 border font-bold text-center">
+                                        <td class="py-2 px-4 border  text-center">
                                             {{ match.home_score ?? '?' }} - {{ match.away_score ?? '?' }}
                                         </td>
                                         <td class="py-2 px-4 border flex items-center gap-2 justify-center">
@@ -85,7 +85,7 @@
 
                 {% if rankings[clubId] is defined %}
                     <div class="overflow-x-auto">
-                        <h3 class="text-lg font-semibold mb-2">Classement</h3>
+                        <h3 class="text-lg  mb-2">Classement</h3>
                         <table class="table-auto w-full text-left text-sm border">
                             <thead class="bg-gray-200">
                                 <tr>
@@ -97,7 +97,7 @@
                                     <th class="p-2">D</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="bg-white">
                                 {% for team in rankings[clubId] %}
                                     <tr class="border-t">
                                         <td class="p-2">{{ team.rank }}</td>
@@ -163,26 +163,24 @@ async function fetchRugbyResults() {
         }
 
         let html = `<table class="w-full mt-4 border text-sm text-left">
-            <thead class="bg-indigo-600 text-white">
+            <thead class="bg-gray-100 text-black">
                 <tr>
                     <th class="p-2">Journée</th>
                     <th class="p-2">Date</th>
                     <th class="p-2">Équipe Locale</th>
                     <th class="p-2">Score</th>
                     <th class="p-2">Équipe Visiteuse</th>
-                    <th class="p-2">État</th>
                 </tr>
             </thead><tbody>`;
 
-        data.forEach(match => {
+        [...data].reverse().forEach(match => {
             const date = new Date(match.date).toLocaleDateString("fr-FR");
             html += `<tr class="border-t">
                 <td class="p-2">${match.journee}</td>
                 <td class="p-2">${date}</td>
                 <td class="p-2 flex items-center gap-2"><img src="${match.local_logo ?? 'placeholder.png'}" class="h-6 w-6 rounded" /> ${match.local_team}</td>
-                <td class="p-2 text-center">${match.local_score} - ${match.visitor_score}</td>
+                <td class="p-2">${match.local_score} - ${match.visitor_score}</td>
                 <td class="p-2 flex items-center gap-2"><img src="${match.visitor_logo ?? 'placeholder.png'}" class="h-6 w-6 rounded" /> ${match.visitor_team}</td>
-                <td class="p-2">${match.etat}</td>
             </tr>`;
         });
 

@@ -43,64 +43,72 @@
     </div>
 
     <!-- Menu principal (desktop) -->
-    <nav class="hidden lg:flex bg-[#2f2f5a] text-white rounded-full mx-auto max-w-screen-xl px-6 py-3 mt-4 text-sm font-semibold">
-        <div class="max-w-screen-xl mx-auto px-4">
-            <div class="flex justify-around items-center space-x-6">
-                <a href="{{ path('app_blog_index') }}" class="{% if app.request.get('_route') starts with 'app_blog' %}text-pink-400 underline{% else %}hover:text-gray-300{% endif %}">
-                    {% if app.user and favoriteTeams is defined and favoriteTeams|length > 0 %}
-                        MES ACTUS <span class="text-pink-400">❤</span>
-                    {% else %}
-                        ACTUALITÉS
-                    {% endif %}
-                </a>
-                <a href="{{ path('scoreandco') }}" class="{% if app.request.get('_route') == 'scoreandco' %}text-pink-400 underline{% else %}hover:text-gray-300{% endif %}">
-                    RÉSULTATS
-                </a>
-                <!-- Sous-menu SPORTS -->
-                <div class="relative" x-data="{ open: false, timeout: null }" @mouseenter="clearTimeout(timeout); open = true" @mouseleave="timeout = setTimeout(() => open = false, 150)">
-                    <button class="hover:text-gray-300 focus:outline-none">SPORTS</button>
-                    <div x-show="open" x-transition.opacity.duration.200ms class="absolute left-0 mt-2 bg-white text-gray-700 rounded shadow w-44 py-2 text-sm z-50">
-                        <ul>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Football</a></li>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Rugby</a></li>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Basket</a></li>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Volley</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <a href="#" class="hover:text-gray-300">CALENDRIER</a>
-                <a href="{{ path('app_contact_index') }}" class="{% if app.request.get('_route') == 'app_contact_index' %}text-pink-400 underline{% else %}hover:text-gray-300{% endif %}">À PROPOS</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Menu Mobile -->
-    <div class="lg:hidden hidden px-4 pb-4" id="navbar" x-data="{ showSports: false }">
-        <ul class="flex flex-col space-y-2 text-sm font-semibold">
-            <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-500">ACTUALITÉS</a></li>
-            <li><a href="{{ path('scoreandco') }}" class="hover:text-gray-500">RÉSULTATS</a></li>
-            <li>
-                <button @click="showSports = !showSports" class="hover:text-gray-500 w-full text-left">SPORTS</button>
-                <ul x-show="showSports" x-transition.duration.200ms class="pl-4 mt-1 space-y-1 text-sm">
-                    <li><a href="#" class="block py-1 hover:text-gray-400">Football</a></li>
-                    <li><a href="#" class="block py-1 hover:text-gray-400">Rugby</a></li>
-                    <li><a href="#" class="block py-1 hover:text-gray-400">Basket</a></li>
-                    <li><a href="#" class="block py-1 hover:text-gray-400">Volley</a></li>
-                </ul>
-            </li>
-            <li><a href="#" class="hover:text-gray-500">CALENDRIER</a></li>
-            <li><a href="{{ path('app_contact_index') }}" class="hover:text-gray-500">À PROPOS</a></li>
-            <li class="flex items-center gap-2 text-xl">
-                <a href="#" class="hover:opacity-75"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="hover:opacity-75"><i class="fa-brands fa-tiktok"></i></a>
-                <a href="#" class="hover:opacity-75"><i class="fa-brands fa-youtube"></i></a>
-                <span class="mx-1">|</span>
-                {% if app.user %}
-                    <a href="{{ path('app_profile') }}" class="hover:opacity-75"><i class="fa-solid fa-user"></i></a>
+<nav class="hidden lg:flex bg-[#2f2f5a] text-white rounded-full mx-auto max-w-screen-xl px-6 py-3 mt-4 text-sm font-semibold">
+    <div class="max-w-screen-xl mx-auto px-4">
+        <div class="flex justify-around items-center space-x-6">
+            <a href="{{ path('app_blog_index') }}" class="{% if app.request.attributes.get('_route') starts with 'app_blog' %}text-blue-700{% else %}hover:text-gray-300{% endif %}">
+                {% if app.user and favoriteTeams is defined and favoriteTeams|length > 0 %}
+                    MES ACTUS <span class="text-pink-400">❤</span>
                 {% else %}
-                    <a href="{{ path('app_login') }}" class="hover:opacity-75"><i class="fa-regular fa-user"></i></a>
+                    ACTUALITÉS
                 {% endif %}
-            </li>
-        </ul>
+            </a>
+            <a href="{{ path('scoreandco') }}" class="{% if app.request.attributes.get('_route') == 'scoreandco' %}text-blue-700{% else %}hover:text-gray-300{% endif %}">
+                RÉSULTATS
+            </a>
+            <!-- Sous-menu SPORTS -->
+            <div class="relative" x-data="{ open: false, timeout: null }" @mouseenter="clearTimeout(timeout); open = true" @mouseleave="timeout = setTimeout(() => open = false, 150)">
+                <a href="{{ path('app_sports') }}">
+                    <button class="{% if app.request.attributes.get('_route') starts with 'app_sport_show' or app.request.attributes.get('_route') == 'app_sports' %}text-blue-700{% else %}hover:text-gray-300{% endif %} focus:outline-none">
+                        SPORTS
+                    </button>
+                </a>
+                <div x-show="open" x-transition.opacity.duration.200ms class="absolute left-0 mt-2 bg-white text-gray-700 rounded shadow w-44 py-2 text-sm z-50">
+                    <ul>
+                        <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block px-4 py-2 hover:bg-gray-100">Football</a></li>
+                        <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block px-4 py-2 hover:bg-gray-100">Rugby</a></li>
+                        <li><a href="{{ path('app_sport_show', { slug: 'volleyball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Volley</a></li>
+                        <li><a href="{{ path('app_sport_show', { slug: 'hockey-sur-glace' }) }}" class="block px-4 py-2 hover:bg-gray-100">Hockey</a></li>
+                    </ul>
+                </div>
+            </div>
+            <a href="#" class="{% if app.request.attributes.get('_route') == 'calendar' %}text-blue-700{% else %}hover:text-gray-300{% endif %}">
+                CALENDRIER
+            </a>
+            <a href="{{ path('app_contact_index') }}" class="{% if app.request.attributes.get('_route') == 'app_contact_index' %}text-blue-700{% else %}hover:text-gray-300{% endif %}">
+                À PROPOS
+            </a>
+        </div>
     </div>
+</nav>
+
+<!-- Menu Mobile -->
+<div class="lg:hidden hidden px-4 pb-4" id="navbar" x-data="{ showSports: false }">
+    <ul class="flex flex-col space-y-2 text-sm font-semibold">
+        <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-500">ACTUALITÉS</a></li>
+        <li><a href="{{ path('scoreandco') }}" class="hover:text-gray-500">RÉSULTATS</a></li>
+        <li>
+            <button @click="showSports = !showSports" class="hover:text-gray-500 w-full text-left">SPORTS</button>
+            <ul x-show="showSports" x-transition.duration.200ms class="pl-4 mt-1 space-y-1 text-sm">
+                <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block py-1 hover:text-gray-400">Football</a></li>
+                <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block py-1 hover:text-gray-400">Rugby</a></li>
+                <li><a href="{{ path('app_sport_show', { slug: 'volleyball' }) }}" class="block py-1 hover:text-gray-400">Volley</a></li>
+                <li><a href="{{ path('app_sport_show', { slug: 'hockey-sur-glace' }) }}" class="block py-1 hover:text-gray-400">Hockey</a></li>
+            </ul>
+        </li>
+        <li><a href="#" class="hover:text-gray-500">CALENDRIER</a></li>
+        <li><a href="{{ path('app_contact_index') }}" class="hover:text-gray-500">À PROPOS</a></li>
+        <li class="flex items-center gap-2 text-xl">
+            <a href="#" class="hover:opacity-75"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="hover:opacity-75"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#" class="hover:opacity-75"><i class="fa-brands fa-youtube"></i></a>
+            <span class="mx-1">|</span>
+            {% if app.user %}
+                <a href="{{ path('app_profile') }}" class="hover:opacity-75"><i class="fa-solid fa-user"></i></a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="hover:opacity-75"><i class="fa-regular fa-user"></i></a>
+            {% endif %}
+        </li>
+    </ul>
+</div>
 </header>

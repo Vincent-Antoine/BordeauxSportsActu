@@ -1,6 +1,10 @@
 {
     "Football - Girondins de Bordeaux": {
-        "message": "Aucun match en live actuellement"
+        "match_time": "68 ",
+        "home_team": "Bordeaux",
+        "away_team": "Saint-Malo",
+        "home_score": "1",
+        "away_score": "0"
     },
     "Rugby - UBB": {
         "message": "Aucun match en live actuellement"

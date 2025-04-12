@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ sport.name }}{% endblock %}
+
+{% block body %}
+
+<!-- FIL D'ARIANE -->
+<nav class="max-w-7xl mx-auto  py-4 text-sm text-gray-600" aria-label="Fil d'Ariane">
+    <ol class="list-reset flex items-center space-x-2">
+        <li>
+            <a href="{{ path('app_home') }}" class="hover:text-blue-600">Accueil</a>
+            <span class="mx-2 text-gray-400">/</span>
+        </li>
+        <li>
+            <a href="{{ path('app_sports') }}" class="hover:text-blue-600">Sports</a>
+            <span class="mx-2 text-gray-400">/</span>
+        </li>
+        <li class="text-gray-800 font-semibold">{{ sport.name }}</li>
+    </ol>
+</nav>
+
+<!-- BANNIÈRE -->
+<div class="relative w-full h-[250px] mb-12 parallax-banner"
+     style="background-image: url('{{ sport.image }}'); background-attachment: fixed; background-size: cover; background-position: center;">
+    <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
+    <div class="relative z-10 h-full flex items-center justify-start max-w-7xl mx-auto px-6">
+        <h2 class="text-white text-3xl sm:text-4xl md:text-5xl">
+            {{ sport.name }}
+        </h2>
+    </div>
+</div>
+
+<!-- LISTE DES ÉQUIPES -->
+<div class="max-w-6xl mx-auto px-6">
+    <h3 class="text-2xl mb-4">Équipes de {{ sport.name }}</h3>
+
+    {% if teams is empty %}
+        <p class="text-gray-500 italic">Aucune équipe enregistrée pour ce sport.</p>
+    {% else %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for team in teams %}
+                <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                    {% if team.image %}
+                        <img src="{{ asset('uploads/teams/' ~ team.image) }}" alt="{{ team.name }}" class="w-full h-40 object-cover">
+                    {% endif %}
+                    <div class="p-4">
+                        <h4 class="text-lg text-gray-800">{{ team.name }}</h4>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

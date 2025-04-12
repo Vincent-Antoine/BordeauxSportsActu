@@ -1,7 +1,7 @@
 <div id="live-matches">
     {% for sport, data in live_matches %}
         <div class="bg-white shadow-lg rounded-lg p-6 mb-10">
-            <h2 class="text-2xl font-bold text-gray-700 mb-4">Match en Direct - {{ sport }}</h2>
+            <h2 class="text-2xl  text-gray-700 mb-4">Match en Direct - {{ sport }}</h2>
             {% if data.message is defined %}
                 <p class="text-gray-600">{{ data.message }}</p>
             {% else %}
@@ -10,7 +10,7 @@
                         <span class="text-blue-600">{{ data.home_team }}</span> vs 
                         <span class="text-red-600">{{ data.away_team }}</span>
                     </div>
-                    <div class="text-lg font-bold text-gray-800">
+                    <div class="text-lg  text-gray-800">
                         <span>{{ data.home_score }}</span> - 
                         <span>{{ data.away_score }}</span>
                     </div>

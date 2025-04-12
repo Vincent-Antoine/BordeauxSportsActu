@@ -152,7 +152,7 @@
 {# Catégorie #}
 
 <section class="container mx-auto py-12" x-data="sliderCategorie()" x-init="init()">
-    <h2 class="text-2xl  text-center mb-6">Catégories sportives</h2>
+    <h2 class="text-2xl text-center mb-6">Catégories sportives</h2>
 
     <div class="relative">
         <!-- Slider drag & infini -->
@@ -168,20 +168,20 @@
             @touchend="endDrag"
         >
             <template x-for="(item, index) in items" :key="index">
-                <div class="flex-shrink-0 w-60 h-64 bg-white rounded shadow flex flex-col justify-between items-center snap-start">
+                <div class="flex-shrink-0 w-60 h-64 bg-white rounded shadow flex flex-col justify-between items-center snap-start overflow-hidden">
                     <template x-if="index % 2 === 0">
                         <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-t">
-                            <p class="text-sm " x-text="item.title"></p>
+                            <p class="text-sm" x-text="item.title"></p>
                         </div>
                     </template>
 
-                    <div class="flex-grow flex items-center justify-center">
-                        <img :src="item.image" alt="" class="w-16 h-16 object-contain">
+                    <div class="flex-grow w-full h-full">
+                        <img :src="item.image" alt="" class="w-full h-full object-cover">
                     </div>
 
                     <template x-if="index % 2 !== 0">
                         <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-b">
-                            <p class="text-sm " x-text="item.title"></p>
+                            <p class="text-sm" x-text="item.title"></p>
                         </div>
                     </template>
                 </div>
@@ -190,28 +190,29 @@
 
         <!-- Flèche gauche -->
         <button @click="scrollLeft"
-                class="absolute left-0 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full shadow  z-10">
+                class="absolute left-0 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full shadow z-10">
             <i class="fas fa-chevron-left"></i>
         </button>
 
         <!-- Flèche droite -->
         <button @click="scrollRight"
-                class="absolute right-0 top-1/2 transform -translate-y-1/2  text-white p-2 rounded-full shadow  z-10">
+                class="absolute right-0 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full shadow z-10">
             <i class="fas fa-chevron-right"></i>
         </button>
     </div>
 </section>
 
+
 <script>
     function sliderCategorie() {
         return {
             items: [
-                { title: 'Catégorie 1', image: 'https://via.placeholder.com/60' },
-                { title: 'Catégorie 2', image: 'https://via.placeholder.com/60' },
-                { title: 'Catégorie 3', image: 'https://via.placeholder.com/60' },
-                { title: 'Catégorie 4', image: 'https://via.placeholder.com/60' },
-                { title: 'Catégorie 5', image: 'https://via.placeholder.com/60' },
-                { title: 'Catégorie 6', image: 'https://via.placeholder.com/60' },
+                { title: 'Volley', image: '/medias/volley-merginac.webp'},
+                { title: 'Football', image: 'https://via.placeholder.com/60' },
+                { title: 'Rugby', image: 'https://via.placeholder.com/60' },
+                { title: 'Rugby Feminin', image: 'https://via.placeholder.com/60' },
+                { title: 'Rugby Amateur', image: 'https://via.placeholder.com/60' },
+                { title: 'Hockey sur glace', image: '/medias/hockey-sur-glace.webp' },
             ],
             slider: null,
             isDown: false,
