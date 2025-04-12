@@ -1,4 +1,4 @@
-<div class="container mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+<div class="container mx-auto px-4 sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8  pt-[100px]">
   <div class="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
     <!-- Colonne 1 : Logo + Description -->
     <div class="sm:col-span-1">
@@ -6,7 +6,7 @@
          <img src="/medias/LOGO-BSA-3-LETTRES.png" alt="Logo BSA" class="h-12 sm:h-14">
       </a>
       <div class="mt-6 lg:max-w-sm">
-        <p class="text-sm text-gray-800">
+        <p class="text-gray-800 text-lg">
          Bordeaux Sports Actu, c’est un collectif étudiant dédié à l’actualité 100 % bordelaise. Nous mettons en lumière les clubs, athlètes et événements qui font vibrer notre ville.
         </p>
         
@@ -15,8 +15,8 @@
 
     <!-- ✅ Nouvelle Colonne : Liens utiles -->
     <div class="space-y-2 text-sm">
-      <p class="text-base font-bold tracking-wide text-gray-900">Liens utiles</p>
-      <ul class="space-y-1">
+      <p class="text-base font-bold tracking-wide text-gray-900 text-xl">Liens utiles</p>
+      <ul class="space-y-1 text-lg">
         <li><a href="{{ path('app_home') }}" class="text-gray-800 hover:text-blue-700">Accueil</a></li>
         <li><a href="{{ path('app_blog_index') }}" class="text-gray-800 hover:text-blue-700">Actualités</a></li>
         <li><a href="{{ path('scoreandco') }}" class="text-gray-800 hover:text-blue-700">Résultats</a></li>
@@ -28,14 +28,12 @@
 
     <!-- Colonne 3 : Contacts -->
     <div class="space-y-2 text-sm">
-      <p class="text-base font-bold tracking-wide text-gray-900">Contact</p>
+      <p class="text-base font-bold tracking-wide text-gray-900 text-xl">Contact</p>
       <div class="flex">
-        <p class="mr-1 text-gray-800">Email:</p>
-        <a href="mailto:bordeauxsportsactu@gmail.com" class="hover:text-blue-700">bordeauxsportsactu@gmail.com</a>
+        <a href="mailto:bordeauxsportsactu@gmail.com" class="hover:text-blue-700 text-lg">bordeauxsportsactu@gmail.com</a>
       </div>
       <div class="flex">
-        <p class="mr-1 text-gray-800">Adresse:</p>
-        <a href="https://www.google.com/maps/place//data=!4m2!3m1!1s0xd55287c2b667971:0xfaa5a2368b146e35?sa=X&ved=1t:8290&ictx=111" target="_blank" rel="noopener noreferrer" class="hover:text-blue-700">
+        <a href="https://www.google.com/maps/place//data=!4m2!3m1!1s0xd55287c2b667971:0xfaa5a2368b146e35?sa=X&ved=1t:8290&ictx=111" target="_blank" rel="noopener noreferrer" class="text-lg hover:text-blue-700">
           2 Esplanade de la Gare, 33110 Le Bouscat
         </a>
       </div>
@@ -43,12 +41,12 @@
 
     <!-- Colonne 4 : Social -->
     <div>
-      <span class="text-base font-bold tracking-wide text-gray-900">Nos réseaux sociaux</span>
+      <span class="text-base font-bold tracking-wide text-gray-900 text-xl">Nos réseaux sociaux</span>
       <div class="flex items-center mt-1 space-x-3">
         <!-- Icônes réseaux (exemples) -->
-        <a href="/" class="text-gray-500 hover:text-blue-700"><i class="fa-brands fa-twitter"></i></a>
-        <a href="/" class="text-gray-500 hover:text-blue-700"><i class="fa-brands fa-instagram"></i></a>
-        <a href="/" class="text-gray-500 hover:text-blue-700"><i class="fa-brands fa-youtube"></i></a>
+        <a href="/" class="text-gray-500 hover:text-blue-700"><i class="fa-brands fa-twitter text-lg"></i></a>
+        <a href="/" class="text-gray-500 hover:text-blue-700"><i class="fa-brands fa-instagram text-lg"></i></a>
+        <a href="/" class="text-gray-500 hover:text-blue-700"><i class="fa-brands fa-youtube text-lg"></i></a>
       </div>
     </div>
   </div>
@@ -56,7 +54,7 @@
   <!-- Bas de page -->
   <div class="flex flex-col-reverse justify-between pt-5 pb-10 border-t lg:flex-row">
     <p class="text-sm text-gray-600">© Copyright 2025 Bordeaux Sports Actu. Tous droits réservés.</p>
-    <ul class="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
+    <ul class="text-lg flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
       <li><a href="/" class="text-sm text-gray-600 hover:text-blue-700">F.A.Q</a></li>
       <li><a href="/" class="text-sm text-gray-600 hover:text-blue-700">Politique de confidentialité</a></li>
       <li><a href="/" class="text-sm text-gray-600 hover:text-blue-700">Conditions générales</a></li>

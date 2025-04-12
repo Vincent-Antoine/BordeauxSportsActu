@@ -30,7 +30,7 @@
             <div x-show="currentIndex === index" class="absolute inset-0 transition-all duration-700 ease-in-out">
                 <img :src="article.image" :alt="article.title" class="w-full h-80 sm:h-96 object-cover">
                 <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
-                    <h2 class="text-lg sm:text-2xl font-bold" x-text="article.title"></h2>
+                    <h2 class="text-lg sm:text-2xl" x-text="article.title"></h2>
                     <p class="text-sm sm:text-base mt-2" x-text="article.content"></p>
                 </div>
             </div>
@@ -67,7 +67,7 @@
         <div x-show="currentSlide === {{ loop.index0 }}" class="flex flex-col md:flex-row gap-6">
             <!-- Résultats -->
             <div class="w-full md:w-1/2 bg-gray-100 p-4 rounded shadow">
-                <h3 class="text-xl font-semibold text-primary-black mb-2">{{ teamName }}</h3>
+                <h3 class="text-xl  text-primary-black mb-2">{{ teamName }}</h3>
                 <table class="w-full bg-white border border-gray-200 text-sm">
                     <thead class="bg-gray-100">
                         <tr>
@@ -89,7 +89,7 @@
                                         {% endif %}
                                         {{ result.home_team ?? 'N/A' }}
                                     </td>
-                                    <td class="p-2 font-bold text-center">
+                                    <td class="p-2  text-center">
                                         {{ result.home_score ?? '?' }} - {{ result.away_score ?? '?' }}
                                     </td>
                                     <td class="p-2 flex items-center gap-2">
@@ -109,7 +109,7 @@
 
             <!-- Classement -->
             <div class="w-full md:w-1/2 bg-gray-100 p-4 rounded shadow">
-                <h3 class="text-xl font-semibold text-primary-black mb-2">{{ teamName }}</h3>
+                <h3 class="text-xl  text-primary-black mb-2">{{ teamName }}</h3>
                 <table class="table-auto w-full text-left text-sm border">
                     <thead class="bg-gray-200">
                         <tr>
@@ -152,7 +152,7 @@
 {# Catégorie #}
 
 <section class="container mx-auto py-12" x-data="sliderCategorie()" x-init="init()">
-    <h2 class="text-2xl font-bold text-center mb-6">Catégories sportives</h2>
+    <h2 class="text-2xl  text-center mb-6">Catégories sportives</h2>
 
     <div class="relative">
         <!-- Slider drag & infini -->
@@ -171,7 +171,7 @@
                 <div class="flex-shrink-0 w-60 h-64 bg-white rounded shadow flex flex-col justify-between items-center snap-start">
                     <template x-if="index % 2 === 0">
                         <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-t">
-                            <p class="text-sm font-semibold" x-text="item.title"></p>
+                            <p class="text-sm " x-text="item.title"></p>
                         </div>
                     </template>
 
@@ -181,7 +181,7 @@
 
                     <template x-if="index % 2 !== 0">
                         <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-b">
-                            <p class="text-sm font-semibold" x-text="item.title"></p>
+                            <p class="text-sm " x-text="item.title"></p>
                         </div>
                     </template>
                 </div>
@@ -268,7 +268,7 @@
 
         <div class="flex-1">
             {# <p class="text-gray-600 text-sm mb-2">Semaine du : {{ portrait.semaineDu|date('d/m/Y') }}</p> #}
-            <h3 class="text-xl font-semibold">{{ portrait.prenom }} {{ portrait.nom }}</h3>
+            <h3 class="text-xl ">{{ portrait.prenom }} {{ portrait.nom }}</h3>
             <p class="text-gray-700 mt-2">{{ portrait.description }}</p>
             <a href="{{ path('article_show', { slug: portrait.article.slug }) }}"
                class="inline-block mt-4 text-blue-600 hover:underline">Lire l’article complet →</a>
