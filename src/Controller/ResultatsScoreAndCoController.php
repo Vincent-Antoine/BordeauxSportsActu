@@ -6,43 +6,33 @@ use App\Service\ResultatsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\TeamRepository;
+
 
 class ResultatsScoreAndCoController extends AbstractController
 {
     #[Route('/resultats-score-and-co', name: 'scoreandco')]
-    public function index(ResultatsService $resultatsService): Response
+    public function index(ResultatsService $resultatsService, TeamRepository $teamRepository): Response
     {
-        // Clubs principaux avec leurs IDs
-        $clubList = [
-            33519   => 'Basket Ambitions Girondines',
-            108012  => 'JSA Basket',
-            48043   => 'Girondins de Bordeaux Football',
-            72716   => 'UBB Rugby',
-            84369   => 'Burdies Volley',
-            276898  => 'Les Boxers Hockey sur glace',
-            50140   => 'Stade Bordelais Feminine',
-        ];
+        // 🔄 Récupération automatique des équipes avec IDs Scorenco valides
+        $teams = $teamRepository->createQueryBuilder('t')
+            ->where('t.scorencoMatchId IS NOT NULL')
+            ->andWhere('t.scorencoRankingId IS NOT NULL')
+            ->getQuery()
+            ->getResult();
 
-        $clubListIdClub = [
-            33519   => 560453,
-            108012  => 560512,
-            48043   => 543558,
-            72716   => 558964,
-            84369   => 603224,
-            276898  => 603179,
-            50140   => 567862,
-        ];
+        // 🧭 Préparer les données pour getAllResults() et getRanking()
+        $clubList = []; // [matchId => nom]
+        $clubListIdClub = []; // [matchId => rankingId]
 
-
+        foreach ($teams as $team) {
+            $clubList[$team->getScorencoMatchId()] = $team->getName();
+            $clubListIdClub[$team->getScorencoMatchId()] = $team->getScorencoRankingId();
+        }
 
         $results = $resultatsService->getAllResults($clubList);
 
-
-
-        // ➕ Récupération des classements
         $rankings = [];
-
-
         foreach ($clubListIdClub as $resultTeamId => $rankingTeamId) {
             $ranking = $resultatsService->getRanking($rankingTeamId);
             if (!empty($ranking)) {
@@ -50,9 +40,7 @@ class ResultatsScoreAndCoController extends AbstractController
             }
         }
 
-
-
-        // Liste des clubs de rugby amateur à afficher dans le <select>
+        // ✅ Liste des clubs de rugby amateur (fixe)
         $rugbyClubs = [
             "Club Municipal de Floirac",
             "Entente SP Bruges Blanquefort",
@@ -80,7 +68,7 @@ class ResultatsScoreAndCoController extends AbstractController
             'results' => $results,
             'rugbyClubs' => $rugbyClubs,
             'rankings' => $rankings,
-            'clubList' => $clubList, // utile dans le template pour afficher les noms
+            'clubList' => $clubList,
         ]);
     }
 }

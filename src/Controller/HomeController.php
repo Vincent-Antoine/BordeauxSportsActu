@@ -9,9 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ArticleRepository;
-use LDAP\Result;
 use App\Repository\PortraitRepository;
-
 
 class HomeController extends AbstractController
 {
@@ -29,25 +27,20 @@ class HomeController extends AbstractController
         UserFavoriteSportRepository $favoriteRepository,
         ResultatsService $resultatsService,
         PortraitRepository $portraitRepository
-        
     ): Response {
         $user = $this->getUser();
-        $articles = []; 
-
-        $favoriteEntities = []; 
-
+        $articles = [];
+        $favoriteEntities = [];
         $articlesFromFavoriteTeams = [];
-
         $portrait = $portraitRepository->findActivePortrait();
 
-        // Gestion des articles selon l'utilisateur
+        // 🎯 Gestion des articles selon les favoris
         if ($user) {
             $favoriteEntities = $favoriteRepository->findBy(['user' => $user]);
 
             if (!empty($favoriteEntities)) {
                 $favoriteTeams = array_map(fn($fav) => $fav->getTeam(), $favoriteEntities);
 
-                // Récupérer les articles liés aux équipes favorites
                 $articlesWithTeams = $articleRepository->createQueryBuilder('a')
                     ->leftJoin('a.teams', 't')
                     ->andWhere('t IN (:teams)')
@@ -61,85 +54,63 @@ class HomeController extends AbstractController
             }
         }
 
-        // Si aucun article lié à des équipes favorites → derniers articles
-        if (!empty($articlesFromFavoriteTeams)) {
-            $articles = $articlesFromFavoriteTeams;
-        } else {
-            $articles = $articleRepository->findBy([], ['updatedAt' => 'DESC'], 3);
+        $articles = !empty($articlesFromFavoriteTeams)
+            ? $articlesFromFavoriteTeams
+            : $articleRepository->findBy([], ['updatedAt' => 'DESC'], 3);
+
+        // 🔄 Récupération des équipes pros avec IDs Scorenco valides
+        $proTeams = $teamRepository->createQueryBuilder('t')
+            ->where('t.scorencoMatchId IS NOT NULL')
+            ->andWhere('t.scorencoRankingId IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+
+        $clubProIds = [];        // [matchId => teamName]
+        $teamInSeasonIds = [];   // [teamName => rankingId]
+        $clubNameToId = [];      // [teamName => matchId]
+
+        foreach ($proTeams as $team) {
+            $clubProIds[$team->getScorencoMatchId()] = $team->getName();
+            $teamInSeasonIds[$team->getName()] = $team->getScorencoRankingId();
+            $clubNameToId[$team->getName()] = $team->getScorencoMatchId();
         }
-
-        // IDs Scorenco des clubs pros
-        $clubProIds = [
-            33519   => 'Ambitions Girondines - Féminines',
-            108012  => 'Jeunes de Saint-Augustin Bordeaux Métropole',
-            48043   => 'Girondins de Bordeaux',
-            72716   => 'Union Bordeaux Bègles',
-            84369   => 'Bordeaux-Mérignac Volley Birdies',
-            276898  => 'Boxers Bordeaux',
-            50140   => 'Stade Bordelais F',
-        ];
-
-        $teamInSeasonIds = [
-            'Ambitions Girondines - Féminines' => 560453,
-            'Jeunes de Saint-Augustin Bordeaux Métropole' => 560512,
-            'Girondins de Bordeaux' => 543558,
-            'Union Bordeaux Bègles' => 558964,
-            'Bordeaux-Mérignac Volley Birdies' => 603224,
-            'Boxers Bordeaux' => 603179,
-            'Stade Bordelais F' => 567862,
-        ];
-
-        $clubIdToTeamName = $clubProIds; // Même structure, donc on l'utilise directement
-
 
         $results = $resultatsService->getAllResults($clubProIds);
 
-
-
-        // ➕ Récupération des classements
         $rankings = [];
-
-
-        foreach ($teamInSeasonIds as $resultTeamId => $rankingTeamId) {
+        foreach ($teamInSeasonIds as $resultTeamName => $rankingTeamId) {
             $ranking = $resultatsService->getRanking($rankingTeamId);
             if (!empty($ranking)) {
-                $rankings[$resultTeamId] = $ranking;
+                $rankings[$resultTeamName] = $ranking;
             }
         }
 
-
-        $clubNameToId = array_flip($clubProIds);
         $teamsWithResults = [];
         $resultsToShow = [];
         $standingsToShow = [];
 
+        // 🎯 Utilisateur connecté → afficher les résultats de ses équipes favorites
+        if ($user && !empty($favoriteEntities)) {
+            foreach ($favoriteEntities as $fav) {
+                $team = $fav->getTeam();
+                $teamName = $team->getName();
 
-
-        if ($user) {
-            $favoriteEntities = $favoriteRepository->findBy(['user' => $user]);
-            
-
-            if (!empty($favoriteEntities)) {
-                foreach ($favoriteEntities as $fav) {
-                    $team = $fav->getTeam();
-                    $teamName = $team->getName();
-
-                    if (isset($clubNameToId[$teamName])) {
-                        $clubId = $clubNameToId[$teamName];
-                        $results = $this->resultatsService->getResults($clubId);
-                        $resultsToShow[$teamName] = $results;
-                    }
-
-                    if (isset($teamInSeasonIds[$teamName])) {
-                        $standings = $this->resultatsService->getStandings([$teamName => $teamInSeasonIds[$teamName]]);
-                        $standingsToShow = array_merge($standingsToShow, $standings);
-                    }
-
-                    $teamsWithResults[] = [
-                        'team' => $team,
-                        'results' => $resultsToShow[$teamName] ?? [],
-                    ];
+                if (isset($clubNameToId[$teamName])) {
+                    $clubId = $clubNameToId[$teamName];
+                    $resultsToShow[$teamName] = $this->resultatsService->getResults($clubId);
                 }
+
+                if (isset($teamInSeasonIds[$teamName])) {
+                    $standings = $this->resultatsService->getStandings([
+                        $teamName => $teamInSeasonIds[$teamName]
+                    ]);
+                    $standingsToShow = array_merge($standingsToShow, $standings);
+                }
+
+                $teamsWithResults[] = [
+                    'team' => $team,
+                    'results' => $resultsToShow[$teamName] ?? [],
+                ];
             }
         }
 
@@ -149,10 +120,8 @@ class HomeController extends AbstractController
                 $resultsToShow[$clubName] = $this->resultatsService->getResults($clubId);
             }
 
-            $teams = $teamRepository->findAll();
-            foreach ($teams as $team) {
+            foreach ($proTeams as $team) {
                 $name = $team->getName();
-
                 if (isset($resultsToShow[$name])) {
                     $teamsWithResults[] = [
                         'team' => $team,
@@ -166,7 +135,6 @@ class HomeController extends AbstractController
             $standingsToShow = $this->resultatsService->getStandings($teamInSeasonIds);
         }
 
-        // Pour lier les résultats (par ID) et les classements (par nom)
         $clubData = [];
         foreach ($clubProIds as $clubId => $teamName) {
             $clubData[] = [
@@ -175,19 +143,16 @@ class HomeController extends AbstractController
             ];
         }
 
-
         return $this->render('home/index.html.twig', [
             'title' => 'Bienvenue sur Bordeaux Sports Actu',
             'description' => 'Retrouvez les dernières actualités sportives de Bordeaux.',
             'teamsWithResults' => $teamsWithResults,
             'resultsToShow' => $resultsToShow,
-            'rankings' => $rankings, // ⬅️ assure-toi de bien passer la bonne variable ici
+            'rankings' => $rankings,
             'articles' => $articles,
-            'clubProIds' => $clubProIds, // ✅ ceci est requis pour la boucle Twig
+            'clubProIds' => $clubProIds,
             'portrait' => $portrait,
             'favoriteTeams' => $favoriteEntities
-
-
         ]);
     }
 }
