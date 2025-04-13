@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ team.name }}{% endblock %}
+
+{% block body %}
+
+{% set sportSlugMap = {
+    'football': 'football',
+    'rugby': 'rugby',
+    'volley': 'volleyball',
+    'hockey': 'hockey-sur-glace',
+    'basket': 'basketball'
+} %}
+
+<!-- FIL D'ARIANE AVEC LE SPORT -->
+<nav class="max-w-7xl mx-auto py-4 text-sm text-gray-600" aria-label="Fil d'Ariane">
+    <ol class="list-reset flex items-center space-x-2">
+        <li>
+            <a href="{{ path('app_home') }}" class="hover:text-blue-600">Accueil</a>
+            <span class="mx-2 text-gray-400">/</span>
+        </li>
+        <li>
+            <a href="{{ path('app_sports') }}" class="hover:text-blue-600">Sports</a>
+            <span class="mx-2 text-gray-400">/</span>
+        </li>
+        <li>
+            <a href="{{ path('app_sport_show', { slug: sportSlugMap[team.sport] }) }}" class="hover:text-blue-600 capitalize">
+                {{ team.sport|replace({'-': ' '})|title }}
+            </a>
+            <span class="mx-2 text-gray-400">/</span>
+        </li>
+        <li class="text-gray-800 font-semibold">{{ team.name }}</li>
+    </ol>
+</nav>
+
+<!-- Bannière -->
+<div class="relative w-full h-[250px] mb-12 parallax-banner"
+     style="background-image: url('{{ asset('uploads/teams/' ~ team.image) }}'); background-attachment: fixed;background-position: center;">
+    <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
+    <div class="relative z-10 h-full flex items-center justify-start max-w-7xl mx-auto px-6">
+        <h2 class="text-white text-3xl sm:text-4xl md:text-5xl">{{ team.name }}</h2>
+    </div>
+</div>
+
+<!-- Articles liés à l'équipe -->
+<div class="max-w-6xl mx-auto px-6">
+    <h3 class="text-2xl mb-4">Articles liés à {{ team.name }}</h3>
+
+    {% if articles is empty %}
+        <p class="text-gray-500 italic">Aucun article lié à cette équipe.</p>
+    {% else %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for article in articles %}
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <img src="{{ article.imageName ? vich_uploader_asset(article, 'imageFile') : '/images/default-article.png' }}"
+                         alt="{{ article.title }}"
+                         class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h4 class="text-lg font-semibold text-gray-800">{{ article.title }}</h4>
+                        <p class="text-sm text-gray-600 mt-2">{{ article.content|striptags|slice(0, 100) ~ '...' }}</p>
+                        <a href="{{ path('article_show', {'slug': article.slug}) }}"
+                           class="inline-block mt-3 text-blue-600 hover:underline text-sm">Lire l'article</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<div class="max-w-6xl mx-auto px-6 mt-12">
+    <h3 class="text-2xl mb-6">🗓️ Résultats récents</h3>
+
+    {% if matchs is empty %}
+        <p class="text-gray-500 italic">Aucun résultat disponible pour cette équipe.</p>
+    {% else %}
+        <div class="grid gap-4 sm:grid-cols-2">
+            {% for match in matchs %}
+                <div class="bg-white shadow rounded p-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <!-- Équipe domicile -->
+                        <div class="flex items-center gap-2 flex-1 min-w-0">
+                            {% if match.home_logo %}
+                                <img src="{{ match.home_logo }}" alt="Logo domicile" class="w-6 h-6 object-contain shrink-0">
+                            {% endif %}
+                            <span class="font-medium text-sm truncate">{{ match.home_team }}</span>
+                        </div>
+
+                        <!-- Score -->
+                        <div class="text-center font-bold text-gray-800 whitespace-nowrap px-2">
+                            {{ match.home_score ?? '-' }} - {{ match.away_score ?? '-' }}
+                        </div>
+
+                        <!-- Équipe extérieur -->
+                        <div class="flex items-center gap-2 justify-end flex-1 min-w-0">
+                            <span class="font-medium text-sm text-right truncate">{{ match.away_team }}</span>
+                            {% if match.away_logo %}
+                                <img src="{{ match.away_logo }}" alt="Logo extérieur" class="w-6 h-6 object-contain shrink-0">
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Date et heure -->
+                    <div class="text-sm text-gray-500 mt-2">
+                        📅 {{ match.date|date('d/m/Y') }}
+                        {% if match.time is defined and match.time is not empty %}
+                            à {{ match.time|date('H:i') }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+
+<!-- Classement -->
+{% if ranking is not empty %}
+<div class="max-w-6xl mx-auto px-6 mt-16">
+    <h3 class="text-2xl mb-6">📊 Classement</h3>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 text-sm">
+            <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                    <th class="px-3 py-2 text-left whitespace-nowrap">#</th>
+                    <th class="px-3 py-2 text-left whitespace-nowrap">Équipe</th>
+                    <th class="px-3 py-2 text-center">Pts</th>
+                    <th class="px-3 py-2 text-center">MJ</th>
+                    <th class="px-3 py-2 text-center">G</th>
+                    <th class="px-3 py-2 text-center">P</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in ranking %}
+                    <tr class="border-t {% if row.name == team.name %}bg-blue-100 font-semibold{% else %}hover:bg-gray-50{% endif %}">
+                        <td class="px-3 py-2">{{ row.rank }}</td>
+                        <td class="px-3 py-2 flex items-center gap-2">
+                            {% if row.logo %}
+                                <img src="{{ row.logo }}" alt="Logo équipe" class="w-5 h-5 object-contain">
+                            {% endif %}
+                            <span>{{ row.name }}</span>
+                        </td>
+                        <td class="px-3 py-2 text-center">{{ row.pts }}</td>
+                        <td class="px-3 py-2 text-center">{{ row.played }}</td>
+                        <td class="px-3 py-2 text-center">{{ row.win }}</td>
+                        <td class="px-3 py-2 text-center">{{ row.lost }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+
+
+
+
+{% endblock %}

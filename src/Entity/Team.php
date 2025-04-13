@@ -22,6 +22,20 @@ class Team
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $sport = null; // Lien vers le sport du fichier JSON
 
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    private ?string $slug = null;
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

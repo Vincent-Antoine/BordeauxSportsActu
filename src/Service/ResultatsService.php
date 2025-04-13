@@ -19,11 +19,14 @@ class ResultatsService
     public function __construct(
         CacheInterface $cache,
         ParameterBagInterface $params,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        private readonly ScorencoService $scorencoService
+
     ) {
         $this->client = HttpClient::create();
         $this->cache = $cache;
         $this->logger = $logger;
+
 
         $projectDir = $params->get('kernel.project_dir');
         $this->dataPath = $projectDir . '/scripts/public/data/resultats.json';
@@ -315,6 +318,14 @@ class ResultatsService
 
         return $standings;
     }
+
+public function getResultsForClub(int $teamId, int $limit = 3): array
+{
+    return $this->getResults($teamId); // format déjà formaté avec home_team, away_team, etc.
+}
+
+
+
 
 
     /**

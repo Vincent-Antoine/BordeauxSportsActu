@@ -61,3 +61,14 @@ services:
   App\EventListener\CacheResponseListener:
     tags:
       - { name: kernel.event_listener, event: kernel.response }
+
+  ######################################################
+  # Listener pour générer automatiquement les slugs des équipes
+  ######################################################
+  App\EventListener\TeamSlugListener:
+    arguments:
+      $slugger: '@slugger'
+      $teamRepository: '@App\Repository\TeamRepository'
+    tags:
+      - { name: doctrine.orm.entity_listener, event: prePersist, entity: App\Entity\Team, method: prePersist }
+      - { name: doctrine.orm.entity_listener, event: preUpdate, entity: App\Entity\Team, method: preUpdate }

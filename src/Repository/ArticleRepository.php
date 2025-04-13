@@ -40,4 +40,15 @@ class ArticleRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findByTeam(\App\Entity\Team $team): array
+{
+    return $this->createQueryBuilder('a')
+        ->innerJoin('a.teams', 't')
+        ->where('t = :team')
+        ->setParameter('team', $team)
+        ->orderBy('a.updatedAt', 'DESC')
+        ->getQuery()
+        ->getResult();
+}
 }
