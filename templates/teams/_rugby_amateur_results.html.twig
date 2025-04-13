@@ -1,0 +1,69 @@
+<div class="max-w-6xl mx-auto px-6 mt-12">
+    <h3 class="text-2xl mb-6">🗓️ Résultats Rugby Amateur</h3>
+
+    <div class="my-4">
+        <label for="club-select" class="block font-medium text-gray-700">Sélectionnez un club :</label>
+        <select id="club-select" onchange="fetchRugbyResults()" class="mt-1 block w-full p-2 border rounded shadow">
+            <option value="">-- Sélectionnez un club --</option>
+            {% for club in rugbyClubs %}
+                <option value="{{ club }}">{{ club }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div id="rugby-results" class="bg-white p-4 rounded shadow text-sm text-gray-700">
+        <p class="text-gray-500">Veuillez sélectionner un club pour voir les résultats.</p>
+    </div>
+</div>
+
+<script>
+async function fetchRugbyResults() {
+    const club = document.getElementById("club-select").value;
+    const container = document.getElementById("rugby-results");
+
+    if (!club) {
+        container.innerHTML = "<p class='text-gray-500'>Veuillez sélectionner un club.</p>";
+        return;
+    }
+
+    container.innerHTML = "<p>Chargement...</p>";
+
+    try {
+        const res = await fetch("/api/results?club=" + encodeURIComponent(club));
+        const data = await res.json();
+
+        if (!Array.isArray(data) || data.length === 0 || data.error) {
+            container.innerHTML = `<p class='text-red-600'>${data.error ?? "Aucun résultat trouvé."}</p>`;
+            return;
+        }
+
+        let html = `<table class="w-full mt-4 border text-sm text-left">
+            <thead class="bg-gray-100 text-black">
+                <tr>
+                    <th class="p-2">Journée</th>
+                    <th class="p-2">Date</th>
+                    <th class="p-2">Équipe Locale</th>
+                    <th class="p-2">Score</th>
+                    <th class="p-2">Équipe Visiteuse</th>
+                </tr>
+            </thead><tbody>`;
+
+        [...data].reverse().forEach(match => {
+            const date = new Date(match.date).toLocaleDateString("fr-FR");
+            html += `<tr class="border-t">
+                <td class="p-2">${match.journee}</td>
+                <td class="p-2">${date}</td>
+                <td class="p-2 flex items-center gap-2"><img src="${match.local_logo ?? 'placeholder.png'}" class="h-6 w-6 rounded" /> ${match.local_team}</td>
+                <td class="p-2">${match.local_score} - ${match.visitor_score}</td>
+                <td class="p-2 flex items-center gap-2"><img src="${match.visitor_logo ?? 'placeholder.png'}" class="h-6 w-6 rounded" /> ${match.visitor_team}</td>
+            </tr>`;
+        });
+
+        html += "</tbody></table>";
+        container.innerHTML = html;
+    } catch (e) {
+        container.innerHTML = "<p class='text-red-600'>Erreur lors du chargement.</p>";
+        console.error(e);
+    }
+}
+</script>
