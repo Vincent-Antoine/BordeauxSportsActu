@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class TeamCrudController extends AbstractCrudController
 {
@@ -33,9 +34,12 @@ class TeamCrudController extends AbstractCrudController
                     'Basketball' => 'basket',
                     'Volley' => 'volley',
                     'Basketball-Ambitions-Girondines' => 'basket-ambitions-girondines',
-
                 ])
                 ->setRequired(false),
+            IntegerField::new('scorencoMatchId', 'ID Scorenco (Matchs)')
+                ->setHelp('ID utilisé pour récupérer les matchs via l\'API Scorenco'),
+            IntegerField::new('scorencoRankingId', 'ID Scorenco (Classement)')
+                ->setHelp('ID utilisé pour récupérer le classement via l\'API Scorenco'),
         ];
     }
 }

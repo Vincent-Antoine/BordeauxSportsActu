@@ -25,6 +25,37 @@ class Team
     #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $slug = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $scorencoMatchId = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $scorencoRankingId = null;
+
+    public function getScorencoMatchId(): ?int
+    {
+        return $this->scorencoMatchId;
+    }
+
+    public function setScorencoMatchId(?int $scorencoMatchId): self
+    {
+        $this->scorencoMatchId = $scorencoMatchId;
+
+        return $this;
+    }
+
+    public function getScorencoRankingId(): ?int
+    {
+        return $this->scorencoRankingId;
+    }
+
+    public function setScorencoRankingId(?int $scorencoRankingId): self
+    {
+        $this->scorencoRankingId = $scorencoRankingId;
+
+        return $this;
+    }
+
+
     public function getSlug(): ?string
     {
         return $this->slug;

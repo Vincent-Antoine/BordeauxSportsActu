@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Entity\User;
 use App\Entity\Team;
-use App\Entity\Portrait; // 👈 à ajouter
+use App\Entity\Portrait; 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -26,6 +26,10 @@ class DashboardController extends AbstractDashboardController
         return $this->redirect($url);
     }
 
+    
+
+
+
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
@@ -43,4 +47,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Portrait de la semaine');
         yield MenuItem::linkToCrud('Portraits', 'fas fa-user-circle', Portrait::class);
     }
+
+    
 }

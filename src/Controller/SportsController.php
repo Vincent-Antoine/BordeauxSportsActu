@@ -32,61 +32,42 @@ class SportsController extends AbstractController
     }
 
     #[Route('/equipe/{slug}', name: 'app_team_show')]
-    public function teamShow(
-        string $slug,
-        TeamRepository $teamRepository,
-        ArticleRepository $articleRepository,
-        ResultatsService $resultatsService
-    ): Response {
-        $team = $teamRepository->findOneBy(['slug' => $slug]);
+public function teamShow(
+    string $slug,
+    TeamRepository $teamRepository,
+    ArticleRepository $articleRepository,
+    ResultatsService $resultatsService
+): Response {
+    $team = $teamRepository->findOneBy(['slug' => $slug]);
 
-        if (!$team) {
-            throw $this->createNotFoundException('Équipe non trouvée.');
-        }
-
-        $articles = $articleRepository->findByTeam($team);
-
-        // 🔢 Mapping ID pour récupération des données Scorenco
-        $scorencoMatchIds = [
-            'Union Bordeaux Bègles' => 72716,
-            'Boxers Bordeaux' => 276898,
-            'Girondins de Bordeaux' => 48043,
-            'Stade Bordelais F' => 50140,
-            'Ambitions Girondines - Féminines' => 33519,
-            'JSA Basket' => 108012,
-            'Bordeaux-Mérignac Volley Birdies' => 84369,
-        ];
-
-        $scorencoRankingIds = [
-            'Union Bordeaux Bègles' => 558964,
-            'Boxers Bordeaux' => 603179,
-            'Girondins de Bordeaux' => 543558,
-            'Stade Bordelais F' => 567862,
-            'Ambitions Girondines - Féminines' => 560453,
-            'JSA Basket' => 560512,
-            'Bordeaux-Mérignac Volley Birdies' => 603224,
-        ];
-
-        $matchs = [];
-        $ranking = [];
-
-        $teamName = $team->getName();
-
-        if (isset($scorencoMatchIds[$teamName])) {
-            $matchs = $resultatsService->getResultsForClub($scorencoMatchIds[$teamName]);
-        }
-
-        if (isset($scorencoRankingIds[$teamName])) {
-            $ranking = $resultatsService->getRanking($scorencoRankingIds[$teamName]);
-        }
-
-        return $this->render('teams/show.html.twig', [
-            'team' => $team,
-            'articles' => $articles,
-            'matchs' => $matchs,
-            'ranking' => $ranking,
-        ]);
+    if (!$team) {
+        throw $this->createNotFoundException('Équipe non trouvée.');
     }
+
+    $articles = $articleRepository->findByTeam($team);
+
+    $matchs = [];
+    $ranking = [];
+
+    // 🔗 Récupération des données via ID stockés en BDD
+    $matchId = $team->getScorencoMatchId();
+    $rankingId = $team->getScorencoRankingId();
+
+    if ($matchId) {
+        $matchs = $resultatsService->getResultsForClub($matchId);
+    }
+
+    if ($rankingId) {
+        $ranking = $resultatsService->getRanking($rankingId);
+    }
+
+    return $this->render('teams/show.html.twig', [
+        'team' => $team,
+        'articles' => $articles,
+        'matchs' => $matchs,
+        'ranking' => $ranking,
+    ]);
+}
 
 
     #[Route('/sports/{slug}', name: 'app_sport_show')]
