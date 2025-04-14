@@ -40,6 +40,15 @@ class ArticleRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+public function findLatestSummaries(): array
+{
+    return $this->createQueryBuilder('a')
+        ->select('a.id, a.title, a.slug, a.category, a.updatedAt, a.imageName')
+        ->orderBy('a.updatedAt', 'DESC')
+        ->setMaxResults(5)
+        ->getQuery()
+        ->getArrayResult();
+}
 
     public function findByTeam(\App\Entity\Team $team): array
 {

@@ -4,13 +4,137 @@
 
 {% block body %}
 
-<div class="flex flex-col items-center justify-center gap-4 mt-20">
+<div class="flex flex-col items-center justify-center gap-4 mt-20 relative">
     <h1 class="text-5xl text-[#FF6600] block">Ton media sportif</h1>
     <h2 class="text-2xl uppercase font-body block">ACTUALITÉ, RESULTATS, CALENDRIERS & INTERVIEWS ...</h2>
     <h3 class="text-primary-blue text-5xl block">Dédié au sport bordelais</h3>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    <button class="mt-20 bg-[#6699CC] hover:bg-[#333367] text-white py-2 px-4 rounded-full">
         <a href="{{ path('app_profile') }}">Créer mon compte !</a>
     </button>
+    <img src="{{ asset('/medias/ballon-about.webp') }}" alt="Ballon de bastekball" class="w-[20%] absolute top-0 right-0">
+</div>
+
+<div  class="mt-20">
+    <h2 class="mb-8 text-2xl uppercase font-body block">Une plateforme créée par un collectif étudiant</h2>
+<div class="py-10">
+  <div class="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 gap-8 place-items-center">
+    {% set avatars = [
+      {'image': '/images/avatar1.png', 'name': 'AMOROS Alicia'},
+      {'image': '/images/avatar2.png', 'name': 'ARNOUX Ancelin'},
+      {'image': '/images/avatar3.png', 'name': 'BORDIN Audrey'},
+      {'image': '/images/avatar4.png', 'name': 'CHADUTEAU Nicolas'},
+      {'image': '/images/avatar5.png', 'name': 'COMPARATO Vincent-antoine'},
+      {'image': '/images/avatar6.png', 'name': 'RABILLER Antoine'},
+      {'image': '/images/avatar7.png', 'name': 'RENOUARD Gabriel'},
+      {'image': '/images/avatar8.png', 'name': 'VEREPLA Tanya'}
+
+    ] %}
+
+    {% for avatar in avatars %}
+      <div class="flex flex-col items-center">
+        <img src="{{ avatar.image }}" alt="{{ avatar.name }}" class="w-24 h-24 rounded-full object-cover">
+        <p class="mt-2 text-sm text-gray-700">{{ avatar.name }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<p>propulsés par YNOV BORDEAUX CAMPUS </p>
+
+</div>
+
+<div  class="mt-20">
+
+<h2 class="text-2xl uppercase font-body block mb-8">Toutes les news de tes équipes préférées</h2>
+
+<div class="grid md:grid-cols-5 gap-6">
+  {% for article in articles %}
+  <a href="{{ path('article_show', {'slug': article.slug}) }}" class="block group">
+    <div class="bg-white rounded-xl shadow p-4 hover:shadow-lg transition">
+      
+      {% if article.imageName %}
+        <img src="{{ asset('uploads/images/' ~ article.imageName) }}"
+             alt="{{ article.title }}"
+             class="w-full h-32 object-cover rounded-md mb-3 group-hover:scale-[1.02] transition-transform duration-300">
+      {% endif %}
+
+      <h3 class="text-base mb-2">
+        {{ article.title }}
+      </h3>
+
+      <p class="text-xs uppercase text-white mt-1 bg-[#6699CC] py-2 px-4 rounded-full w-fit">
+        {{ article.category }}
+      </p>
+
+      <span class="text-[#6699CC] text-sm font-medium mt-2 inline-block group-hover:underline">
+        Lire la suite →
+      </span>
+    </div>
+  </a>
+{% else %}
+  <p>Aucun article à afficher pour le moment.</p>
+{% endfor %}
+
+<p>
+  <a  href="{{ path('article_index') }}"
+     class="group inline-flex items-center text-[#6699CC] font-medium hover:text-[#333367] transition duration-300">
+    Tous les articles
+    <svg class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
+         fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </a>
+</p>
+</div>
+
+
+
+
+
+
+<p class="mt-4">Créer ton compte et ajoute tes équipes favorites pour les retrouver dans la rubrique “Mes Actus”.</p>
+</div>
+
+<div class="mt-20">
+
+<h2 class="text-2xl uppercase font-body block mb-8">Nos valeurs</h2>
+<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-gray-800">
+
+    <!-- Colonne 1 -->
+    <div>
+      <p>
+        <strong>Bordeaux Sports Actu</strong>, c’est un collectif étudiant dédié à<br>
+        l’actualité 100 % bordelaise.<br>
+        Nous mettons en lumière les clubs, athlètes et événements<br>
+        qui font vibrer notre ville.
+      </p>
+      <p class="mt-4">💙 Une passion locale<br>
+        Football, rugby, basketball, hockey, handball…
+      </p>
+      <p class="mt-4 font-semibold">Chaque sport compte.</p>
+    </div>
+
+    <!-- Colonne 2 -->
+    <div>
+      <p>Des équipes professionnelles aux clubs amateurs, nous suivons tous ceux qui font rayonner Bordeaux.</p>
+      <p class="mt-4">🐺 <strong>Un engagement étudiant</strong><br>
+        Nous sommes une voix indépendante et dynamique, portée par des étudiants passionnés, pour un journalisme sportif authentique et de proximité.
+      </p>
+    </div>
+
+    <!-- Colonne 3 -->
+    <div>
+      <p>⚡ <strong>Un média accessible</strong><br>
+        Interviews, reportages, vidéos…<br>
+        Nous créons un lien direct entre le public et les acteurs du sport.
+      </p>
+      <p class="mt-4">✨ <strong>Un regard neuf</strong><br>
+        Avec du contenu interactif et immersif, nous offrons une nouvelle façon de suivre l’actualité sportive.<br>
+        Rejoignez-nous et vivez le sport bordelais autrement ! 🎉
+      </p>
+    </div>
+
+  </div>
 </div>
     
 {% endblock %}

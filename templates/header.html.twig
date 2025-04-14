@@ -73,9 +73,15 @@
                     </ul>
                 </div>
             </div>
-            <a href="#" class="{% if app.request.attributes.get('_route') == 'calendar' %}text-blue-700{% else %}hover:text-gray-300{% endif %}">
-                CALENDRIER
-            </a>
+            <a href="{{ path('app_calendar') }}"
+   class="{% if app.request.attributes.get('_route') == 'app_calendar' %}
+              text-blue-700
+          {% else %}
+              hover:text-gray-300
+          {% endif %}">
+    CALENDRIER
+</a>
+
             <a href="{{ path('app_about') }}" class="{% if app.request.attributes.get('_route') == 'app_about' %}text-blue-700{% else %}hover:text-gray-300{% endif %}">
                 À PROPOS
             </a>

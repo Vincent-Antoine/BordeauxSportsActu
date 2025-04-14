@@ -2,6 +2,7 @@
 
 parameters:
     project_dir: '%kernel.project_dir%'
+    locale: 'fr'
 
 imports:
   - { resource: clubs.yaml }  # Importe le fichier clubs.yaml où se trouve la liste des clubs
