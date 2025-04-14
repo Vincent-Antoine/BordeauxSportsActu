@@ -20,4 +20,13 @@ class TeamRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Team::class);
     }
+    public function findAllWithScorencoIds(): array
+{
+    return $this->createQueryBuilder('t')
+        ->where('t.scorencoMatchId IS NOT NULL')
+        ->andWhere('t.scorencoRankingId IS NOT NULL')
+        ->getQuery()
+        ->getResult();
+}
+
 }

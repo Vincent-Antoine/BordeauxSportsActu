@@ -76,7 +76,7 @@
             <a href="#" class="{% if app.request.attributes.get('_route') == 'calendar' %}text-blue-700{% else %}hover:text-gray-300{% endif %}">
                 CALENDRIER
             </a>
-            <a href="{{ path('app_contact_index') }}" class="{% if app.request.attributes.get('_route') == 'app_contact_index' %}text-blue-700{% else %}hover:text-gray-300{% endif %}">
+            <a href="{{ path('app_about') }}" class="{% if app.request.attributes.get('_route') == 'app_about' %}text-blue-700{% else %}hover:text-gray-300{% endif %}">
                 À PROPOS
             </a>
         </div>
@@ -99,7 +99,7 @@
             </ul>
         </li>
         <li><a href="#" class="hover:text-gray-500">CALENDRIER</a></li>
-        <li><a href="{{ path('app_contact_index') }}" class="hover:text-gray-500">À PROPOS</a></li>
+        <li><a href="{{ path('app_about') }}" class="hover:text-gray-500">À PROPOS</a></li>
         <li class="flex items-center gap-2 text-xl">
             <a href="#" class="hover:opacity-75"><i class="fa-brands fa-instagram"></i></a>
             <a href="#" class="hover:opacity-75"><i class="fa-brands fa-tiktok"></i></a>

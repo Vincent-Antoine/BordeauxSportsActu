@@ -72,3 +72,10 @@ services:
     tags:
       - { name: doctrine.orm.entity_listener, event: prePersist, entity: App\Entity\Team, method: prePersist }
       - { name: doctrine.orm.entity_listener, event: preUpdate, entity: App\Entity\Team, method: preUpdate }
+
+  ######################################################
+  # CacheWarmer pour précharger les données Scorenco
+  ######################################################
+  App\Cache\ResultatsCacheWarmer:
+    tags:
+      - { name: kernel.cache_warmer }
