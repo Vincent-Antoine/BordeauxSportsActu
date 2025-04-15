@@ -19,9 +19,9 @@
         <div class="hidden lg:flex flex-row items-center text-sm gap-4">
             <!-- Réseaux sociaux -->
             <div class="flex items-center gap-4 text-2xl">
-                <a href="#" class="hover:opacity-75"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="hover:opacity-75"><i class="fa-brands fa-tiktok"></i></a>
-                <a href="#" class="hover:opacity-75"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="hover:opacity-75" aria-label="instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:opacity-75" aria-label="tiktok"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="#" class="hover:opacity-75" aria-label="youtube"><i class="fa-brands fa-youtube"></i></a>
             </div>
             <div class="border-l border-black h-6 mx-2"></div>
             <!-- Connexion / Profil -->
@@ -107,9 +107,9 @@
         <li><a href="#" class="hover:text-gray-500">CALENDRIER</a></li>
         <li><a href="{{ path('app_about') }}" class="hover:text-gray-500">À PROPOS</a></li>
         <li class="flex items-center gap-2 text-xl">
-            <a href="#" class="hover:opacity-75"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#" class="hover:opacity-75"><i class="fa-brands fa-tiktok"></i></a>
-            <a href="#" class="hover:opacity-75"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" class="hover:opacity-75" aria-label="instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="hover:opacity-75" aria-label="tiktok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#" class="hover:opacity-75" aria-label="youtube"><i class="fa-brands fa-youtube"></i></a>
             <span class="mx-1">|</span>
             {% if app.user %}
                 <a href="{{ path('app_profile') }}" class="hover:opacity-75"><i class="fa-solid fa-user"></i></a>
