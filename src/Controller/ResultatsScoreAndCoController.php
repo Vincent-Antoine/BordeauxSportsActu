@@ -11,7 +11,7 @@ use App\Repository\TeamRepository;
 
 class ResultatsScoreAndCoController extends AbstractController
 {
-    #[Route('/resultats-score-and-co', name: 'scoreandco')]
+    #[Route('/resultats', name: 'scoreandco')]
     public function index(ResultatsService $resultatsService, TeamRepository $teamRepository): Response
     {
         // 🔄 Récupération automatique des équipes avec IDs Scorenco valides

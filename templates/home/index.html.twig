@@ -3,18 +3,17 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-
 <script>
     window.sliderArticles = {{ articles is defined and articles ? articles|map(article => {
         title: article.title,
         category: article.category,
         image: article.imageName ? vich_uploader_asset(article, 'imageFile') : '/images/default-article.png',
-        content: article.content|striptags|slice(0, 150) ~ '...',
+        content: article.content|striptags|slice(0, 150)|escape('html') ~ '...',
         link: path('article_show', {'slug': article.slug})
     }) | json_encode | raw : '[]' }};
 </script>
 
-<div class="container mx-auto  py-8" x-data="carouselComponent()" x-init="init()">
+<div class="container mx-auto py-8" x-data="carouselComponent()" x-init="init()" @mouseenter="pause()" @mouseleave="start()">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl sm:text-3xl text-primary-blue font-title">
             {{ app.user and articlesFromFavoriteTeams is defined and articlesFromFavoriteTeams|length > 0 ? 'Mes actus' : 'À la une' }}
@@ -24,40 +23,42 @@
         </span>
     </div>
 
-    <!-- Augmenté : h-80 mobile, h-96 desktop -->
     <div class="relative overflow-hidden rounded-lg shadow-md h-80 sm:h-96">
         <template x-for="(article, index) in articles" :key="index">
-    <a :href="article.link" x-show="currentIndex === index" class="absolute inset-0 transition-all duration-700 ease-in-out block">
-        <img :src="article.image" :alt="article.title" class="w-full h-80 sm:h-96 object-cover">
-        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
-            <h2 class="text-lg sm:text-2xl" x-text="article.title"></h2>
-            <p class="text-sm sm:text-base mt-2" x-text="article.content"></p>
-        </div>
-    </a>
-    </template>
+            <a :href="article.link" x-show="currentIndex === index" class="absolute inset-0 transition-all duration-700 ease-in-out block">
+                <img :src="article.image" :alt="article.title" class="w-full h-80 sm:h-96 object-cover" loading="lazy">
+                <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+                    <h2 class="text-lg sm:text-2xl" x-text="article.title"></h2>
+                    <p class="text-sm sm:text-base mt-2" x-text="article.content"></p>
+                </div>
+            </a>
+        </template>
     </div>
 
     <div class="flex justify-end mt-4 space-x-2 items-center">
         <template x-for="(article, i) in articles" :key="i">
             <button @click="currentIndex = i"
                     class="w-3 h-3 rounded-full"
-                    :class="{'bg-primary-blue': currentIndex === i, 'bg-gray-300': currentIndex !== i}">
+                    :class="{'bg-primary-blue': currentIndex === i, 'bg-gray-300': currentIndex !== i}"
+                    :aria-label="'Afficher l’article ' + (i + 1)">
             </button>
         </template>
-        <p><a href="{{ path('app_blog_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Tous les articles</a></p>
+        <p>
+            <a href="{{ path('app_blog_index') }}" class="hover:text-gray-400 block py-2 lg:py-0">Tous les articles</a>
+        </p>
     </div>
 </div>
 
-
 <!-- Bloc Résultats & Classements synchronisés -->
-<div class="container mx-auto  py-12" x-data="{ currentSlide: 0 }">
+<div class="container mx-auto py-12" x-data="{ currentSlide: 0 }">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl text-primary-blue font-title">Résultats & Classements</h2>
         <div class="space-x-2">
             {% for teamName in resultsToShow|keys %}
                 <button @click="currentSlide = {{ loop.index0 }}"
                         class="w-3 h-3 rounded-full"
-                        :class="{ 'bg-primary-blue': currentSlide === {{ loop.index0 }}, 'bg-gray-300': currentSlide !== {{ loop.index0 }} }">
+                        :class="{ 'bg-primary-blue': currentSlide === {{ loop.index0 }}, 'bg-gray-300': currentSlide !== {{ loop.index0 }} }"
+                        aria-label="Afficher {{ teamName }}">
                 </button>
             {% endfor %}
         </div>
@@ -67,7 +68,7 @@
         <div x-show="currentSlide === {{ loop.index0 }}" class="flex flex-col md:flex-row gap-6">
             <!-- Résultats -->
             <div class="w-full md:w-1/2 bg-gray-100 p-4 rounded shadow">
-                <h3 class="text-xl  text-primary-black mb-2">{{ teamName }}</h3>
+                <h3 class="text-xl text-primary-black mb-2">{{ teamName }}</h3>
                 <table class="w-full bg-white border border-gray-200 text-sm">
                     <thead class="bg-gray-100">
                         <tr>
@@ -85,16 +86,14 @@
                                     <td class="p-2">{{ result.date is defined ? result.date|date('d/m/Y') : 'N/A' }}</td>
                                     <td class="p-2 flex items-center gap-2">
                                         {% if result.home_logo %}
-                                            <img src="{{ result.home_logo }}" class="h-6 w-6 rounded" />
+                                            <img src="{{ result.home_logo }}" class="h-6 w-6 rounded" alt="Logo {{ result.home_team }}">
                                         {% endif %}
                                         {{ result.home_team ?? 'N/A' }}
                                     </td>
-                                    <td class="p-2  text-center">
-                                        {{ result.home_score ?? '?' }} - {{ result.away_score ?? '?' }}
-                                    </td>
+                                    <td class="p-2 text-center">{{ result.home_score ?? '?' }} - {{ result.away_score ?? '?' }}</td>
                                     <td class="p-2 flex items-center gap-2">
                                         {% if result.away_logo %}
-                                            <img src="{{ result.away_logo }}" class="h-6 w-6 rounded" />
+                                            <img src="{{ result.away_logo }}" class="h-6 w-6 rounded" alt="Logo {{ result.away_team }}">
                                         {% endif %}
                                         {{ result.away_team ?? 'N/A' }}
                                     </td>
@@ -109,7 +108,7 @@
 
             <!-- Classement -->
             <div class="w-full md:w-1/2 bg-gray-100 p-4 rounded shadow">
-                <h3 class="text-xl  text-primary-black mb-2">{{ teamName }}</h3>
+                <h3 class="text-xl text-primary-black mb-2">{{ teamName }}</h3>
                 <table class="table-auto w-full text-left text-sm border">
                     <thead class="bg-gray-200">
                         <tr>
@@ -129,7 +128,7 @@
                                     <td class="p-2">{{ team.rank }}</td>
                                     <td class="p-2 flex items-center gap-2">
                                         {% if team.logo %}
-                                            <img src="{{ team.logo }}" alt="logo" width="20" class="inline-block rounded">
+                                            <img src="{{ team.logo }}" alt="logo {{ team.name }}" width="20" class="inline-block rounded">
                                         {% endif %}
                                         {{ team.name }}
                                     </td>
@@ -149,137 +148,58 @@
     {% endfor %}
 </div>
 
-{# Catégorie #}
-
+<!-- Catégories sportives -->
 <section class="container mx-auto py-12" x-data="sliderCategorie()" x-init="init()">
     <h2 class="text-2xl text-center mb-6">Catégories sportives</h2>
-
     <div class="relative">
-        <!-- Slider drag & infini -->
-        <div
-            class="flex gap-4 px-2 overflow-hidden"
-            x-ref="slider"
-
-        >
+        <div class="flex gap-4 px-2 overflow-hidden" x-ref="slider">
             <template x-for="(item, index) in items" :key="index">
-    <a :href="'/sports/' + item.slug" class="relative flex-shrink-0 w-60 h-64 bg-white rounded shadow flex flex-col justify-between items-center snap-start overflow-hidden hover:shadow-lg transition">
-        <template x-if="index % 2 === 0">
-            <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-t">
-                <p class="text-sm" x-text="item.title"></p>
-            </div>
-        </template>
-
-        <div class="flex-grow w-full h-full">
-            <img :src="item.image" alt="" class="w-full h-full object-cover">
+                <a :href="'/sports/' + item.slug" class="relative flex-shrink-0 w-60 h-64 bg-white rounded shadow flex flex-col justify-between items-center snap-start overflow-hidden hover:shadow-lg transition">
+                    <template x-if="index % 2 === 0">
+                        <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-t">
+                            <p class="text-sm" x-text="item.title"></p>
+                        </div>
+                    </template>
+                    <div class="flex-grow w-full h-full">
+                        <img :src="item.image" :alt="item.title" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                    <template x-if="index % 2 !== 0">
+                        <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-b absolute bottom-0">
+                            <p class="text-sm" x-text="item.title"></p>
+                        </div>
+                    </template>
+                </a>
+            </template>
         </div>
-
-        <template x-if="index % 2 !== 0">
-            <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-b absolute bottom-0">
-                <p class="text-sm" x-text="item.title"></p>
-            </div>
-        </template>
-    </a>
-</template>
-
-        </div>
-
-        <!-- Flèche gauche -->
-        <button @click="scrollLeft"
-                class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black p-2 ">
+        <button @click="scrollLeft" class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black p-2 bg-white rounded-full">
             <i class="fas fa-chevron-left text-lg"></i>
         </button>
-
-        <!-- Flèche droite -->
-        <button @click="scrollRight"
-                class="absolute right-0 top-1/2 transform -translate-y-1/2 text-black p-2">
+        <button @click="scrollRight" class="absolute right-0 top-1/2 transform -translate-y-1/2 text-black p-2 bg-white rounded-full">
             <i class="fas fa-chevron-right text-lg"></i>
         </button>
     </div>
 </section>
 
-
-<script>
-    function sliderCategorie() {
-        return {
-            items: [
-    { title: 'Volley', image: '/medias/volley-merginac.webp', slug: 'volleyball' },
-    { title: 'Football', image: 'https://via.placeholder.com/60', slug: 'football' },
-    { title: 'Rugby', image: '/medias/ubb-rugby-_Enj.E23.webp', slug: 'rugby' },
-    { title: 'Rugby Amateur', image: 'https://via.placeholder.com/60', slug: 'rugby-amateur' }, // ou autre slug si tu as une page
-    { title: 'Hockey sur glace', image: '/medias/hockey-sur-glace.webp', slug: 'hockey-sur-glace' },
-    { title: 'Basket', image: 'https://via.placeholder.com/60', slug: 'basketball' }
-],
-
-            slider: null,
-            isDown: false,
-            startX: 0,
-            scrollLeftSaved: 0,
-
-            init() {
-                this.slider = this.$refs.slider;
-                // Clone items to fake infinite loop
-                this.items = [...this.items, ...this.items];
-            },
-
-            scrollLeft() {
-                this.slider.scrollBy({ left: -300, behavior: 'smooth' });
-            },
-
-            scrollRight() {
-                this.slider.scrollBy({ left: 300, behavior: 'smooth' });
-            },
-
-            
-        }
-    }
-</script>
-
-
-
-
 {% if portrait %}
-<section class="container mx-auto  py-12">
+<section class="container mx-auto py-12">
     <h2 class="text-2xl text-primary-blue font-title text-start mb-6">Portrait de la semaine</h2>
-
     <div class="flex flex-col md:flex-row items-center gap-6 bg-white p-6 rounded shadow">
         {% if portrait.article.imageName %}
-            <img src="{{ vich_uploader_asset(portrait.article, 'imageFile') }}" alt="Image article" class="w-48 h-48 object-cover rounded">
+            <img src="{{ vich_uploader_asset(portrait.article, 'imageFile') }}" alt="Portrait de {{ portrait.prenom }} {{ portrait.nom }}" class="w-48 h-48 object-cover rounded" loading="lazy">
         {% endif %}
-
         <div class="flex-1">
-            {# <p class="text-gray-600 text-sm mb-2">Semaine du : {{ portrait.semaineDu|date('d/m/Y') }}</p> #}
-            <h3 class="text-xl ">{{ portrait.prenom }} {{ portrait.nom }}</h3>
+            <h3 class="text-xl">{{ portrait.prenom }} {{ portrait.nom }}</h3>
             <p class="text-gray-700 mt-2">{{ portrait.description }}</p>
             <a href="{{ path('article_show', { slug: portrait.article.slug }) }}"
-               class="inline-block mt-4 text-blue-600 hover:underline">Lire l’article complet →</a>
+               class="inline-block mt-4 text-blue-600 hover:underline">Lire l’article complet</a>
         </div>
     </div>
 </section>
 {% endif %}
-
-
-
-
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <script>
-        function carouselComponent() {
-            return {
-                articles: [],
-                currentIndex: 0,
-                interval: null,
-                init() {
-                    this.articles = window.sliderArticles ?? [];
-                    if (this.articles.length > 1) {
-                        this.interval = setInterval(() => {
-                            this.currentIndex = (this.currentIndex + 1) % this.articles.length;
-                        }, 5000);
-                    }
-                }
-            };
-        }
-    </script>
+    {{ encore_entry_script_tags('app') }}
 {% endblock %}
+
