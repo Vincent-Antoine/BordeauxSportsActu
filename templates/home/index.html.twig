@@ -27,14 +27,14 @@
     <!-- Augmenté : h-80 mobile, h-96 desktop -->
     <div class="relative overflow-hidden rounded-lg shadow-md h-80 sm:h-96">
         <template x-for="(article, index) in articles" :key="index">
-            <div x-show="currentIndex === index" class="absolute inset-0 transition-all duration-700 ease-in-out">
-                <img :src="article.image" :alt="article.title" class="w-full h-80 sm:h-96 object-cover">
-                <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
-                    <h2 class="text-lg sm:text-2xl" x-text="article.title"></h2>
-                    <p class="text-sm sm:text-base mt-2" x-text="article.content"></p>
-                </div>
-            </div>
-        </template>
+    <a :href="article.link" x-show="currentIndex === index" class="absolute inset-0 transition-all duration-700 ease-in-out block">
+        <img :src="article.image" :alt="article.title" class="w-full h-80 sm:h-96 object-cover">
+        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-60 text-white p-4">
+            <h2 class="text-lg sm:text-2xl" x-text="article.title"></h2>
+            <p class="text-sm sm:text-base mt-2" x-text="article.content"></p>
+        </div>
+    </a>
+    </template>
     </div>
 
     <div class="flex justify-end mt-4 space-x-2 items-center">
@@ -157,47 +157,42 @@
     <div class="relative">
         <!-- Slider drag & infini -->
         <div
-            class="flex gap-4 px-2 cursor-grab overflow-hidden"
+            class="flex gap-4 px-2 overflow-hidden"
             x-ref="slider"
-            @mousedown="startDrag"
-            @mousemove="onDrag"
-            @mouseup="endDrag"
-            @mouseleave="endDrag"
-            @touchstart="startDrag"
-            @touchmove="onDrag"
-            @touchend="endDrag"
+
         >
             <template x-for="(item, index) in items" :key="index">
-                <div class="flex-shrink-0 w-60 h-64 bg-white rounded shadow flex flex-col justify-between items-center snap-start overflow-hidden">
-                    <template x-if="index % 2 === 0">
-                        <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-t">
-                            <p class="text-sm" x-text="item.title"></p>
-                        </div>
-                    </template>
+    <a :href="'/sports/' + item.slug" class="relative flex-shrink-0 w-60 h-64 bg-white rounded shadow flex flex-col justify-between items-center snap-start overflow-hidden hover:shadow-lg transition">
+        <template x-if="index % 2 === 0">
+            <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-t">
+                <p class="text-sm" x-text="item.title"></p>
+            </div>
+        </template>
 
-                    <div class="flex-grow w-full h-full">
-                        <img :src="item.image" alt="" class="w-full h-full object-cover">
-                    </div>
+        <div class="flex-grow w-full h-full">
+            <img :src="item.image" alt="" class="w-full h-full object-cover">
+        </div>
 
-                    <template x-if="index % 2 !== 0">
-                        <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-b">
-                            <p class="text-sm" x-text="item.title"></p>
-                        </div>
-                    </template>
-                </div>
-            </template>
+        <template x-if="index % 2 !== 0">
+            <div class="bg-[#6699cd] text-white w-full text-center p-2 rounded-b absolute bottom-0">
+                <p class="text-sm" x-text="item.title"></p>
+            </div>
+        </template>
+    </a>
+</template>
+
         </div>
 
         <!-- Flèche gauche -->
         <button @click="scrollLeft"
-                class="absolute left-0 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full shadow z-10">
-            <i class="fas fa-chevron-left"></i>
+                class="absolute left-0 top-1/2 transform -translate-y-1/2 text-black p-2 ">
+            <i class="fas fa-chevron-left text-lg"></i>
         </button>
 
         <!-- Flèche droite -->
         <button @click="scrollRight"
-                class="absolute right-0 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full shadow z-10">
-            <i class="fas fa-chevron-right"></i>
+                class="absolute right-0 top-1/2 transform -translate-y-1/2 text-black p-2">
+            <i class="fas fa-chevron-right text-lg"></i>
         </button>
     </div>
 </section>
@@ -207,13 +202,14 @@
     function sliderCategorie() {
         return {
             items: [
-                { title: 'Volley', image: '/medias/volley-merginac.webp'},
-                { title: 'Football', image: 'https://via.placeholder.com/60' },
-                { title: 'Rugby', image: 'https://via.placeholder.com/60' },
-                { title: 'Rugby Feminin', image: 'https://via.placeholder.com/60' },
-                { title: 'Rugby Amateur', image: 'https://via.placeholder.com/60' },
-                { title: 'Hockey sur glace', image: '/medias/hockey-sur-glace.webp' },
-            ],
+    { title: 'Volley', image: '/medias/volley-merginac.webp', slug: 'volleyball' },
+    { title: 'Football', image: 'https://via.placeholder.com/60', slug: 'football' },
+    { title: 'Rugby', image: '/medias/ubb-rugby-_Enj.E23.webp', slug: 'rugby' },
+    { title: 'Rugby Amateur', image: 'https://via.placeholder.com/60', slug: 'rugby-amateur' }, // ou autre slug si tu as une page
+    { title: 'Hockey sur glace', image: '/medias/hockey-sur-glace.webp', slug: 'hockey-sur-glace' },
+    { title: 'Basket', image: 'https://via.placeholder.com/60', slug: 'basketball' }
+],
+
             slider: null,
             isDown: false,
             startX: 0,
@@ -233,24 +229,7 @@
                 this.slider.scrollBy({ left: 300, behavior: 'smooth' });
             },
 
-            startDrag(e) {
-                this.isDown = true;
-                this.slider.classList.add('cursor-grabbing');
-                this.startX = e.type.includes('touch') ? e.touches[0].pageX : e.pageX;
-                this.scrollLeftSaved = this.slider.scrollLeft;
-            },
-
-            onDrag(e) {
-                if (!this.isDown) return;
-                const x = e.type.includes('touch') ? e.touches[0].pageX : e.pageX;
-                const walk = (this.startX - x) * 1.5; // drag speed
-                this.slider.scrollLeft = this.scrollLeftSaved + walk;
-            },
-
-            endDrag() {
-                this.isDown = false;
-                this.slider.classList.remove('cursor-grabbing');
-            }
+            
         }
     }
 </script>
