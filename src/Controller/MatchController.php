@@ -37,6 +37,10 @@ class MatchController extends AbstractController
             return $this->json(['error' => 'Club inconnu ou non configuré'], 404);
         }
 
+        $this->logger->info('🔎 Club demandé : ' . $club);
+$this->logger->info('🔗 URL trouvée : ' . $url);
+
+
         // Appeler le service pour récupérer les résultats
         $results = $matchResultsService->getMatchResults($url);
 
