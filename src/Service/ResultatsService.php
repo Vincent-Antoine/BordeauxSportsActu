@@ -60,33 +60,40 @@ class ResultatsService
 
 
     private function fetchResultsFromApi(int $clubId): array
-    {
-        $query = <<<'GRAPHQL'
-            query GetMatchs($teamId: Int, $dateFilter: Int, $limit: Int) {
-                competitions_event_detail_by_team_id(
-                    args: {date_filter: $dateFilter, id: $teamId}
-                    limit: $limit
-                ) {
+{
+    $this->logger->info("🟢 [fetchResultsFromApi] Démarrage pour club ID: {$clubId}");
+
+    $query = <<<'GRAPHQL'
+        query GetMatchs($teamId: Int, $dateFilter: Int, $limit: Int) {
+            competitions_event_detail_by_team_id(
+                args: {date_filter: $dateFilter, id: $teamId}
+                limit: $limit
+            ) {
+                id
+                status
+                date
+                time
+                url
+                teams
+                level_name
+                place {
                     id
-                    status
-                    date
-                    time
-                    url
-                    teams
-                    level_name
-                    place {
-                        id
-                        name
-                    }
+                    name
                 }
             }
-        GRAPHQL;
+        }
+    GRAPHQL;
 
-        $variables = [
-            'teamId' => $clubId,
-            'dateFilter' => -1,
-            'limit' => 10,
-        ];
+    $variables = [
+        'teamId' => $clubId,
+        'dateFilter' => -1,
+        'limit' => 10,
+    ];
+
+    try {
+        $this->logger->info("[fetchResultsFromApi] Envoi requête GraphQL à Scorenco", [
+            'variables' => $variables,
+        ]);
 
         $response = $this->client->request('POST', 'https://graphql.scorenco.com/v1/graphql', [
             'headers' => [
@@ -101,8 +108,17 @@ class ResultatsService
             ],
         ]);
 
-        $data = $response->toArray();
-        $matches = $data['data']['competitions_event_detail_by_team_id'] ?? [];
+        $data = $response->toArray(false);
+
+        if (!isset($data['data']['competitions_event_detail_by_team_id'])) {
+            $this->logger->warning("[fetchResultsFromApi] Pas de données 'competitions_event_detail_by_team_id' pour club ID: {$clubId}", [
+                'response' => $data,
+            ]);
+            return [];
+        }
+
+        $matches = $data['data']['competitions_event_detail_by_team_id'];
+        $this->logger->info("[fetchResultsFromApi] {$clubId} => {$matches ? count($matches) : 0} match(s) récupéré(s)");
 
         $formatted = [];
         foreach ($matches as $match) {
@@ -121,7 +137,14 @@ class ResultatsService
         }
 
         return $formatted;
+    } catch (\Throwable $e) {
+        $this->logger->error("[fetchResultsFromApi] Erreur pour club ID {$clubId}: " . $e->getMessage(), [
+            'exception' => $e,
+        ]);
+        return [];
     }
+}
+
 
     public function getAllResults(array $clubList): array
     {
