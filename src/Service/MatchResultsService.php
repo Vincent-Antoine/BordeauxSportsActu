@@ -32,7 +32,7 @@ class MatchResultsService
         try {
             $this->logger->info("📡 Appel à l'API pour le club : " . $apiUrl);
 
-            $response = $this->client->request('GET', $apiUrl);
+$response = $this->client->request('GET', 'https://bordeauxsportsactu.fr/proxy?url=' . urlencode($apiUrl));
 
             if ($response->getStatusCode() !== 200) {
                 $this->logger->error('Erreur: code HTTP inattendu', [
