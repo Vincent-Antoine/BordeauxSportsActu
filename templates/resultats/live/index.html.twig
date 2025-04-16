@@ -2,50 +2,83 @@
 
 {% block title %}Résultats - Match Live{% endblock %}
 
-
 {% block body %}
 <script async defer src="https://widgets.scorenco.com/host/widgets.js"></script>
+
 <style>
-.scorenco-widget-iframe:not(:first-of-type) {
+  .scorenco-widget-iframe:not(:first-of-type) {
     margin-top: 50px !important;
-}
+  }
 </style>
 
-{# Girondins de bordeaux Live #}
-<div class="scorenco-widget" data-widget-type="live" data-widget-id="111462" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
-  <div class="ldsdr"></div>
-  </div>
+<div class="max-w-6xl mx-auto px-4 py-10 space-y-16">
 
-{# UBB Live #}
+  {# FOOTBALL #}
+  <section>
+    <h2 class="text-3xl  pb-2 pt-2 mb-8">⚽ Football</h2>
 
-<div class="scorenco-widget" data-widget-type="live" data-widget-id="111528" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
-  <div class="ldsdr"></div>
-  </div>
+    {# Girondins de Bordeaux #}
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111462" 
+      class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
+      <div class="ldsdr"></div>
+    </div>
+  </section>
 
+  {# RUGBY #}
+  <section>
+    <h2 class="text-3xl  pb-2 pt-2 mb-8">🏉 Rugby</h2>
 
-{# Burdies Live #}
+    {# UBB #}
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111528" 
+      class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
+      <div class="ldsdr"></div>
+    </div>
 
-<div class="scorenco-widget" data-widget-type="live" data-widget-id="111529" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
-  <div class="ldsdr"></div>
-  </div>
+    {# Les Lionnes #}
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111561" 
+      class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
+      <div class="ldsdr"></div>
+    </div>
+  </section>
 
-{# JSA Live #}
+  {# BASKET #}
+  <section>
+    <h2 class="text-3xl  pb-2 pt-2 mb-8">🏀 Basket</h2>
 
-  <div class="scorenco-widget" data-widget-type="live" data-widget-id="111530" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
-  <div class="ldsdr"></div>
-  </div>
-  
-{# Ambitions girondines Live #}
+    {# JSA #}
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111530" 
+      class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
+      <div class="ldsdr"></div>
+    </div>
 
-  <div class="scorenco-widget" data-widget-type="live" data-widget-id="111531" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
-  <div class="ldsdr"></div>
-  </div>
-{# Boxers Live #}
+    {# Ambitions Girondines #}
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111531" 
+      class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
+      <div class="ldsdr"></div>
+    </div>
+  </section>
 
+  {# VOLLEY #}
+  <section>
+    <h2 class="text-3xl  pb-2 pt-2 mb-8">🏐 Volley</h2>
 
-<div class="scorenco-widget" data-widget-type="live" data-widget-id="111532" style="background: #F2F5F9; height: 500px; display: flex; align-items: center; justify-content: center; flex-direction: column;text-transform: uppercase; font-family: sans-serif; font-weight: bolder; gap: 9px; color:#1E457B;">
-  <div class="ldsdr"></div>
-  </div>
-  
+    {# Burdies #}
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111529" 
+      class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
+      <div class="ldsdr"></div>
+    </div>
+  </section>
 
+  {# HOCKEY SUR GLACE #}
+  <section>
+    <h2 class="text-3xl  pb-2 pt-2 mb-8">🏒 Hockey sur glace</h2>
+
+    {# Boxers #}
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111532" 
+      class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
+      <div class="ldsdr"></div>
+    </div>
+  </section>
+
+</div>
 {% endblock %}
