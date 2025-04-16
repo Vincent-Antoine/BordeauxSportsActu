@@ -68,6 +68,7 @@ public function refreshLiveMatchFragment(): Response
         ]);
     } catch (\Throwable $e) {
         return new Response("Erreur : " . $e->getMessage(), 500);
+        dd($success);
     }
 }
 

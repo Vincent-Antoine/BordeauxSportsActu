@@ -52,11 +52,12 @@ class LiveResultatsService
 
         exec($command, $output, $returnCode);
 
-        $this->logger->info('Exécution du script Python', [
-            'command' => $command,
-            'output' => $output,
-            'returnCode' => $returnCode,
-        ]);
+        dump([
+    'command' => $command,
+    'output' => $output,
+    'returnCode' => $returnCode,
+]);
+
 
         if ($returnCode !== 0) {
             $this->logger->error('Erreur lors de l\'exécution du script Python.', [
