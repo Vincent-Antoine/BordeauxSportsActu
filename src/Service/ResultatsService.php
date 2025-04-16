@@ -106,7 +106,7 @@ class ResultatsService
 
     public function getAllResults(array $clubList): array
     {
-        $cacheKey = 'scorenco_all_results';
+        $cacheKey = 'scorenco_all_results_' . md5(json_encode($clubList));
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($clubList) {
             $item->expiresAfter(300);
