@@ -54,11 +54,11 @@ class LiveResultatsService
         file_put_contents('/tmp/refresh_output.log', implode("\n", $output) . "\nReturn Code: $returnCode");
 
 
-        dump([
-    'command' => $command,
-    'output' => $output,
-    'returnCode' => $returnCode,
-]);
+        // dump([
+        //     'command' => $command,
+        //     'output' => $output,
+        //     'returnCode' => $returnCode,
+        // ]);
 
 
         if ($returnCode !== 0) {
