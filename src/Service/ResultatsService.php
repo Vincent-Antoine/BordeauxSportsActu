@@ -32,12 +32,15 @@ class ResultatsService
 
     public function getResults(int $clubId): array
     {
-        $cacheKey = 'scorenco_' . $clubId;
+        // $cacheKey = 'scorenco_' . $clubId;
 
-        return $this->cache->get($cacheKey, function (ItemInterface $item) use ($clubId) {
-            $item->expiresAfter(300);
-            return $this->fetchResultsFromApi($clubId);
-        });
+        // return $this->cache->get($cacheKey, function (ItemInterface $item) use ($clubId) {
+        //     $item->expiresAfter(300);
+        //     return $this->fetchResultsFromApi($clubId);
+        // });
+
+            return $this->fetchResultsFromApi($clubId); // Bypass le cache pour test
+
     }
 
     private function fetchResultsFromApi(int $clubId): array

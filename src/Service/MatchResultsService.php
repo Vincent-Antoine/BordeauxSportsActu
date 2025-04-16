@@ -135,6 +135,7 @@ class MatchResultsService
                 'exception' => $e->getMessage()
             ]);
             return [];
+            $this->logger->info("Appel à l'API pour le club : " . $apiUrl);
         }
     }
 }
