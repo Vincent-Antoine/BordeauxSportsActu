@@ -91,7 +91,7 @@ class ResultatsService
     ];
 
     try {
-        $this->logger->info("[fetchResultsFromApi] Envoi requête GraphQL à Scorenco", [
+        $this->logger->info("[fetchResultsFromApi] Envoi de la requête GraphQL à Scorenco", [
             'variables' => $variables,
         ]);
 
@@ -111,14 +111,19 @@ class ResultatsService
         $data = $response->toArray(false);
 
         if (!isset($data['data']['competitions_event_detail_by_team_id'])) {
-            $this->logger->warning("[fetchResultsFromApi] Pas de données 'competitions_event_detail_by_team_id' pour club ID: {$clubId}", [
+            $this->logger->warning("[fetchResultsFromApi] Aucun champ 'competitions_event_detail_by_team_id' pour club ID: {$clubId}", [
                 'response' => $data,
             ]);
             return [];
         }
 
         $matches = $data['data']['competitions_event_detail_by_team_id'];
-        $this->logger->info("[fetchResultsFromApi] {$clubId} => {$matches ? count($matches) : 0} match(s) récupéré(s)");
+
+        $this->logger->info(sprintf(
+            "[fetchResultsFromApi] %d => %d match(s) récupéré(s)",
+            $clubId,
+            is_array($matches) ? count($matches) : 0
+        ));
 
         $formatted = [];
         foreach ($matches as $match) {
@@ -137,8 +142,9 @@ class ResultatsService
         }
 
         return $formatted;
+
     } catch (\Throwable $e) {
-        $this->logger->error("[fetchResultsFromApi] Erreur pour club ID {$clubId}: " . $e->getMessage(), [
+        $this->logger->error("[fetchResultsFromApi] Erreur pour club ID {$clubId} : " . $e->getMessage(), [
             'exception' => $e,
         ]);
         return [];
