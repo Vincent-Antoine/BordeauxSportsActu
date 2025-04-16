@@ -66,13 +66,13 @@
                 <div class="relative" x-data="{ open: false, timeout: null }"
                      @mouseenter="clearTimeout(timeout); open = true"
                      @mouseleave="timeout = setTimeout(() => open = false, 150)">
-                    <button type="button"
+                                    <a href="{{ path('app_sports') }}"><button type="button"
                             class="{% if app.request.attributes.get('_route') starts with 'app_sport_show' or app.request.attributes.get('_route') == 'app_sports' %}text-blue-700{% else %}hover:text-gray-300{% endif %} focus:outline-none"
                             aria-haspopup="true"
                             :aria-expanded="open.toString()"
                             aria-controls="submenu-sports">
                         SPORTS
-                    </button>
+                    </button></a>
                     <div x-show="open"
                          id="submenu-sports"
                          x-transition.opacity.duration.200ms
@@ -103,12 +103,12 @@
             <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-500">ACTUALITÉS</a></li>
             <li><a href="{{ path('scoreandco') }}" class="hover:text-gray-500">RÉSULTATS</a></li>
             <li>
-                <a href="{{ path('app_sports') }}"><button @click="showSports = !showSports"
+<button @click="showSports = !showSports"
                         class="hover:text-gray-500 w-full text-left"
                         aria-expanded="false"
                         aria-controls="mobile-sports-submenu">
                     SPORTS
-                </button><a>
+                </button>
                 <ul x-show="showSports" id="mobile-sports-submenu" x-transition.duration.200ms class="pl-4 mt-1 space-y-1 text-sm">
                     <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block py-1 hover:text-gray-400">Football</a></li>
                     <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block py-1 hover:text-gray-400">Rugby</a></li>
