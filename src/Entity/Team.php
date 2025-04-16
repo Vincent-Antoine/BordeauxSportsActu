@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Evenement;
 use App\Repository\TeamRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team
@@ -31,40 +34,12 @@ class Team
     #[ORM\Column(nullable: true)]
     private ?int $scorencoRankingId = null;
 
-    public function getScorencoMatchId(): ?int
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Evenement::class)]
+    private Collection $evenements;
+
+    public function __construct()
     {
-        return $this->scorencoMatchId;
-    }
-
-    public function setScorencoMatchId(?int $scorencoMatchId): self
-    {
-        $this->scorencoMatchId = $scorencoMatchId;
-
-        return $this;
-    }
-
-    public function getScorencoRankingId(): ?int
-    {
-        return $this->scorencoRankingId;
-    }
-
-    public function setScorencoRankingId(?int $scorencoRankingId): self
-    {
-        $this->scorencoRankingId = $scorencoRankingId;
-
-        return $this;
-    }
-
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(?string $slug): static
-    {
-        $this->slug = $slug;
-        return $this;
+        $this->evenements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,6 +78,44 @@ class Team
     {
         $this->sport = $sport;
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    public function getScorencoMatchId(): ?int
+    {
+        return $this->scorencoMatchId;
+    }
+
+    public function setScorencoMatchId(?int $scorencoMatchId): self
+    {
+        $this->scorencoMatchId = $scorencoMatchId;
+        return $this;
+    }
+
+    public function getScorencoRankingId(): ?int
+    {
+        return $this->scorencoRankingId;
+    }
+
+    public function setScorencoRankingId(?int $scorencoRankingId): self
+    {
+        $this->scorencoRankingId = $scorencoRankingId;
+        return $this;
+    }
+
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
     }
 
     public function __toString(): string
