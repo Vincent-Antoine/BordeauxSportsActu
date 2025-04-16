@@ -3,11 +3,20 @@
 {% block title %}Résultats - Match Live{% endblock %}
 
 {% block body %}
+<!-- Préloader pleine page -->
+<div id="preloader" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+  <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+</div>
+
 <script async defer src="https://widgets.scorenco.com/host/widgets.js"></script>
 
 <style>
   .scorenco-widget-iframe:not(:first-of-type) {
     margin-top: 50px !important;
+  }
+
+  #preloader {
+    transition: opacity 0.5s ease;
   }
 </style>
 
@@ -15,10 +24,10 @@
 
   {# FOOTBALL #}
   <section>
-    <h2 class="text-3xl  pb-2 pt-2 mb-8">⚽ Football</h2>
+    <h2 class="text-3xl pb-2 pt-2 mb-8">⚽ Football</h2>
 
     {# Girondins de Bordeaux #}
-    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111462" 
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111462"
       class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
       <div class="ldsdr"></div>
     </div>
@@ -26,16 +35,16 @@
 
   {# RUGBY #}
   <section>
-    <h2 class="text-3xl  pb-2 pt-2 mb-8">🏉 Rugby</h2>
+    <h2 class="text-3xl pb-2 pt-2 mb-8">🏉 Rugby</h2>
 
     {# UBB #}
-    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111528" 
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111528"
       class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
       <div class="ldsdr"></div>
     </div>
 
     {# Les Lionnes #}
-    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111561" 
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111561"
       class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
       <div class="ldsdr"></div>
     </div>
@@ -43,16 +52,16 @@
 
   {# BASKET #}
   <section>
-    <h2 class="text-3xl  pb-2 pt-2 mb-8">🏀 Basket</h2>
+    <h2 class="text-3xl pb-2 pt-2 mb-8">🏀 Basket</h2>
 
     {# JSA #}
-    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111530" 
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111530"
       class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
       <div class="ldsdr"></div>
     </div>
 
     {# Ambitions Girondines #}
-    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111531" 
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111531"
       class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
       <div class="ldsdr"></div>
     </div>
@@ -60,10 +69,10 @@
 
   {# VOLLEY #}
   <section>
-    <h2 class="text-3xl  pb-2 pt-2 mb-8">🏐 Volley</h2>
+    <h2 class="text-3xl pb-2 pt-2 mb-8">🏐 Volley</h2>
 
     {# Burdies #}
-    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111529" 
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111529"
       class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
       <div class="ldsdr"></div>
     </div>
@@ -71,14 +80,25 @@
 
   {# HOCKEY SUR GLACE #}
   <section>
-    <h2 class="text-3xl  pb-2 pt-2 mb-8">🏒 Hockey sur glace</h2>
+    <h2 class="text-3xl pb-2 pt-2 mb-8">🏒 Hockey sur glace</h2>
 
     {# Boxers #}
-    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111532" 
+    <div class="scorenco-widget" data-widget-type="live" data-widget-id="111532"
       class="bg-gray-100 h-[500px] flex flex-col items-center justify-center text-blue-900 font-bold uppercase gap-2 font-sans">
       <div class="ldsdr"></div>
     </div>
   </section>
 
 </div>
+
+<script>
+  window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+      preloader.style.opacity = '0';
+      preloader.style.pointerEvents = 'none';
+      setTimeout(() => preloader.remove(), 500);
+    }
+  });
+</script>
 {% endblock %}
