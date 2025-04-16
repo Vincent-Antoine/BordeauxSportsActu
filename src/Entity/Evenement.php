@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\EvenementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Team;
+
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
@@ -27,6 +29,14 @@ class Evenement
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $competition;
+
+    #[ORM\ManyToOne(inversedBy: 'evenements')]
+    #[ORM\JoinColumn(nullable: true)] // <-- AU LIEU DE false
+    private ?Team $team = null;
+
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $sport;
 
     public function getId(): ?int
     {
@@ -65,6 +75,28 @@ class Evenement
         $this->lieu = $lieu;
         return $this;
     }
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
+        return $this;
+    }
+
+    public function getSport(): string
+    {
+        return $this->sport;
+    }
+
+    public function setSport(string $sport): self
+    {
+        $this->sport = $sport;
+        return $this;
+    }
+
 
     public function getDate(): \DateTimeInterface
     {

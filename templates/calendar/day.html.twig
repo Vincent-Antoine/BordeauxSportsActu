@@ -5,19 +5,27 @@
 {% block body %}
 <h1>Événements du {{ date|date('d F Y') }}</h1>
 
-{% if evenements is empty %}
-    <p>Aucun événement prévu ce jour-là.</p>
-{% else %}
-    <ul class="space-y-4">
-        {% for e in evenements %}
-            <li class="p-4 rounded bg-gray-100">
-                <strong>{{ e.equipeDomicile }} vs {{ e.equipeExterieur }}</strong><br>
-                📍 {{ e.lieu }}<br>
-                🕒 {{ e.date|date('H:i') }}<br>
-                🏆 {{ e.competition }}
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
+{% for e in evenements %}
+    <li class="p-4 rounded bg-gray-100">
+        <strong>{{ e.equipeDomicile }} vs {{ e.equipeExterieur }}</strong><br>
+        📍 {{ e.lieu }}<br>
+        🕒 {{ e.date|date('H:i') }}<br>
+        🏆 {{ e.competition }}<br>
+
+        {% if e.team %}
+            <div class="mt-2 flex items-center gap-2">
+                {% if e.team.image %}
+<img src="{{ asset('/uploads/teams/' ~ e.team.image) }}" alt="{{ e.team.name }}" style="max-width: 25px;">
+                {% endif %}
+                <p>
+                    {{ e.team.name }}
+                </p>
+                <span class="text-sm text-gray-500">({{ e.team.sport }})</span>
+            </div>
+        {% endif %}
+    </li>
+{% endfor %}
+
+
 
 {% endblock %}

@@ -55,10 +55,14 @@
                                 {{ day }}
                             </a>
                             {% for event in events %}
-                                <div class="text-xs px-2 truncate">
-                                    {{ event.equipeDomicile }} vs {{ event.equipeExterieur }}
-                                </div>
-                            {% endfor %}
+    <div class="text-xs px-2 truncate leading-tight">
+        <div><strong>{{ event.equipeDomicile }} vs {{ event.equipeExterieur }}</strong></div>
+        <div class="text-gray-500">
+            🕒 {{ event.date|date('H:i') }} — 📍 {{ event.lieu }}
+        </div>
+    </div>
+{% endfor %}
+
                         </td>
                         {% set day = day + 1 %}
                     {% else %}
