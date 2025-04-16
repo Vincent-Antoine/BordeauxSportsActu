@@ -31,17 +31,33 @@ class ResultatsService
     }
 
     public function getResults(int $clubId): array
-    {
-        // $cacheKey = 'scorenco_' . $clubId;
+{
+    $cacheKey = 'scorenco_' . $clubId;
 
-        // return $this->cache->get($cacheKey, function (ItemInterface $item) use ($clubId) {
-        //     $item->expiresAfter(300);
-        //     return $this->fetchResultsFromApi($clubId);
-        // });
+    return $this->cache->get($cacheKey, function (ItemInterface $item) use ($clubId) {
+        $item->expiresAfter(300); // ⏱️ 5 minutes
 
-            return $this->fetchResultsFromApi($clubId); // Bypass le cache pour test
+        try {
+            $results = $this->fetchResultsFromApi($clubId);
 
-    }
+            if (empty($results)) {
+                $this->logger->warning("[Scorenco] Données vides pour clubId={$clubId}, cache non enregistré.");
+                // On empêche le cache d'enregistrer une valeur vide
+                throw new \RuntimeException("Résultat vide pour club {$clubId}, on ne le met pas en cache.");
+            }
+
+            $this->logger->info("[Scorenco] Résultats récupérés avec succès pour clubId={$clubId}");
+            return $results;
+
+        } catch (\Throwable $e) {
+            $this->logger->error("[Scorenco] Erreur lors de la récupération des résultats pour clubId={$clubId}", [
+                'error' => $e->getMessage()
+            ]);
+            throw $e; // Important : ne pas cacher l'erreur, ça évite de stocker un résultat vide
+        }
+    });
+}
+
 
     private function fetchResultsFromApi(int $clubId): array
     {
