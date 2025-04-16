@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use IntlDateFormatter;
+use App\Repository\EvenementRepository;
+
 
 
 class CalendarController extends AbstractController
@@ -54,10 +56,31 @@ public function index(Request $request, CalendarService $calendarService): Respo
 }
 
     #[Route('/calendrier/day/{date}', name: 'app_calendar_day')]
-    public function showDay(string $date): Response
-    {
-        return $this->render('calendar/day.html.twig', [
-            'date' => $date,
-        ]);
+public function showDay(string $date, EvenementRepository $evenementRepository): Response
+{
+    $dateTime = \DateTime::createFromFormat('Y-m-d', $date);
+
+    if (!$dateTime || $dateTime->format('Y-m-d') !== $date) {
+        throw $this->createNotFoundException('Date invalide.');
     }
+
+    $startOfDay = (clone $dateTime)->setTime(0, 0, 0);
+    $endOfDay = (clone $dateTime)->setTime(23, 59, 59);
+
+    $evenements = $evenementRepository->createQueryBuilder('e')
+        ->where('e.date BETWEEN :start AND :end')
+        ->setParameter('start', $startOfDay)
+        ->setParameter('end', $endOfDay)
+        ->orderBy('e.date', 'ASC')
+        ->getQuery()
+        ->getResult();
+
+    return $this->render('calendar/day.html.twig', [
+        'date' => $dateTime,
+        'evenements' => $evenements,
+    ]);
+}
+
+
+    
 }

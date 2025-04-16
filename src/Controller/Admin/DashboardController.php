@@ -12,6 +12,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Evenement;
+
 
 class DashboardController extends AbstractDashboardController
 {
@@ -42,6 +44,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Articles', 'fas fa-newspaper', Article::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('Équipes', 'fas fa-users', Team::class);
+        yield MenuItem::linkToCrud('Événements', 'fa fa-calendar', Evenement::class);
+
 
         // 🎨 Section Portrait
         yield MenuItem::section('Portrait de la semaine');

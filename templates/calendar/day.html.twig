@@ -3,15 +3,21 @@
 {% block title %}Détail du {{ date|date('d/m/Y') }}{% endblock %}
 
 {% block body %}
-<div class="container my-5">
-    <h1 class="mb-4">Détail du jour : {{ date|date('l d F Y')|capitalize }}</h1>
+<h1>Événements du {{ date|date('d F Y') }}</h1>
 
-    <div class="alert alert-info">
-        👉 Ici, tu peux afficher les événements, notes, rendez-vous, etc.
-    </div>
+{% if evenements is empty %}
+    <p>Aucun événement prévu ce jour-là.</p>
+{% else %}
+    <ul class="space-y-4">
+        {% for e in evenements %}
+            <li class="p-4 rounded bg-gray-100">
+                <strong>{{ e.equipeDomicile }} vs {{ e.equipeExterieur }}</strong><br>
+                📍 {{ e.lieu }}<br>
+                🕒 {{ e.date|date('H:i') }}<br>
+                🏆 {{ e.competition }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
-    <a href="{{ path('app_calendar', { month: date|date('n'), year: date|date('Y') }) }}" class="btn btn-primary">
-        🔙 Retour au calendrier
-    </a>
-</div>
 {% endblock %}
