@@ -22,33 +22,38 @@ class MatchController extends AbstractController
     }
 
     #[Route('/api/results', name: 'fetch_results', methods: ['GET'])]
-    public function fetchResults(
-        Request $request,
-        ClubUrlProvider $clubUrlProvider,
-        MatchResultsService $matchResultsService,
-        LoggerInterface $logger
-    ): JsonResponse {
-        $club = $request->query->get('club');
-        if (!$club) {
-            return $this->json(['error' => 'Aucun club sélectionné'], 400);
-        }
+public function fetchResults(
+    Request $request,
+    ClubUrlProvider $clubUrlProvider,
+    MatchResultsService $matchResultsService
+): JsonResponse {
+    $club = $request->query->get('club');
+    $logger = $this->get('logger');
 
-        // Récupérer l’URL depuis la config
-        $url = $clubUrlProvider->getUrlForClub($club);
-        if (!$url) {
-            return $this->json(['error' => 'Club inconnu ou non configuré'], 404);
-        }
-
-        // ✅ Log correct avec injection propre
-        $logger->info('🔎 Club demandé : ' . $club);
-        $logger->info('🔗 URL trouvée : ' . $url);
-
-        // Appeler le service pour récupérer les résultats
-        $results = $matchResultsService->getMatchResults($url);
-
-        $this->container->get('logger')->info('🧪 Test de log dans prod.log');
-
-
-        return $this->json($results);
+    if (!$club) {
+        $logger->error('❌ Aucun club reçu');
+        return $this->json(['error' => 'Aucun club sélectionné'], 400);
     }
+
+    $logger->info('🔎 Club reçu : ' . $club);
+
+    $url = $clubUrlProvider->getUrlForClub($club);
+    if (!$url) {
+        $logger->error('❌ Club inconnu : ' . $club);
+        return $this->json(['error' => 'Club inconnu ou non configuré'], 404);
+    }
+
+    $logger->info('🔗 URL trouvée : ' . $url);
+
+    try {
+        $results = $matchResultsService->getMatchResults($url);
+        $logger->info('✅ Résultats récupérés : ' . count($results));
+    } catch (\Throwable $e) {
+        $logger->error('💥 Exception levée : ' . $e->getMessage());
+        return $this->json(['error' => 'Erreur interne'], 500);
+    }
+
+    return $this->json($results);
+}
+
 }
