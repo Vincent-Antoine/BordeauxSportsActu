@@ -103,12 +103,12 @@
             <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-500">ACTUALITÉS</a></li>
             <li><a href="{{ path('scoreandco') }}" class="hover:text-gray-500">RÉSULTATS</a></li>
             <li>
-                <button @click="showSports = !showSports"
+                <a href="{{ path('app_sports') }}"><button @click="showSports = !showSports"
                         class="hover:text-gray-500 w-full text-left"
                         aria-expanded="false"
                         aria-controls="mobile-sports-submenu">
                     SPORTS
-                </button>
+                </button><a>
                 <ul x-show="showSports" id="mobile-sports-submenu" x-transition.duration.200ms class="pl-4 mt-1 space-y-1 text-sm">
                     <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block py-1 hover:text-gray-400">Football</a></li>
                     <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block py-1 hover:text-gray-400">Rugby</a></li>
