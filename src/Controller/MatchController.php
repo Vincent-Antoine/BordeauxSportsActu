@@ -40,6 +40,8 @@ class MatchController extends AbstractController
         // Appeler le service pour récupérer les résultats
         $results = $matchResultsService->getMatchResults($url);
 
+
+
         return $this->json($results);
     }
 }

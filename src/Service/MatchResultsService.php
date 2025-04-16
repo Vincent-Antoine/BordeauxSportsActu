@@ -15,6 +15,9 @@ class MatchResultsService
         $this->client = new Client([
             'timeout'  => 10,
             'verify'   => false,
+            'headers'  => [
+                'User-Agent' => 'Mozilla/5.0 (compatible; BordeauxSportsActuBot/1.0)',
+            ]
         ]);
         $this->logger = $logger;
     }
@@ -62,10 +65,10 @@ class MatchResultsService
                         // ==================================================
                         $localTeam = 'Équipe locale inconnue';
                         if (!empty($localStructure['Regroupement'])) {
-                            $localTeam = $localStructure['Regroupement']['nom'] 
+                            $localTeam = $localStructure['Regroupement']['nom']
                                 ?? 'Équipe locale inconnue';
                         } elseif (!empty($localStructure['Structure'])) {
-                            $localTeam = $localStructure['Structure']['nom'] 
+                            $localTeam = $localStructure['Structure']['nom']
                                 ?? 'Équipe locale inconnue';
                         }
 
