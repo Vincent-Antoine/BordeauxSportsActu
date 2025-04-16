@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\Log\LoggerInterface;
 
 use App\Service\ClubUrlProvider;
 use App\Service\MatchResultsService;
@@ -24,7 +25,8 @@ class MatchController extends AbstractController
     public function fetchResults(
         Request $request,
         ClubUrlProvider $clubUrlProvider,
-        MatchResultsService $matchResultsService
+        MatchResultsService $matchResultsService,
+        LoggerInterface $logger
     ): JsonResponse {
         $club = $request->query->get('club');
         if (!$club) {
@@ -37,14 +39,12 @@ class MatchController extends AbstractController
             return $this->json(['error' => 'Club inconnu ou non configuré'], 404);
         }
 
-        $this->get('logger')->info('🔎 Club demandé : ' . $club);
-        $this->get('logger')->info('🔗 URL trouvée : ' . $url);
-
+        // ✅ Log correct avec injection propre
+        $logger->info('🔎 Club demandé : ' . $club);
+        $logger->info('🔗 URL trouvée : ' . $url);
 
         // Appeler le service pour récupérer les résultats
         $results = $matchResultsService->getMatchResults($url);
-
-
 
         return $this->json($results);
     }
