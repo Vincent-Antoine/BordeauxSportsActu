@@ -46,6 +46,9 @@ class MatchController extends AbstractController
         // Appeler le service pour récupérer les résultats
         $results = $matchResultsService->getMatchResults($url);
 
+        $this->container->get('logger')->info('🧪 Test de log dans prod.log');
+
+
         return $this->json($results);
     }
 }
