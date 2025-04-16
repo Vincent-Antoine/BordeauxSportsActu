@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class ProxyController extends AbstractController
 {
@@ -18,25 +19,30 @@ class ProxyController extends AbstractController
             return $this->json(['error' => 'Paramètre URL manquant'], 400);
         }
 
-        try {
-            $client = new Client([
-                'timeout' => 10,
-                'verify' => false,
-                'headers' => [
-                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0',
-                    'Accept' => 'application/json, text/plain, */*',
-                    'Accept-Language' => 'fr-FR,fr;q=0.9',
-                    'Referer' => 'https://www.ffr.fr/',
-                    'Origin' => 'https://www.ffr.fr',
-                ]
-            ]);
+        // Remplace ce chemin par le bon emplacement de ton script Python
+        $scriptPath = '/var/www/bordeauxsportsactu/scripts/proxy_ffr.py';
 
-            $response = $client->request('GET', $url);
-            $data = json_decode($response->getBody()->getContents(), true);
+        $process = new Process(['python3', $scriptPath, $url]);
+        $process->setTimeout(15); // Tu peux ajuster le timeout si besoin
+        $process->run();
 
-            return $this->json($data);
-        } catch (\Exception $e) {
-            return $this->json(['error' => 'Échec du proxy', 'details' => $e->getMessage()], 500);
+        if (!$process->isSuccessful()) {
+            return $this->json([
+                'error' => 'Échec du script Python',
+                'details' => $process->getErrorOutput() ?: $process->getOutput()
+            ], 500);
         }
+
+        $output = $process->getOutput();
+        $data = json_decode($output, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return $this->json([
+                'error' => 'Réponse JSON invalide',
+                'output' => $output
+            ], 500);
+        }
+
+        return $this->json($data);
     }
 }

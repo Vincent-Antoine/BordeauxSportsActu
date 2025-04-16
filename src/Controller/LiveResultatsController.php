@@ -21,20 +21,20 @@ class LiveResultatsController extends AbstractController
     #[Route('/live', name: 'app_resultats_live')]
 public function index(): Response
 {
-    $filePath = $this->getParameter('kernel.project_dir') . '/scripts/resultats_live.json';
+    // $filePath = $this->getParameter('kernel.project_dir') . '/scripts/resultats_live.json';
 
-    if (!file_exists($filePath)) {
-        throw $this->createNotFoundException('Le fichier JSON des résultats en direct est introuvable.');
-    }
+    // if (!file_exists($filePath)) {
+    //     throw $this->createNotFoundException('Le fichier JSON des résultats en direct est introuvable.');
+    // }
 
-    $liveMatches = json_decode(file_get_contents($filePath), true);
+    // $liveMatches = json_decode(file_get_contents($filePath), true);
 
-    if ($liveMatches === null) {
-        throw new \RuntimeException('Le fichier JSON est mal formaté.');
-    }
+    // if ($liveMatches === null) {
+    //     throw new \RuntimeException('Le fichier JSON est mal formaté.');
+    // }
 
     return $this->render('resultats/live/index.html.twig', [
-        'live_matches' => $liveMatches,
+        // 'live_matches' => $liveMatches,
     ]);
 }
 
