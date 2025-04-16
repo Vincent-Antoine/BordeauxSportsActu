@@ -51,6 +51,8 @@ class LiveResultatsService
         $command = "$pythonCommand " . escapeshellarg($this->scriptPath);
 
         exec($command, $output, $returnCode);
+        file_put_contents('/tmp/refresh_output.log', implode("\n", $output) . "\nReturn Code: $returnCode");
+
 
         dump([
     'command' => $command,
