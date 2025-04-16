@@ -16,10 +16,13 @@ class MatchResultsService
             'timeout' => 10,
             'verify' => false,
             'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (compatible; BordeauxSportsActuBot/1.0)',
-                'Referer' => 'https://bordeauxsportsactu.fr',
-                'Accept' => 'application/json',
-            ],
+                'User-Agent'      => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0',
+                'Accept'          => 'application/json, text/plain, */*',
+                'Accept-Language' => 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+                'Referer'         => 'https://www.ffr.fr/',
+                'Origin'          => 'https://www.ffr.fr',
+                'Connection'      => 'keep-alive',
+            ]
         ]);
         $this->logger = $logger;
     }
