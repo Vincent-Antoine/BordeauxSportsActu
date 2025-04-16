@@ -13,11 +13,13 @@ class MatchResultsService
     public function __construct(LoggerInterface $logger)
     {
         $this->client = new Client([
-            'timeout'  => 10,
-            'verify'   => false,
-            'headers'  => [
+            'timeout' => 10,
+            'verify' => false,
+            'headers' => [
                 'User-Agent' => 'Mozilla/5.0 (compatible; BordeauxSportsActuBot/1.0)',
-            ]
+                'Referer' => 'https://bordeauxsportsactu.fr',
+                'Accept' => 'application/json',
+            ],
         ]);
         $this->logger = $logger;
     }
@@ -25,7 +27,8 @@ class MatchResultsService
     public function getMatchResults(string $apiUrl): array
     {
         try {
-            // 1. Requête HTTP
+            $this->logger->info("📡 Appel à l'API pour le club : " . $apiUrl);
+
             $response = $this->client->request('GET', $apiUrl);
 
             if ($response->getStatusCode() !== 200) {
@@ -35,88 +38,47 @@ class MatchResultsService
                 return [];
             }
 
-            // 2. Parser le JSON
             $data = json_decode($response->getBody()->getContents(), true);
             if (!$data) {
                 $this->logger->error('Impossible de parser la réponse JSON');
                 return [];
             }
 
-            // 3. Extraire les matchs
             $matches = [];
             $phases = $data['data']['competition']['competitions_phases'] ?? [];
 
             foreach ($phases as $phase) {
-                $journees = $phase['competitions_journees'] ?? [];
-                foreach ($journees as $journee) {
+                foreach ($phase['competitions_journees'] ?? [] as $journee) {
                     $journeeNom = $journee['nom'] ?? 'Journée inconnue';
 
-                    $rencontres = $journee['rencontres'] ?? [];
-                    foreach ($rencontres as $rencontre) {
+                    foreach ($journee['rencontres'] ?? [] as $rencontre) {
                         $dateMatch = $rencontre['date'] ?? 'Date inconnue';
                         $etat = $rencontre['Etat']['nom'] ?? 'État inconnu';
 
-                        // --- Récupération des structures (local/visitor)
-                        $localStructure   = $rencontre['local_structure']   ?? [];
+                        $localStructure = $rencontre['local_structure'] ?? [];
                         $visitorStructure = $rencontre['visitor_structure'] ?? [];
 
-                        // ==================================================
-                        // Récupération du nom de l'équipe locale
-                        // ==================================================
-                        $localTeam = 'Équipe locale inconnue';
-                        if (!empty($localStructure['Regroupement'])) {
-                            $localTeam = $localStructure['Regroupement']['nom']
-                                ?? 'Équipe locale inconnue';
-                        } elseif (!empty($localStructure['Structure'])) {
-                            $localTeam = $localStructure['Structure']['nom']
-                                ?? 'Équipe locale inconnue';
-                        }
+                        $localTeam = $localStructure['Regroupement']['nom']
+                            ?? $localStructure['Structure']['nom']
+                            ?? 'Équipe locale inconnue';
 
-                        // ==================================================
-                        // Récupération du nom de l'équipe visiteuse
-                        // ==================================================
-                        $visitorTeam = 'Équipe visiteuse inconnue';
-                        if (!empty($visitorStructure['Regroupement'])) {
-                            $visitorTeam = $visitorStructure['Regroupement']['nom']
-                                ?? 'Équipe visiteuse inconnue';
-                        } elseif (!empty($visitorStructure['Structure'])) {
-                            $visitorTeam = $visitorStructure['Structure']['nom']
-                                ?? 'Équipe visiteuse inconnue';
-                        }
+                        $visitorTeam = $visitorStructure['Regroupement']['nom']
+                            ?? $visitorStructure['Structure']['nom']
+                            ?? 'Équipe visiteuse inconnue';
 
-                        // ==================================================
-                        // Récupération du score
-                        // ==================================================
-                        $localScore   = $rencontre['RencontreResultatLocale']['pointsDeMarque']    ?? 0;
+                        $localScore = $rencontre['RencontreResultatLocale']['pointsDeMarque'] ?? 0;
                         $visitorScore = $rencontre['RencontreResultatVisiteuse']['pointsDeMarque'] ?? 0;
 
-                        // ==================================================
-                        // Récupération du logo local
-                        // ==================================================
-                        $localLogo = null;
-                        if (!empty($localStructure['Regroupement'])) {
-                            $localLogo = $localStructure['Regroupement']['embleme'] ?? null;
-                        } elseif (!empty($localStructure['StructuresItem'])) {
-                            $localLogo = $localStructure['StructuresItem'][0]['embleme'] ?? null;
-                        } elseif (!empty($localStructure['Structure'])) {
-                            $localLogo = $localStructure['Structure']['embleme'] ?? null;
-                        }
+                        $localLogo = $localStructure['Regroupement']['embleme']
+                            ?? $localStructure['StructuresItem'][0]['embleme']
+                            ?? $localStructure['Structure']['embleme']
+                            ?? null;
 
-                        // ==================================================
-                        // Récupération du logo visiteur
-                        // ==================================================
-                        $visitorLogo = null;
-                        if (!empty($visitorStructure['Regroupement'])) {
-                            $visitorLogo = $visitorStructure['Regroupement']['embleme'] ?? null;
-                        } elseif (!empty($visitorStructure['StructuresItem'])) {
-                            $visitorLogo = $visitorStructure['StructuresItem'][0]['embleme'] ?? null;
-                        } elseif (!empty($visitorStructure['Structure'])) {
-                            $visitorLogo = $visitorStructure['Structure']['embleme'] ?? null;
-                        }
+                        $visitorLogo = $visitorStructure['Regroupement']['embleme']
+                            ?? $visitorStructure['StructuresItem'][0]['embleme']
+                            ?? $visitorStructure['Structure']['embleme']
+                            ?? null;
 
-                        // ==================================================
-                        // Final: on ajoute le match au tableau
-                        // ==================================================
                         $matches[] = [
                             'journee'       => $journeeNom,
                             'date'          => $dateMatch,
@@ -132,13 +94,13 @@ class MatchResultsService
                 }
             }
 
+            $this->logger->info('✅ Résultats récupérés : ' . count($matches));
             return $matches;
         } catch (\Exception $e) {
-            $this->logger->error('Erreur lors de la récupération des résultats', [
+            $this->logger->error('❌ Exception attrapée lors de la récupération des résultats', [
                 'exception' => $e->getMessage()
             ]);
             return [];
-            $this->logger->info("Appel à l'API pour le club : " . $apiUrl);
         }
     }
 }
