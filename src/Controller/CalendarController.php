@@ -12,15 +12,15 @@ use App\Repository\EvenementRepository;
 
 
 
+
 class CalendarController extends AbstractController
 {
     #[Route('/calendrier', name: 'app_calendar')]
-public function index(Request $request, CalendarService $calendarService): Response
+public function index(Request $request, CalendarService $calendarService, EvenementRepository $evenementRepository): Response
 {
     $month = (int) $request->query->get('month', date('n'));
     $year = (int) $request->query->get('year', date('Y'));
 
-    // Ajuste les débordements de mois
     if ($month < 1) {
         $month = 12;
         $year--;
@@ -32,16 +32,25 @@ public function index(Request $request, CalendarService $calendarService): Respo
     $calendarData = $calendarService->getMonthData($year, $month);
     $currentDate = \DateTime::createFromFormat('!Y-n', "$year-$month");
 
-    // ✅ Format du titre en français
-    $formatter = new IntlDateFormatter(
-        'fr_FR',
-        IntlDateFormatter::LONG,
-        IntlDateFormatter::NONE,
-        null,
-        null,
-        'MMMM yyyy' // ex: "avril 2025"
-    );
+    // Récupération des événements du mois
+    $start = (clone $currentDate)->setTime(0, 0);
+    $end = (clone $currentDate)->modify('last day of this month')->setTime(23, 59, 59);
 
+    $evenements = $evenementRepository->createQueryBuilder('e')
+        ->where('e.date BETWEEN :start AND :end')
+        ->setParameter('start', $start)
+        ->setParameter('end', $end)
+        ->getQuery()
+        ->getResult();
+
+    // Regrouper les événements par date (format 'Y-m-d')
+    $evenementsParDate = [];
+    foreach ($evenements as $event) {
+        $dateStr = $event->getDate()->format('Y-m-d');
+        $evenementsParDate[$dateStr][] = $event;
+    }
+
+    $formatter = new \IntlDateFormatter('fr_FR', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, null, null, 'MMMM yyyy');
     $formattedTitle = ucfirst($formatter->format($currentDate));
 
     return $this->render('calendar/index.html.twig', [
@@ -52,7 +61,9 @@ public function index(Request $request, CalendarService $calendarService): Respo
         'nextMonth' => $month + 1,
         'prevYear' => $month === 1 ? $year - 1 : $year,
         'nextYear' => $month === 12 ? $year + 1 : $year,
+        'evenementsParDate' => $evenementsParDate,
     ]);
+
 }
 
     #[Route('/calendrier/day/{date}', name: 'app_calendar_day')]
