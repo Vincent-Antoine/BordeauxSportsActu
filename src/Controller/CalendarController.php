@@ -66,7 +66,7 @@ public function index(Request $request, CalendarService $calendarService, Evenem
 
 }
 
-    #[Route('/calendrier/day/{date}', name: 'app_calendar_day')]
+    #[Route('/calendrier/date/{date}', name: 'app_calendar_day')]
 public function showDay(string $date, EvenementRepository $evenementRepository): Response
 {
     $dateTime = \DateTime::createFromFormat('Y-m-d', $date);
