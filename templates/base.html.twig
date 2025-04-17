@@ -69,14 +69,26 @@
     </script>
 
     <!-- Consentement Axeptio -->
-    <script>
-    window._axcb = window._axcb || [];
+<script>
+    window.axeptioSettings = {
+        clientId: "6800b1c97e1ab3015a54ec5f",
+        cookiesVersion: "bordeauxsportsactu-fr-EU"
+    };
 
-    // Quand Axeptio est prêt
-    window._axcb.push(function(axeptio) {
+    // Charger le SDK
+    (function(d, s) {
+        var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+        e.async = true;
+        e.src = "https://static.axept.io/sdk.js";
+        t.parentNode.insertBefore(e, t);
+    })(document, "script");
+
+    // Attendre que le SDK soit chargé et prêt
+    window._axcb = window._axcb || [];
+    window._axcb.push(function (axeptio) {
         console.log("[Axeptio] Widget chargé ✔️");
 
-        // Écouter l'événement de changement de préférences
+        // Écoute de l'événement cookies:complete (quand l'utilisateur valide)
         axeptio.on("cookies:complete", function (preferences) {
             console.log("[Axeptio] Consentement donné ✅", preferences);
 
@@ -108,6 +120,7 @@
         });
     });
 </script>
+
 
 {% endblock %}
 
