@@ -47,7 +47,7 @@
 
 <h2 class="text-[14px] sm:text-2xl uppercase font-body block mb-8">Toutes les news de tes équipes préférées</h2>
 
-<div class="grid md:grid-cols-5 gap-6">
+<div class="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
   {% for article in articles %}
   <a href="{{ path('article_show', {'slug': article.slug}) }}" class="block group">
     <div class="bg-white rounded-xl shadow p-4 hover:shadow-lg transition">
