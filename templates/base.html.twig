@@ -70,29 +70,36 @@
 
     <!-- Consentement Axeptio -->
 <script>
+    console.log("[Axeptio] Initialisation du widget…");
+
     window.axeptioSettings = {
         clientId: "6800b1c97e1ab3015a54ec5f",
         cookiesVersion: "bordeauxsportsactu-fr-EU"
     };
 
-    // Charger le SDK
+    // Charger le SDK Axeptio (une seule fois)
     (function(d, s) {
+        if (d.getElementById("axeptio-sdk")) return;
         var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+        e.id = "axeptio-sdk";
         e.async = true;
         e.src = "https://static.axept.io/sdk.js";
         t.parentNode.insertBefore(e, t);
     })(document, "script");
 
-    // Attendre que le SDK soit chargé et prêt
+    // Code exécuté après chargement du widget Axeptio
     window._axcb = window._axcb || [];
-    window._axcb.push(function (axeptio) {
+    window._axcb.push(function(axeptio) {
         console.log("[Axeptio] Widget chargé ✔️");
 
-        // Écoute de l'événement cookies:complete (quand l'utilisateur valide)
         axeptio.on("cookies:complete", function (preferences) {
             console.log("[Axeptio] Consentement donné ✅", preferences);
 
-            // Clarity
+            for (const key in preferences) {
+                console.log(`Préférence : ${key} =>`, preferences[key]);
+            }
+
+            // Chargement Microsoft Clarity
             if (preferences.clarity) {
                 console.log("[Consentement] Clarity accepté ✅ — chargement du script");
                 (function(c,l,a,r,i,t,y){
@@ -104,7 +111,7 @@
                 console.warn("[Consentement] Clarity refusé ❌ — script non chargé");
             }
 
-            // Google Tag Manager
+            // Chargement Google Tag Manager
             if (preferences.google_tag_manager) {
                 console.log("[Consentement] GTM accepté ✅ — chargement du script");
                 (function(w,d,s,l,i){
@@ -120,6 +127,7 @@
         });
     });
 </script>
+
 
 
 {% endblock %}
