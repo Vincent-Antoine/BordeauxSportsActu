@@ -3,7 +3,7 @@
 {% block title %}Détail du {{ date|date('d/m/Y') }}{% endblock %}
 
 {% block body %}
-<h1>Événements du {{ date|date('d F Y') }}</h1>
+<h1>Événements du {{ formattedDate }}</h1>
 
 {% for e in evenements %}
     <li class="p-4 rounded bg-gray-100">
