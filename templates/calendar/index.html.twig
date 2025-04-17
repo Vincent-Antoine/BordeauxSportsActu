@@ -4,33 +4,37 @@
 
 {% block body %}
 <div class="max-w-5xl mx-auto py-10 px-4">
+    <!-- Titre -->
     <div class="text-center mb-6">
-        <h1 class="text-3xl font-medium mb-4">
+        <h1 class="text-3xl font-semibold mb-4 text-gray-800">
             {{ calendarTitle }}
         </h1>
-        <div class="flex justify-center gap-4">
+
+        <!-- Navigation mois -->
+        <div class="flex justify-center items-center gap-4">
             <a href="{{ path('app_calendar', { month: prevMonth, year: prevYear }) }}"
-               class="inline-block px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-100 transition">
-                ⬅ Mois précédent
+               class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 transition shadow-sm">
+                <i class="fa-solid fa-chevron-left"></i> Mois précédent
             </a>
             <a href="{{ path('app_calendar', { month: nextMonth, year: nextYear }) }}"
-               class="inline-block px-4 py-2 border border-blue-600 text-blue-600 rounded hover:bg-blue-100 transition">
-                Mois suivant ➡
+               class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 transition shadow-sm">
+                Mois suivant <i class="fa-solid fa-chevron-right"></i>
             </a>
         </div>
     </div>
 
+    <!-- Calendrier -->
     <div class="overflow-x-auto bg-white rounded shadow">
-        <table class="w-full table-fixed border border-gray-200 text-center">
-            <thead class="bg-gray-100">
+        <table class="w-full table-fixed border border-gray-200 text-center text-sm">
+            <thead class="bg-gray-100 text-gray-700">
                 <tr>
-                    <th class="py-2">Lun</th>
-                    <th class="py-2">Mar</th>
-                    <th class="py-2">Mer</th>
-                    <th class="py-2">Jeu</th>
-                    <th class="py-2">Ven</th>
-                    <th class="py-2 text-blue-600">Sam</th>
-                    <th class="py-2 text-red-600">Dim</th>
+                    <th class="py-2 text-xs sm:text-sm">Lun</th>
+                    <th class="py-2 text-xs sm:text-sm">Mar</th>
+                    <th class="py-2 text-xs sm:text-sm">Mer</th>
+                    <th class="py-2 text-xs sm:text-sm">Jeu</th>
+                    <th class="py-2 text-xs sm:text-sm">Ven</th>
+                    <th class="py-2 text-blue-600 text-xs sm:text-sm">Sam</th>
+                    <th class="py-2 text-red-600 text-xs sm:text-sm">Dim</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,33 +44,43 @@
                     {% if i % 7 == 0 %}<tr>{% endif %}
 
                     {% if i < calendar.startDay - 1 %}
-                        <td class="h-20 border border-gray-200 bg-gray-50"></td>
+                        <td class="h-12 sm:h-24 border border-gray-200 bg-gray-50"></td>
                     {% elseif day <= calendar.daysInMonth %}
                         {% set currentDate = "%04d-%02d-%02d"|format(calendar.year, calendar.month, day) %}
                         {% set events = evenementsParDate[currentDate] ?? [] %}
-                        <td class="h-20 border border-gray-200 p-0 align-top text-left">
+                        <td class="h-12 sm:h-24 border border-gray-200 p-0 align-top text-left">
                             <a href="{{ path('app_calendar_day', { date: currentDate }) }}"
-                               class="block text-sm font-medium px-2 pt-1
-                               {% if currentDate == today %}
-                                   bg-green-600 text-white font-bold rounded
-                               {% else %}
-                                   hover:bg-gray-100 transition rounded
-                               {% endif %}">
-                                {{ day }}
-                            </a>
-                            {% for event in events %}
-    <div class="text-xs px-2 truncate leading-tight">
-        <div><strong>{{ event.equipeDomicile }} vs {{ event.equipeExterieur }}</strong></div>
-        <div class="text-gray-500">
-            🕒 {{ event.date|date('H:i') }} — 📍 {{ event.lieu }}
-        </div>
-    </div>
-{% endfor %}
+   class="block text-[11px] sm:text-sm font-medium px-1 pt-0.5 w-full
+   {% if currentDate == today %}
+       bg-green-600 text-white font-bold rounded-t
+   {% else %}
+       hover:bg-gray-100 transition rounded-t
+   {% endif %}">
+    {{ day }}
+</a>
 
+{% if events is not empty %}
+    <div class="block sm:hidden">
+        <i class="fa-solid fa-circle text-red-600 text-[6px] leading-none"></i>
+    </div>
+{% endif %}
+
+
+                            <!-- Détail visible sur sm et + -->
+                            <div class="hidden sm:block">
+                                {% for event in events %}
+                                    <div class="text-xs px-2 truncate leading-tight">
+                                        <div><strong>{{ event.equipeDomicile }} vs {{ event.equipeExterieur }}</strong></div>
+                                        <div class="text-gray-500">
+                                            🕒 {{ event.date|date('H:i') }} — 📍 {{ event.lieu }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </td>
                         {% set day = day + 1 %}
                     {% else %}
-                        <td class="h-20 border border-gray-200 bg-gray-50"></td>
+                        <td class="h-12 sm:h-24 border border-gray-200 bg-gray-50"></td>
                     {% endif %}
 
                     {% if i % 7 == 6 %}</tr>{% endif %}

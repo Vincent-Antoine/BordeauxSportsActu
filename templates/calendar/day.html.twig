@@ -3,10 +3,10 @@
 {% block title %}Détail du {{ date|date('d/m/Y') }}{% endblock %}
 
 {% block body %}
-<h1>Événements du {{ formattedDate }}</h1>
+<h1 class="pb-4">Événements du {{ formattedDate }}</h1>
 
 {% for e in evenements %}
-    <li class="p-4 rounded bg-gray-100">
+    <li class="p-4 rounded bg-gray-100 list-none">
         <strong>{{ e.equipeDomicile }} vs {{ e.equipeExterieur }}</strong><br>
         📍 {{ e.lieu }}<br>
         🕒 {{ e.date|date('H:i') }}<br>
