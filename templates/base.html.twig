@@ -36,27 +36,13 @@
         <meta name="robots" content="index, follow">
 
                 <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-T4CG3Z4N');</script>
-        <!-- End Google Tag Manager -->
+        
 
-        <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "r55tp5wwbi");
-</script>
+
     </head>
 
     <body class="bg-[#dce6ef]">
-        <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T4CG3Z4N"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+        
         {% include 'header.html.twig' %}
 
         <main role="main" class="sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 mx-auto px-4 mt-8">
@@ -66,7 +52,45 @@
         {% include 'footer.html.twig' %}
 
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
+    {{ encore_entry_script_tags('app') }}
+
+    <script>
+        window.axeptioSettings = {
+            clientId: "6800b1c97e1ab3015a54ec5f",
+            cookiesVersion: "bordeauxsportsactu-fr-EU"
+        };
+        (function(d, s) {
+            var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+            e.async = true; e.src = "https://static.axept.io/sdk.js";
+            t.parentNode.insertBefore(e, t);
+        })(document, "script");
+    </script>
+
+    <script>
+        window._axcb = window._axcb || [];
+        window._axcb.push(function(axeptio) {
+            // Chargement Microsoft Clarity
+            if (axeptio.userPreferences && axeptio.userPreferences.clarity === true) {
+                (function(c,l,a,r,i,t,y){
+                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/r55tp5wwbi";
+                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script");
+            }
+
+            // Chargement Google Tag Manager
+            if (axeptio.userPreferences && axeptio.userPreferences.google_tag_manager === true) {
+                (function(w,d,s,l,i){
+                    w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+                    var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+                    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+                    f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-T4CG3Z4N');
+            }
+        });
+    </script>
+{% endblock %}
+
     </body>
 </html>
