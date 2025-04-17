@@ -70,13 +70,18 @@
 
     <!-- Consentement Axeptio -->
     <script>
-        window._axcb = window._axcb || [];
-        window._axcb.push(function(axeptio) {
-            console.log("[Axeptio] Widget chargé ✔️");
-            console.log("[Axeptio] Préférences utilisateur :", axeptio.userPreferences);
+    window._axcb = window._axcb || [];
 
-            // Microsoft Clarity
-            if (axeptio.userPreferences && axeptio.userPreferences.clarity === true) {
+    // Quand Axeptio est prêt
+    window._axcb.push(function(axeptio) {
+        console.log("[Axeptio] Widget chargé ✔️");
+
+        // Écouter l'événement de changement de préférences
+        axeptio.on("cookies:complete", function (preferences) {
+            console.log("[Axeptio] Consentement donné ✅", preferences);
+
+            // Clarity
+            if (preferences.clarity) {
                 console.log("[Consentement] Clarity accepté ✅ — chargement du script");
                 (function(c,l,a,r,i,t,y){
                     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -88,7 +93,7 @@
             }
 
             // Google Tag Manager
-            if (axeptio.userPreferences && axeptio.userPreferences.google_tag_manager === true) {
+            if (preferences.google_tag_manager) {
                 console.log("[Consentement] GTM accepté ✅ — chargement du script");
                 (function(w,d,s,l,i){
                     w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
@@ -101,7 +106,9 @@
                 console.warn("[Consentement] GTM refusé ❌ — script non chargé");
             }
         });
-    </script>
+    });
+</script>
+
 {% endblock %}
 
 
