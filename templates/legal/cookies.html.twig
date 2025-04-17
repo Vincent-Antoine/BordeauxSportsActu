@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de cookies - Bordeaux Sports Actu{% endblock %}
+
+{% block body %}
+<section class="bg-white rounded-xl shadow-md p-6 md:p-10 max-w-4xl mx-auto mb-10">
+    <h1 class="text-3xl text-gray-800 mb-6 border-b pb-2">Politique de cookies</h1>
+
+    <div class="space-y-6 text-gray-700 leading-relaxed text-base">
+
+        <div>
+            <h2 class=" text-lg text-gray-900 mb-1">Qu’est-ce qu’un cookie ?</h2>
+            <p>
+                Un cookie est un petit fichier texte déposé sur votre appareil lors de la visite d’un site internet.
+                Il permet de conserver certaines informations sur votre navigation (préférences, statistiques, etc.).
+            </p>
+        </div>
+
+        <div>
+            <h2 class=" text-lg text-gray-900 mb-1">Pourquoi utilisons-nous des cookies ?</h2>
+            <p>Les cookies utilisés sur notre site permettent :</p>
+            <ul class="list-disc list-inside">
+                <li>De mesurer l’audience et améliorer nos contenus (via Microsoft Clarity)</li>
+                <li>De gérer les balises et services tiers (via Google Tag Manager)</li>
+                <li>De stocker vos préférences de consentement (via Axeptio)</li>
+            </ul>
+        </div>
+
+        <div>
+            <h2 class=" text-lg text-gray-900 mb-1">Gestion du consentement</h2>
+            <p>
+                À votre première visite, un bandeau de consentement vous permet de gérer l’activation des cookies. Vous pouvez modifier vos choix à tout moment en cliquant sur le bouton jaune en bas à gauche de votre écran.
+            </p>
+        </div>
+
+        <div>
+            <h2 class=" text-lg text-gray-900 mb-1">Liste des cookies utilisés</h2>
+            <p>Voici les principaux cookies utilisés sur ce site :</p>
+
+            <ul class="list-disc list-inside">
+                <li><strong>CLID</strong> (Microsoft Clarity) – durée : 1 an – suivi statistique</li>
+                <li><strong>_clck</strong> (Clarity) – durée : 1 an – identifiant utilisateur unique</li>
+                <li><strong>_clsk</strong> (Clarity) – durée : 1 jour – session de visite</li>
+                <li><strong>axeptio_authorized_vendors</strong> – durée : 12 mois – préférences utilisateur</li>
+                <li><strong>googletagmanager</strong> – durée variable – gestion des balises</li>
+            </ul>
+
+            <p class="text-sm text-gray-500 mt-2">⚠️ La liste peut évoluer en fonction des services ajoutés ou retirés.</p>
+        </div>
+
+        <div>
+            <h2 class=" text-lg text-gray-900 mb-1">Refus ou suppression des cookies</h2>
+            <p>
+                Vous pouvez refuser les cookies non essentiels à tout moment via le gestionnaire de cookies Axeptio.
+                Vous pouvez également supprimer les cookies via les paramètres de votre navigateur.
+            </p>
+        </div>
+
+        <div>
+            <h2 class=" text-lg text-gray-900 mb-1">Contact</h2>
+            <p>
+                Pour toute question concernant notre politique de cookies, vous pouvez nous écrire à :
+                <a href="mailto:bordeauxsportsactu@gmail.com" class="text-blue-600 hover:underline">bordeauxsportsactu@gmail.com</a>
+            </p>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
