@@ -1,12 +1,23 @@
 <header class="bg-[#dce6ef] text-black" x-data="{ showSports: false }" @click.away="showSports = false">
     <div class="sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 mx-auto px-4 py-4 flex justify-between items-center">
         <!-- En direct -->
-        <div class="flex items-center gap-2 text-sm">
-            <a href="{{ path('app_resultats_live') }}" class="flex items-center gap-2">
-                <span class="w-3 h-3 bg-red-600 rounded-md animate-pulse inline-block" aria-hidden="true"></span>
-                <span>En direct</span>
-            </a>
-        </div>
+        <div class="hidden md:flex items-center gap-2 text-sm">
+    <a href="{{ path('app_resultats_live') }}" class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-red-600 rounded-md animate-pulse inline-block" aria-hidden="true"></span>
+        <span>En direct</span>
+    </a>
+</div>
+<div class="flex md:hidden items-center text-sm">
+    {% if app.user %}
+        <a href="{{ path('app_profile') }}" class="hover:opacity-75 text-2xl" aria-label="Accéder à mon profil">
+<i class="fas fa-user-circle"></i>        </a>
+    {% else %}
+        <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
+<i class="fas fa-user-circle"></i>        </a>
+    {% endif %}
+</div>
+
+
 
         <!-- Logo -->
         <div class="flex justify-center">
@@ -114,6 +125,7 @@
         <ul class="flex flex-col space-y-2 text-sm font-semibold" aria-label="Navigation mobile">
             <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-500">ACTUALITÉS</a></li>
             <li><a href="{{ path('scoreandco') }}" class="hover:text-gray-500">RÉSULTATS</a></li>
+             <li><a href="{{ path('app_resultats_live') }}" class="hover:text-gray-500">LIVE</a></li>
             <li>
 <button @click="showSports = !showSports"
                         class="hover:text-gray-500 w-full text-left"

@@ -20,10 +20,10 @@
 </nav>
 
 <!-- BANNIÈRE -->
-<div class="relative w-full h-[250px] mb-12 parallax-banner"
+<div class="relative w-full h-[100px] sm:h-[250px] mb-12 parallax-banner"
      style="background-image: url('{{ sport.image }}'); background-attachment: fixed; background-size: cover; background-position: center;">
     <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
-    <div class="relative z-10 h-full flex items-center justify-start max-w-7xl mx-auto px-6">
+    <div class="relative z-10 h-full flex items-center justify-start w-full px-6 ">
         <h2 class="text-white text-3xl sm:text-4xl md:text-5xl">
             {{ sport.name }}
         </h2>
@@ -31,7 +31,7 @@
 </div>
 
 <!-- LISTE DES ÉQUIPES -->
-<div class="max-w-6xl mx-auto px-6">
+<div class="w-full mx-auto ">
     <h3 class="text-2xl mb-4">Équipes de {{ sport.name }}</h3>
 
     {% if teams is empty %}
