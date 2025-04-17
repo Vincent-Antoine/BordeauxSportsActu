@@ -77,17 +77,9 @@
         cookiesVersion: "bordeauxsportsactu-fr-EU"
     };
 
-    // Charger le SDK Axeptio (une seule fois)
-    (function(d, s) {
-        if (d.getElementById("axeptio-sdk")) return;
-        var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
-        e.id = "axeptio-sdk";
-        e.async = true;
-        e.src = "https://static.axept.io/sdk.js";
-        t.parentNode.insertBefore(e, t);
-    })(document, "script");
+    // PAS de chargement du SDK ici ! Axeptio le gère déjà via son intégration auto.
 
-    // Code exécuté après chargement du widget Axeptio
+    // Quand le SDK est prêt
     window._axcb = window._axcb || [];
     window._axcb.push(function(axeptio) {
         console.log("[Axeptio] Widget chargé ✔️");
