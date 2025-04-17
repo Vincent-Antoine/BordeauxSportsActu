@@ -2,6 +2,15 @@
 
 {% block title %}Bordeaux Sports Actu{% endblock %}
 
+{% block meta %}
+    <meta name="description" content="Bordeaux Sports Actu - Suivez les résultats, classements et actualités des clubs sportifs de Bordeaux.">
+    <meta name="keywords" content="Bordeaux, sport, résultats, classements, clubs, actualités sportives">
+    <meta property="og:title" content="Bordeaux Sports Actu" />
+    <meta property="og:description" content="L'actu sportive bordelaise en un clin d'œil : résultats, classements, portraits de joueurs, et plus encore." />
+    <meta property="og:type" content="website" />
+{% endblock %}
+
+
 {% block body %}
 <script>
     window.sliderArticles = {{ articles is defined and articles ? articles|map(article => {
