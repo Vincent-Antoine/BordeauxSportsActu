@@ -3,7 +3,7 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block body %}
-<div class="container mx-auto my-8 px-4">
+<div class="container mx-auto my-8">
     <div class="max-w-5xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         {% if article.imageName %}
             <img 
@@ -32,10 +32,10 @@
                 {{ article.content|raw }}
             </div>
 
-            <div class="text-center mt-4">
+            <div class="text-left mt-4">
                 <a href="{{ path('article_index') }}" 
                    class="inline-block bg-blue-500 text-white px-6 py-2 rounded shadow hover:bg-blue-600 transition duration-200">
-                    Retour à la liste
+                    Retour aux articles
                 </a>
             </div>
         </div>

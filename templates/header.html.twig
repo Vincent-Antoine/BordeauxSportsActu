@@ -67,7 +67,7 @@
             <a href="{{ path('app_blog_index') }}"
                class="{% if app.request.attributes.get('_route') starts with 'app_blog' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
                 {% if app.user and favoriteTeams is defined and favoriteTeams|length > 0 %}
-                    MES ACTUS <span class="text-pink-400" aria-hidden="true">❤</span>
+                    MES ACTUS <!---<span class="text-pink-400" aria-hidden="true">❤</span>-->
                 {% else %}
                     ACTUALITÉS
                 {% endif %}
