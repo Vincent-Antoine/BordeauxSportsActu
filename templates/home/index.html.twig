@@ -13,7 +13,7 @@
     }) | json_encode | raw : '[]' }};
 </script>
 
-<div class="container mx-auto py-8" x-data="carouselComponent()" x-init="init()" @mouseenter="pause()" @mouseleave="start()">
+<div class="container mx-auto pb-12 pt-6" x-data="carouselComponent()" x-init="init()" @mouseenter="pause()" @mouseleave="start()">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl sm:text-3xl text-primary-blue font-title">
             {{ app.user and articlesFromFavoriteTeams is defined and articlesFromFavoriteTeams|length > 0 ? 'Mes actus' : 'À la une' }}
@@ -64,8 +64,8 @@
     {% for teamName in resultsToShow|keys %}
         <div x-show="currentSlide === {{ loop.index0 }}" class="flex flex-col md:flex-row gap-6">
             <!-- Résultats -->
-            <div class="w-full md:w-1/2 bg-gray-100 p-4 rounded shadow">
-                <h3 class="text-xl text-primary-black mb-2">{{ teamName }}</h3>
+<div class="hidden md:block w-full md:w-1/2 bg-gray-100 p-4 rounded shadow">
+                <h3 class="text-lg font-semibold text-primary-black mb-1">{{ teamName }}</h3>
                 <table class="w-full bg-white border border-gray-200 text-sm">
                     <thead class="bg-gray-100">
                         <tr>
@@ -103,51 +103,114 @@
                 </table>
             </div>
 
+            <div class="block md:hidden w-full">
+    {% set result = (resultsToShow[teamName] ?? [])[0] ?? null %}
+    {% if result %}
+        {% set home_score = result.home_score ?? '?' %}
+        {% set away_score = result.away_score ?? '?' %}
+        {% set home_win = home_score|default(0) > away_score|default(0) %}
+        {% set away_win = away_score|default(0) > home_score|default(0) %}
+        {% set teamSlug = teamName|lower|replace({' ': '-'}) %}
+
+        <div class="bg-white rounded shadow p-4 w-full mb-4 relative">
+            <!-- Nom du club -->
+            <div class="text-lg font-semibold text-primary-black mb-1">
+                {{ teamName }}
+            </div>
+
+            <!-- Date -->
+            <div class="text-sm text-gray-500 mb-3">
+                {{ result.date is defined ? result.date|date('d/m/Y') : 'Date inconnue' }}
+            </div>
+
+            <!-- Équipe domicile -->
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                    {% if result.home_logo %}
+                        <img src="{{ result.home_logo }}" alt="Logo {{ result.home_team }}" class="h-6 w-6 rounded">
+                    {% endif %}
+                    <span class="font-medium">{{ result.home_team ?? 'N/A' }}</span>
+                </div>
+                <span class="{{ home_win ? 'font-bold text-green-600' : '' }}">
+                    {{ home_score }}
+                </span>
+            </div>
+
+            <!-- Équipe extérieur -->
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-2">
+                    {% if result.away_logo %}
+                        <img src="{{ result.away_logo }}" alt="Logo {{ result.away_team }}" class="h-6 w-6 rounded">
+                    {% endif %}
+                    <span class="font-medium">{{ result.away_team ?? 'N/A' }}</span>
+                </div>
+                <span class="{{ away_win ? 'font-bold text-green-600' : '' }}">
+                    {{ away_score }}
+                </span>
+            </div>
+
+            <!-- Bouton vers tous les résultats -->
+            <div class="flex justify-end">
+                <a href="/equipe/{{ teamSlug }}" class="text-sm text-blue-600 hover:underline">
+                    Voir tous les résultats
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center text-gray-500">Aucun résultat</div>
+    {% endif %}
+</div>
+
+
+
             <!-- Classement -->
             <div class="w-full md:w-1/2 bg-gray-100 p-4 rounded shadow">
-                <h3 class="text-xl text-primary-black mb-2">{{ teamName }}</h3>
-                <table class="table-auto w-full text-left text-sm border">
-                    <thead class="bg-gray-200">
-                        <tr>
-                            <th class="p-2">Rang</th>
-                            <th class="p-2">Équipe</th>
-                            <th class="p-2">Pts</th>
-                            <th class="p-2">J</th>
-                            <th class="p-2">V</th>
-                            <th class="p-2">D</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% set ranking = rankings[teamName] ?? [] %}
-                        {% if ranking is not empty %}
-                            {% for team in ranking %}
-                                <tr class="border-t">
-                                    <td class="p-2">{{ team.rank }}</td>
-                                    <td class="p-2 flex items-center gap-2">
-                                        {% if team.logo %}
-                                            <img src="{{ team.logo }}" alt="logo {{ team.name }}" width="20" class="inline-block rounded">
-                                        {% endif %}
-                                        {{ team.name }}
-                                    </td>
-                                    <td class="p-2">{{ team.pts }}</td>
-                                    <td class="p-2">{{ team.played }}</td>
-                                    <td class="p-2">{{ team.win }}</td>
-                                    <td class="p-2">{{ team.lost }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr><td colspan="6" class="p-2 text-center text-gray-500">Aucun classement disponible</td></tr>
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
+    <div class="text-lg font-semibold text-primary-black mb-1">{{ teamName }}</div>
+    <table class="table-auto w-full text-left text-sm border">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="p-2">Rang</th>
+                <th class="p-2">Équipe</th>
+                <th class="p-2">Pts</th>
+                <th class="p-2 hidden md:table-cell">J</th>
+                <th class="p-2 hidden md:table-cell">V</th>
+                <th class="p-2 hidden md:table-cell">D</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set ranking = rankings[teamName] ?? [] %}
+            {% if ranking is not empty %}
+                {% for team in ranking %}
+                    <tr class="border-t">
+                        <td class="p-2">{{ team.rank }}</td>
+                        <td class="p-2 flex items-center gap-2">
+                            {% if team.logo %}
+                                <img src="{{ team.logo }}" alt="logo {{ team.name }}" width="20" class="inline-block rounded">
+                            {% endif %}
+                            {{ team.name }}
+                        </td>
+                        <td class="p-2">{{ team.pts }}</td>
+                        <td class="p-2 hidden md:table-cell">{{ team.played }}</td>
+                        <td class="p-2 hidden md:table-cell">{{ team.win }}</td>
+                        <td class="p-2 hidden md:table-cell">{{ team.lost }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" class="p-2 text-center text-gray-500">Aucun classement disponible</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
         </div>
     {% endfor %}
 </div>
 
 <!-- Catégories sportives -->
 <section class="container mx-auto py-12" x-data="sliderCategorie()" x-init="init()">
-    <h2 class="text-2xl text-center mb-6">Catégories sportives</h2>
+    <h2 class="text-2xl text-left md:text-center mb-6 text-primary-blue font-title">Catégories sportives</h2>
     <div class="relative">
         <div class="flex gap-4 px-2 overflow-hidden" x-ref="slider">
             <template x-for="(item, index) in items" :key="index">
@@ -179,17 +242,28 @@
 
 {% if portrait %}
 <section class="container mx-auto py-12">
-    <h2 class="text-2xl text-primary-blue font-title text-start mb-6">Portrait de la semaine</h2>
-    <div class="flex flex-col md:flex-row items-center gap-6 bg-white p-6 rounded shadow">
+    <h2 class="text-2xl text-primary-blue font-title text-start mb-6 ">Portrait de la semaine</h2>
+    <div class="flex flex-col md:flex-row items-center gap-6 bg-white p-6 rounded shadow text-left">
         {% if portrait.article.imageName %}
-            <img src="{{ vich_uploader_asset(portrait.article, 'imageFile') }}" alt="Portrait de {{ portrait.prenom }} {{ portrait.nom }}" class="w-48 h-48 object-cover rounded" loading="lazy">
+<img 
+  src="{{ vich_uploader_asset(portrait.article, 'imageFile') }}" 
+  alt="Portrait de {{ portrait.prenom }} {{ portrait.nom }}" 
+  class="w-full sm:w-48 h-auto sm:h-48 object-cover rounded" 
+  loading="lazy">
         {% endif %}
-        <div class="flex-1">
-            <h3 class="text-xl">{{ portrait.prenom }} {{ portrait.nom }}</h3>
-            <p class="text-gray-700 mt-2">{{ portrait.description }}</p>
-            <a href="{{ path('article_show', { slug: portrait.article.slug }) }}"
-               class="inline-block mt-4 text-blue-600 hover:underline">Lire l’article complet</a>
-        </div>
+        <div class="flex-1 text-left w-full">
+    <!-- Nom et prénom visibles sur mobile -->
+    <h3 class="text-xl block sm:hidden">{{ portrait.prenom }} {{ portrait.nom }}</h3>
+
+    <!-- Bloc complet visible à partir de sm -->
+    <div class="hidden sm:block">
+        <h3 class="text-xl">{{ portrait.prenom }} {{ portrait.nom }}</h3>
+        <p class="text-gray-700 mt-2">{{ portrait.description }}</p>
+        <a href="{{ path('article_show', { slug: portrait.article.slug }) }}"
+           class="inline-block mt-4 text-blue-600 hover:underline">Lire l’article complet</a>
+    </div>
+</div>
+
     </div>
 </section>
 {% endif %}

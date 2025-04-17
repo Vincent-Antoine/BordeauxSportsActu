@@ -11,20 +11,21 @@
 
     <div x-data="{ activeTab: 0 }">
         <!-- Onglets -->
-        <div class="flex flex-wrap border-b bg-gray-100 mb-6">
+        <div class="flex flex-col md:flex-row flex-wrap border-b bg-gray-100 mb-6 ">
             {% for clubName, matchs in results %}
                 <button
-                    @click="activeTab = {{ loop.index0 }}"
-                    :class="activeTab === {{ loop.index0 }} ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'"
-                    class="px-4 py-2 text-sm  focus:outline-none"
-                >
-                    {{ clubName }}
-                </button>
+    @click="activeTab = {{ loop.index0 }}; $nextTick(() => document.getElementById('resultats-{{ loop.index0 }}')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))"
+    :class="activeTab === {{ loop.index0 }} ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'"
+    class="px-4 py-2 text-sm focus:outline-none text-left md:text-center"
+>
+    {{ clubName }}
+</button>
+
             {% endfor %}
             <button
                 @click="activeTab = {{ results|length }}"
                 :class="activeTab === {{ results|length }} ? 'border-b-4 border-indigo-600 text-indigo-600' : 'text-gray-600 hover:text-indigo-600'"
-                class="px-4 py-2 text-sm  focus:outline-none"
+                class="px-4 py-2 text-sm  focus:outline-none text-left md:text-center"
             >
                 Rugby Amateur
             </button>
@@ -38,7 +39,11 @@
                 {% if matchs is empty %}
                     <p class="text-red-600">Aucun match trouvé pour {{ clubName }}.</p>
                 {% else %}
-                    <div class="overflow-x-auto mb-6">
+<a id="resultats-{{ loop.index0 }}"></a>
+                        <h3 class="text-lg mb-2">Derniers résultats</h3>
+
+                    <div class="overflow-x-auto mb-6 hidden md:block
+">
                         <table class="w-full bg-white border border-gray-100  shadow-md text-sm">
                             <thead>
                                 <tr class="bg-gray-100">
@@ -81,40 +86,96 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Version mobile : cartes empilées -->
+<div class="block md:hidden space-y-4 mb-6">
+    {% for match in matchs|slice(0, 6) %}
+        {% set home_score = match.home_score ?? '?' %}
+        {% set away_score = match.away_score ?? '?' %}
+        {% set home_win = home_score|default(0) > away_score|default(0) %}
+        {% set away_win = away_score|default(0) > home_score|default(0) %}
+
+        <div class="bg-white rounded shadow p-4 w-full">
+            <!-- Date et heure -->
+            <div class="text-sm text-gray-500 mb-2">
+                {% if match.date is defined %}
+                    {{ match.date|date('d/m/Y') }}
+                    {% if match.time is defined %}
+                        à {{ match.time|date('H:i') }}
+                    {% endif %}
+                {% else %}
+                    Date inconnue
+                {% endif %}
+            </div>
+
+            <!-- Équipe domicile -->
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                    {% if match.home_logo %}
+                        <img src="{{ match.home_logo }}" alt="Logo {{ match.home_team }}" class="h-6 w-6 rounded">
+                    {% endif %}
+                    <span class="font-medium">{{ match.home_team ?? 'N/A' }}</span>
+                </div>
+                <span class="{{ home_win ? 'font-bold text-green-600' : '' }}">
+                    {{ home_score }}
+                </span>
+            </div>
+
+            <!-- Équipe extérieure -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    {% if match.away_logo %}
+                        <img src="{{ match.away_logo }}" alt="Logo {{ match.away_team }}" class="h-6 w-6 rounded">
+                    {% endif %}
+                    <span class="font-medium">{{ match.away_team ?? 'N/A' }}</span>
+                </div>
+                <span class="{{ away_win ? 'font-bold text-green-600' : '' }}">
+                    {{ away_score }}
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+                    
                 {% endif %}
 
+                
+
                 {% if rankings[clubId] is defined %}
-                    <div class="overflow-x-auto">
-                        <h3 class="text-lg  mb-2">Classement</h3>
-                        <table class="table-auto w-full text-left text-sm border">
-                            <thead class="bg-gray-200">
-                                <tr>
-                                    <th class="p-2">Rang</th>
-                                    <th class="p-2">Équipe</th>
-                                    <th class="p-2">Pts</th>
-                                    <th class="p-2">J</th>
-                                    <th class="p-2">V</th>
-                                    <th class="p-2">D</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white">
-                                {% for team in rankings[clubId] %}
-                                    <tr class="border-t">
-                                        <td class="p-2">{{ team.rank }}</td>
-                                        <td class="p-2 flex items-center gap-2">
-                                            <img src="{{ team.logo }}" alt="logo" width="20" class="inline-block rounded">
-                                            {{ team.name }}
-                                        </td>
-                                        <td class="p-2">{{ team.pts }}</td>
-                                        <td class="p-2">{{ team.played }}</td>
-                                        <td class="p-2">{{ team.win }}</td>
-                                        <td class="p-2">{{ team.lost }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% endif %}
+    <div class="overflow-x-auto">
+        <h3 class="text-lg mb-2">Classement</h3>
+        <table class="table-auto w-full text-left text-sm border">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="p-2">Rang</th>
+                    <th class="p-2">Équipe</th>
+                    <th class="p-2">Pts</th>
+                    <th class="p-2 hidden md:table-cell">J</th>
+                    <th class="p-2 hidden md:table-cell">V</th>
+                    <th class="p-2 hidden md:table-cell">D</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                {% for team in rankings[clubId] %}
+                    <tr class="border-t">
+                        <td class="p-2">{{ team.rank }}</td>
+                        <td class="p-2 flex items-center gap-2">
+                            <img src="{{ team.logo }}" alt="logo" width="20" class="inline-block rounded">
+                            {{ team.name }}
+                        </td>
+                        <td class="p-2">{{ team.pts }}</td>
+                        <td class="p-2 hidden md:table-cell">{{ team.played }}</td>
+                        <td class="p-2 hidden md:table-cell">{{ team.win }}</td>
+                        <td class="p-2 hidden md:table-cell">{{ team.lost }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
             </div>
         {% endfor %}
 
