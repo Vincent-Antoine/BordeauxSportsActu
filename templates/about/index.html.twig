@@ -4,18 +4,18 @@
 
 {% block body %}
 
-<div class="flex flex-col items-center justify-center gap-4 mt-20 relative">
-    <h1 class="text-5xl text-[#FF6600] block">Ton media sportif</h1>
-    <h2 class="text-2xl uppercase font-body block">ACTUALITÉ, RESULTATS, CALENDRIERS & INTERVIEWS ...</h2>
-    <h3 class="text-primary-blue text-5xl block">Dédié au sport bordelais</h3>
-    <button class="mt-20 bg-[#6699CC] hover:bg-[#333367] text-white py-2 px-4 rounded-full">
-        <a href="{{ path('app_profile') }}">Créer mon compte !</a>
+<div class="flex flex-col items-center justify-center gap-1 sm:gap-4 mt-10 sm:mt-20 relative">
+    <h1 class="text-3xl sm:text-5xl text-[#FF6600] block">Ton media sportif</h1>
+    <h2 class="text-[14px] sm:text-2xl uppercase font-body block">ACTUALITÉ, RESULTATS, CALENDRIERS & INTERVIEWS ...</h2>
+    <h3 class="text-3xl sm:text-5xl text-primary-blue block">Dédié au sport bordelais</h3>
+    <button class="mt-5 sm:mt-20 bg-[#6699CC] hover:bg-[#333367] text-white py-2 px-4 rounded-full">
+<a href="{{ path('app_profile') }}" class="text-[14px] sm:text-base">Créer mon compte !</a>
     </button>
-    <img src="{{ asset('/medias/ballon-about.webp') }}" alt="Ballon de bastekball" class="w-[20%] absolute top-0 right-0">
+<img src="{{ asset('/medias/ballon-about.webp') }}" alt="Ballon de bastekball" class="w-[20%] absolute top-[-40px] sm:top-0 right-0">
 </div>
 
-<div  class="mt-20">
-    <h2 class="mb-8 text-2xl uppercase font-body block">Une plateforme créée par un collectif étudiant</h2>
+<div  class="mt-10 sm:mt-20">
+    <h2 class="mb-8 text-[14px] sm:text-2xl  uppercase font-body block">Une plateforme créée par un collectif étudiant</h2>
 <div class="py-10">
   <div class="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 gap-8 place-items-center">
     {% set avatars = [
@@ -39,13 +39,13 @@
   </div>
 </div>
 
-<p>propulsés par YNOV BORDEAUX CAMPUS </p>
+<p class="text-[14px] sm:text-[16px] ">propulsés par YNOV BORDEAUX CAMPUS </p>
 
 </div>
 
-<div  class="mt-20">
+<div  class="mt-10 sm:mt-20">
 
-<h2 class="text-2xl uppercase font-body block mb-8">Toutes les news de tes équipes préférées</h2>
+<h2 class="text-[14px] sm:text-2xl uppercase font-body block mb-8">Toutes les news de tes équipes préférées</h2>
 
 <div class="grid md:grid-cols-5 gap-6">
   {% for article in articles %}
@@ -80,7 +80,7 @@
 
 <p>
   <a  href="{{ path('article_index') }}"
-     class="group inline-flex items-center text-[#6699CC] font-medium hover:text-[#333367] transition duration-300">
+     class="mt-4 group inline-flex items-center text-[#6699CC] font-medium hover:text-[#333367] transition duration-300">
     Tous les articles
     <svg class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300"
          fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -95,7 +95,7 @@
 <p class="mt-4">Créer ton compte et ajoute tes équipes favorites pour les retrouver dans la rubrique “Mes Actus”.</p>
 </div>
 
-<div class="mt-20">
+<div class="mt-10 sm:mt-20">
 
 <h2 class="text-2xl uppercase font-body block mb-8">Nos valeurs</h2>
 <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-gray-800">
