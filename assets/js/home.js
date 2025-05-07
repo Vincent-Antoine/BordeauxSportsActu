@@ -40,12 +40,12 @@ export function sliderCategorie() {
         alt: "Joueurs de l’Union Bordeaux Bègles en match",
         slug: "rugby",
       },
-      {
-        title: "Rugby Amateur",
-        image: "",
-        alt: "Match de rugby amateur avec plusieurs joueurs",
-        slug: "rugby-amateur",
-      },
+      // {
+      //   title: "Rugby Amateur",
+      //   image: "",
+      //   alt: "Match de rugby amateur avec plusieurs joueurs",
+      //   slug: "rugby-amateur",
+      // },
       {
         title: "Hockey sur glace",
         image: "/medias/hockey-sur-glace.webp",
@@ -54,7 +54,7 @@ export function sliderCategorie() {
       },
       {
         title: "Basket",
-        image: "",
+        image: "/medias/JSA-BMB.webp",
         alt: "Matche de basketball avec plusieurs joueurs sur le terrain",
         slug: "basketball",
       },
