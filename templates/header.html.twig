@@ -1,37 +1,39 @@
 <header class="bg-[#dce6ef] text-black" x-data="{ showSports: false }" @click.away="showSports = false">
-<div class="sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 mx-auto px-4 py-4 flex justify-between items-center">
+<div class="sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 mx-auto px-4 py-8 flex justify-between items-center relative">
         <!-- En direct (à partir de tablette) -->
-<div class="hidden lg:flex items-center gap-2 text-sm">
-    <a href="{{ path('app_resultats_live') }}" class="flex items-center gap-2">
-        <span class="w-3 h-3 bg-red-600 rounded-md animate-pulse inline-block" aria-hidden="true"></span>
-        <span>En direct</span>
-    </a>
-</div>
+    <div class="hidden lg:flex items-center gap-2 text-sm">
+        <a href="{{ path('app_resultats_live') }}" class="flex items-center gap-2">
+            <span class="w-3 h-3 bg-red-600 rounded-md animate-pulse inline-block" aria-hidden="true"></span>
+            <span>En direct</span>
+        </a>
+    </div>
 
-<!-- Bouton profil / login (mobile uniquement) -->
-<div class="flex lg:hidden items-center text-sm">
-    {% if app.user %}
-        <a href="{{ path('app_profile') }}" class="hover:opacity-75 text-2xl" aria-label="Accéder à mon profil">
-            <i class="fas fa-user-circle"></i>
-        </a>
-    {% else %}
-        <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
-            <i class="fas fa-user-circle"></i>
-        </a>
-    {% endif %}
-</div>
+    <!-- Bouton profil / login (mobile uniquement) -->
+    <div class="flex lg:hidden items-center text-sm">
+        {% if app.user %}
+            <a href="{{ path('app_profile') }}" class="hover:opacity-75 text-2xl" aria-label="Accéder à mon profil">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        {% endif %}
+    </div>
 
 
 
         <!-- Logo -->
-        <div class="flex justify-center">
-            <a href="{{ path('app_home') }}" aria-label="Accueil Bordeaux Sports Actu">
-                <img src="/medias/logo-bsa.png" alt="Logo de Bordeaux Sports Actu" class="h-12 sm:h-14">
-            </a>
-        </div>
+        <!-- Logo centré -->
+<div class="absolute left-1/2 transform -translate-x-1/2 z-10">
+    <a href="{{ path('app_home') }}" aria-label="Accueil Bordeaux Sports Actu">
+        <img src="/medias/logo-bsa.png" alt="Logo de Bordeaux Sports Actu" class="h-12 sm:h-14">
+    </a>
+</div>
+
 
         <!-- Réseaux + Connexion (visible uniquement à partir de 1024px) -->
-<div class="hidden lg:flex items-center text-sm gap-4">
+    <div class="hidden lg:flex items-center text-sm gap-4">
     <!-- Icône utilisateur -->
     <div class="flex items-center text-sm">
         {% if app.user %}
@@ -39,7 +41,7 @@
                 <i class="fas fa-user-circle"></i>
             </a>
         {% else %}
-            <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
+                  <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
                 <i class="fas fa-user-circle"></i>
             </a>
         {% endif %}
@@ -73,56 +75,56 @@
     </div>
 
     <!-- Menu principal (desktop) -->
-<div class="sticky top-0 z-50">
-  <nav class="hidden lg:flex bg-[#2f2f5a] text-white rounded-full mx-auto max-w-screen-xl px-6 py-3 text-sm font-semibold shadow-md"
-       aria-label="Navigation principale">
-    <div class="max-w-screen-xl mx-auto px-4">
-        <div class="flex justify-around items-center space-x-6">
-            <a href="{{ path('app_blog_index') }}"
-               class="{% if app.request.attributes.get('_route') starts with 'app_blog' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
-                {% if app.user and favoriteTeams is defined and favoriteTeams|length > 0 %}
-                    MES ACTUS <!---<span class="text-pink-400" aria-hidden="true">❤</span>-->
-                {% else %}
-                    ACTUALITÉS
-                {% endif %}
-            </a>
+    <div class="sticky top-0 z-50">
+    <nav class="hidden lg:flex bg-[#2f2f5a] text-white rounded-full mx-auto max-w-screen-xl px-6 py-3 text-sm font-semibold shadow-md"
+        aria-label="Navigation principale">
+        <div class="max-w-screen-xl mx-auto px-4">
+            <div class="flex justify-around items-center space-x-6">
+                <a href="{{ path('app_blog_index') }}"
+                class="{% if app.request.attributes.get('_route') starts with 'app_blog' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
+                    {% if app.user and favoriteTeams is defined and favoriteTeams|length > 0 %}
+                        MES ACTUS <!---<span class="text-pink-400" aria-hidden="true">❤</span>-->
+                    {% else %}
+                        ACTUALITÉS
+                    {% endif %}
+                </a>
 
-            <a href="{{ path('scoreandco') }}"
-               class="{% if app.request.attributes.get('_route') == 'scoreandco' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
-                RÉSULTATS
-            </a>
+                <a href="{{ path('scoreandco') }}"
+                class="{% if app.request.attributes.get('_route') == 'scoreandco' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
+                    RÉSULTATS
+                </a>
 
-            <!-- Sous-menu SPORTS -->
-            <div class="relative" x-data="{ open: false, timeout: null }"
-     @mouseenter="clearTimeout(timeout); open = true"
-     @mouseleave="timeout = setTimeout(() => open = false, 150)">
-    
-    <a href="{{ path('app_sports') }}">
-        <button type="button"
-                class="flex items-center gap-1 {% if app.request.attributes.get('_route') starts with 'app_sport_show' or app.request.attributes.get('_route') == 'app_sports' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %} focus:outline-none"
-                aria-haspopup="true"
-                :aria-expanded="open.toString()"
-                aria-controls="submenu-sports">
-            SPORTS
-            <i x-show="!open" class="fa-solid fa-chevron-down transition duration-200"></i>
-            <i x-show="open" class="fa-solid fa-chevron-up transition duration-200"></i>
-        </button>
-    </a>
+                <!-- Sous-menu SPORTS -->
+                <div class="relative" x-data="{ open: false, timeout: null }"
+        @mouseenter="clearTimeout(timeout); open = true"
+        @mouseleave="timeout = setTimeout(() => open = false, 150)">
+        
+        <a href="{{ path('app_sports') }}">
+            <button type="button"
+                    class="flex items-center gap-1 {% if app.request.attributes.get('_route') starts with 'app_sport_show' or app.request.attributes.get('_route') == 'app_sports' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %} focus:outline-none"
+                    aria-haspopup="true"
+                    :aria-expanded="open.toString()"
+                    aria-controls="submenu-sports">
+                SPORTS
+                <i x-show="!open" class="fa-solid fa-chevron-down transition duration-200"></i>
+                <i x-show="open" class="fa-solid fa-chevron-up transition duration-200"></i>
+            </button>
+        </a>
 
-    <div x-show="open"
-         id="submenu-sports"
-         x-transition.opacity.duration.200ms
-         class="absolute left-0 mt-2 bg-white text-gray-700 rounded shadow w-44 py-2 text-sm z-50"
-         @keydown.escape.window="open = false">
-        <ul>
-            <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block px-4 py-2 hover:bg-gray-100">Football</a></li>
-            <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block px-4 py-2 hover:bg-gray-100">Rugby</a></li>
-            <li><a href="{{ path('app_sport_show', { slug: 'volleyball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Volley</a></li>
-            <li><a href="{{ path('app_sport_show', { slug: 'hockey-sur-glace' }) }}" class="block px-4 py-2 hover:bg-gray-100">Hockey</a></li>
-            <li><a href="{{ path('app_sport_show', { slug: 'basketball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Basketball</a></li>
-        </ul>
+        <div x-show="open"
+            id="submenu-sports"
+            x-transition.opacity.duration.200ms
+            class="absolute left-0 mt-2 bg-white text-gray-700 rounded shadow w-44 py-2 text-sm z-50"
+            @keydown.escape.window="open = false">
+            <ul>
+                <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block px-4 py-2 hover:bg-gray-100">Football</a></li>
+                <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block px-4 py-2 hover:bg-gray-100">Rugby</a></li>
+                <li><a href="{{ path('app_sport_show', { slug: 'volleyball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Volley</a></li>
+                <li><a href="{{ path('app_sport_show', { slug: 'hockey-sur-glace' }) }}" class="block px-4 py-2 hover:bg-gray-100">Hockey</a></li>
+                <li><a href="{{ path('app_sport_show', { slug: 'basketball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Basketball</a></li>
+            </ul>
+        </div>
     </div>
-</div>
 
 
             <a href="{{ path('app_calendar') }}"
