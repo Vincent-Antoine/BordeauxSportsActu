@@ -55,4 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', updateFixedNavVisibility);
     window.addEventListener('resize', updateFixedNavVisibility);
     updateFixedNavVisibility();
+
+    
 });

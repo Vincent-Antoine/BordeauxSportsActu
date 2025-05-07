@@ -54,54 +54,36 @@
 
     <!-- Initialisation Axeptio -->
     <script>
-        /*console.log("[Axeptio] Initialisation du widget...");*/
-        window.axeptioSettings = {
-            clientId: "6800b1c97e1ab3015a54ec5f",
-            cookiesVersion: "bordeauxsportsactu-fr-EU"
-        };
-        (function(d, s) {
-            var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
-            e.async = true; e.src = "https://static.axept.io/sdk.js";
-            t.parentNode.insertBefore(e, t);
-        })(document, "script");
-    </script>
-
-    <!-- Consentement Axeptio -->
-<script>
-    {# console.log("[Axeptio] Initialisation du widget…"); #}
-
     window.axeptioSettings = {
         clientId: "6800b1c97e1ab3015a54ec5f",
         cookiesVersion: "bordeauxsportsactu-fr-EU"
     };
 
-    // Quand le SDK est prêt
+    (function(d, s) {
+        var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+        e.async = true;
+        e.src = "https://static.axept.io/sdk.js";
+        t.parentNode.insertBefore(e, t);
+    })(document, "script");
+
     window._axcb = window._axcb || [];
     window._axcb.push(function(axeptio) {
-        /*console.log("[Axeptio] Widget chargé ✔️");*/
+        // Ouvre la popup automatiquement à la première visite
+        if (!axeptio.consentGiven) {
+            axeptio.openWidget();
+        }
 
-        axeptio.on("cookies:complete", function (preferences) {
-            /*console.log("[Axeptio] Consentement donné ✅", preferences);*/
-
-            for (const key in preferences) {
-                /*console.log(`Préférence : ${key} =>`, preferences[key]);*/
-            }
-
-            // Chargement Microsoft Clarity
+        axeptio.on("cookies:complete", function(preferences) {
+            // Traitement des préférences
             if (preferences.clarity) {
-                /*console.log("[Consentement] Clarity accepté ✅ — chargement du script");*/
                 (function(c,l,a,r,i,t,y){
                     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
                     t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/r55tp5wwbi";
                     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
                 })(window, document, "clarity", "script");
-            } else {
-                /*console.warn("[Consentement] Clarity refusé ❌ — script non chargé");*/
             }
 
-            // Chargement Google Tag Manager
             if (preferences.googletagmanager) {
-                /*console.log("[Consentement] GTM accepté ✅ — chargement du script");*/
                 (function(w,d,s,l,i){
                     w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
                     var f=d.getElementsByTagName(s)[0],
@@ -109,12 +91,11 @@
                     j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
                     f.parentNode.insertBefore(j,f);
                 })(window,document,'script','dataLayer','GTM-T4CG3Z4N');
-            } else {
-                /*console.warn("[Consentement] GTM refusé ❌ — script non chargé");*/
             }
         });
     });
 </script>
+
 
 
 
