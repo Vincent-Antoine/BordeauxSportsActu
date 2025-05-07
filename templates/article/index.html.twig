@@ -59,15 +59,16 @@
         </template>
     </div>
 
-    <div class="flex justify-end mt-4 space-x-2 items-center">
-        <template x-for="(article, i) in articles" :key="i">
-            <button
-                @click="currentIndex = i"
-                class="w-3 h-3 rounded-full"
-                :class="{'bg-primary-blue': currentIndex === i, 'bg-gray-300': currentIndex !== i}"
-            ></button>
-        </template>
-    </div>
+    <div class="flex justify-end mt-4 space-x-2 items-center" x-show="articles.length > 1">
+    <template x-for="(article, i) in articles" :key="i">
+        <button
+            @click="currentIndex = i"
+            class="w-3 h-3 rounded-full"
+            :class="{'bg-primary-blue': currentIndex === i, 'bg-gray-300': currentIndex !== i}"
+        ></button>
+    </template>
+</div>
+
 </div>
 
 <!-- == SECTION FILTRES / RECHERCHE / TRI + PAGINATION (3 articles par page) == -->
