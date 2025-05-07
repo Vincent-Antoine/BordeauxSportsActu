@@ -55,8 +55,9 @@
     </div>
 
     <!-- Menu principal (desktop) -->
-    <nav class="hidden lg:flex bg-[#2f2f5a] text-white rounded-full mx-auto max-w-screen-xl px-6 py-3 mt-4 text-sm font-semibold"
-     aria-label="Navigation principale">
+<div class="sticky top-0 z-50">
+  <nav class="hidden lg:flex bg-[#2f2f5a] text-white rounded-full mx-auto max-w-screen-xl px-6 py-3 text-sm font-semibold shadow-md"
+       aria-label="Navigation principale">
     <div class="max-w-screen-xl mx-auto px-4">
         <div class="flex justify-around items-center space-x-6">
             <a href="{{ path('app_blog_index') }}"
@@ -112,7 +113,10 @@
             </a>
         </div>
     </div>
-</nav>
+  </nav>
+</div>
+
+
 
 
     <!-- Menu Mobile -->
