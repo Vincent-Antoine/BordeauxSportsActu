@@ -116,6 +116,37 @@
     });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Vérifie si le consentement a déjà été donné
+    const hasConsent = localStorage.getItem('axeptio_cookies');
+
+    if (!hasConsent) {
+        // Attendre que le DOM charge et que le shadow DOM soit prêt
+        const tryClick = () => {
+            const axeptioOverlay = document.getElementById('axeptio_overlay');
+            if (!axeptioOverlay) {
+                return setTimeout(tryClick, 300);
+            }
+
+            const shadowRoot = axeptioOverlay.shadowRoot;
+            if (!shadowRoot) {
+                return setTimeout(tryClick, 300);
+            }
+
+            const mainButton = shadowRoot.getElementById('axeptio_main_button');
+            if (mainButton) {
+                mainButton.click();
+                console.log('✅ Bouton Axeptio cliqué automatiquement');
+            } else {
+                setTimeout(tryClick, 300); // Réessayer si le bouton n’est pas encore là
+            }
+        };
+
+        tryClick();
+    }
+});
+</script>
 
 
 
