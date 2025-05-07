@@ -1,179 +1,138 @@
 <header class="bg-[#dce6ef] text-black" x-data="{ showSports: false }" @click.away="showSports = false">
-<div class="sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 mx-auto px-4 py-8 flex justify-between items-center relative">
-        <!-- En direct (à partir de tablette) -->
+  <div class="sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 mx-auto px-4 py-8 flex justify-between items-center relative">
+    <!-- En direct (desktop uniquement) -->
     <div class="hidden lg:flex items-center gap-2 text-sm">
-        <a href="{{ path('app_resultats_live') }}" class="flex items-center gap-2">
-            <span class="w-3 h-3 bg-red-600 rounded-md animate-pulse inline-block" aria-hidden="true"></span>
-            <span>En direct</span>
-        </a>
+      <a href="{{ path('app_resultats_live') }}" class="flex items-center gap-2">
+        <span class="w-3 h-3 bg-red-600 rounded-md animate-pulse inline-block" aria-hidden="true"></span>
+        <span>En direct</span>
+      </a>
     </div>
 
-    <!-- Bouton profil / login (mobile uniquement) -->
+    <!-- Profil mobile -->
     <div class="flex lg:hidden items-center text-sm">
-        {% if app.user %}
-            <a href="{{ path('app_profile') }}" class="hover:opacity-75 text-2xl" aria-label="Accéder à mon profil">
-                <i class="fas fa-user-circle"></i>
-            </a>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
-                <i class="fas fa-user-circle"></i>
-            </a>
-        {% endif %}
+      {% if app.user %}
+        <a href="{{ path('app_profile') }}" class="hover:opacity-75 text-2xl" aria-label="Accéder à mon profil">
+          <i class="fas fa-user-circle"></i>
+        </a>
+      {% else %}
+        <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
+          <i class="fas fa-user-circle"></i>
+        </a>
+      {% endif %}
     </div>
 
-
-
-        <!-- Logo -->
-        <!-- Logo centré -->
-<div class="absolute left-1/2 transform -translate-x-1/2 z-10">
-    <a href="{{ path('app_home') }}" aria-label="Accueil Bordeaux Sports Actu">
+    <!-- Logo centré -->
+    <div class="absolute left-1/2 transform -translate-x-1/2 z-10">
+      <a href="{{ path('app_home') }}" aria-label="Accueil Bordeaux Sports Actu">
         <img src="/medias/logo-bsa.png" alt="Logo de Bordeaux Sports Actu" class="h-12 sm:h-14">
-    </a>
-</div>
+      </a>
+    </div>
 
-
-        <!-- Réseaux + Connexion (visible uniquement à partir de 1024px) -->
+    <!-- Réseaux + Connexion (desktop uniquement) -->
     <div class="hidden lg:flex items-center text-sm gap-4">
-    <!-- Icône utilisateur -->
-    <div class="flex items-center text-sm">
+      <div class="flex items-center text-sm">
         {% if app.user %}
-            <a href="{{ path('app_profile') }}" class="hover:opacity-75 text-2xl" aria-label="Accéder à mon profil">
-                <i class="fas fa-user-circle"></i>
-            </a>
+          <a href="{{ path('app_profile') }}" class="hover:opacity-75 text-2xl" aria-label="Accéder à mon profil">
+            <i class="fas fa-user-circle"></i>
+          </a>
         {% else %}
-                  <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
-                <i class="fas fa-user-circle"></i>
-            </a>
+          <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
+            <i class="fas fa-user-circle"></i>
+          </a>
         {% endif %}
+      </div>
+      <div class="h-6 w-px bg-black mx-2"></div>
+      <div class="flex items-center gap-4 text-2xl">
+        <a href="https://www.instagram.com/bordeaux_sports_actu/" aria-label="Instagram" target="_blank" class="text-black"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@bordeauxsportsactu" aria-label="TikTok" target="_blank" class="text-black"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61571981175133" aria-label="Facebook" target="_blank" class="text-black"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.youtube.com/@BordeauxSportsActu" aria-label="YouTube" target="_blank" class="text-black"><i class="fa-brands fa-youtube"></i></a>
+      </div>
     </div>
 
-    <!-- Séparateur vertical -->
-    <div class="h-6 w-px bg-black mx-2"></div>
+    <!-- Hamburger mobile -->
+    <button data-collapse-toggle="navbar" type="button" class="lg:hidden text-gray-600 hover:text-black focus:outline-none" aria-label="Ouvrir le menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+    </button>
+  </div>
 
-    <!-- Réseaux sociaux -->
-    <div class="flex items-center gap-4 text-2xl">
-        <a href="https://www.instagram.com/bordeaux_sports_actu/" class="hover:opacity-75" aria-label="Instagram Bordeaux Sports Actu"  target="_blank"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.tiktok.com/@bordeauxsportsactu" class="hover:opacity-75" aria-label="TikTok Bordeaux Sports Actu" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-        <a href="https://www.facebook.com/profile.php?id=61571981175133" class="hover:opacity-75" aria-label="Facebook Bordeaux Sports Actu" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-        <a href="https://www.youtube.com/@BordeauxSportsActu" class="hover:opacity-75" aria-label="YouTube Bordeaux Sports Actu" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-    </div>
-</div>
+  <!-- Menu principal (desktop) -->
+  <div class="sticky top-0 z-50">
+    <nav class="hidden lg:flex bg-[#2f2f5a] text-white rounded-full mx-auto max-w-screen-xl px-6 py-3 text-sm font-semibold shadow-md">
+      <div class="max-w-screen-xl mx-auto px-4">
+        <div class="flex justify-around items-center space-x-6">
 
+          <a href="{{ path('app_blog_index') }}" class="relative inline-block group">
+            <span class="relative z-10">{% if app.user and favoriteTeams is defined and favoriteTeams|length > 0 %}MES ACTUS{% else %}ACTUALITÉS{% endif %}</span>
+            <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300 {% if app.request.attributes.get('_route') starts with 'app_blog' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+          </a>
 
+          <a href="{{ path('scoreandco') }}" class="relative inline-block group">
+            <span class="relative z-10">RÉSULTATS</span>
+            <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300 {% if app.request.attributes.get('_route') == 'scoreandco' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+          </a>
 
-        <!-- Hamburger -->
-        <button data-collapse-toggle="navbar"
-                type="button"
-                class="lg:hidden text-gray-600 hover:text-black focus:outline-none"
-                aria-controls="navbar"
-                aria-expanded="false"
-                aria-label="Ouvrir le menu">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-        </button>
-    </div>
-
-    <!-- Menu principal (desktop) -->
-    <div class="sticky top-0 z-50">
-    <nav class="hidden lg:flex bg-[#2f2f5a] text-white rounded-full mx-auto max-w-screen-xl px-6 py-3 text-sm font-semibold shadow-md"
-        aria-label="Navigation principale">
-        <div class="max-w-screen-xl mx-auto px-4">
-            <div class="flex justify-around items-center space-x-6">
-                <a href="{{ path('app_blog_index') }}"
-                class="{% if app.request.attributes.get('_route') starts with 'app_blog' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
-                    {% if app.user and favoriteTeams is defined and favoriteTeams|length > 0 %}
-                        MES ACTUS <!---<span class="text-pink-400" aria-hidden="true">❤</span>-->
-                    {% else %}
-                        ACTUALITÉS
-                    {% endif %}
-                </a>
-
-                <a href="{{ path('scoreandco') }}"
-                class="{% if app.request.attributes.get('_route') == 'scoreandco' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
-                    RÉSULTATS
-                </a>
-
-                <!-- Sous-menu SPORTS -->
-                <div class="relative" x-data="{ open: false, timeout: null }"
-        @mouseenter="clearTimeout(timeout); open = true"
-        @mouseleave="timeout = setTimeout(() => open = false, 150)">
-        
-        <a href="{{ path('app_sports') }}">
-            <button type="button"
-                    class="flex items-center gap-1 {% if app.request.attributes.get('_route') starts with 'app_sport_show' or app.request.attributes.get('_route') == 'app_sports' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %} focus:outline-none"
-                    aria-haspopup="true"
-                    :aria-expanded="open.toString()"
-                    aria-controls="submenu-sports">
-                SPORTS
+          <div class="relative" x-data="{ open: false, timeout: null }" @mouseenter="clearTimeout(timeout); open = true" @mouseleave="timeout = setTimeout(() => open = false, 150)">
+            <a href="{{ path('app_sports') }}" class="relative inline-block group">
+              <button type="button" class="flex items-center gap-1 focus:outline-none">
+                <span class="relative z-10">SPORTS</span>
+                <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300 {% if app.request.attributes.get('_route') starts with 'app_sport' or app.request.attributes.get('_route') == 'app_sports' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
                 <i x-show="!open" class="fa-solid fa-chevron-down transition duration-200"></i>
                 <i x-show="open" class="fa-solid fa-chevron-up transition duration-200"></i>
-            </button>
-        </a>
-
-        <div x-show="open"
-            id="submenu-sports"
-            x-transition.opacity.duration.200ms
-            class="absolute left-0 mt-2 bg-white text-gray-700 rounded shadow w-44 py-2 text-sm z-50"
-            @keydown.escape.window="open = false">
-            <ul>
+              </button>
+            </a>
+            <div x-show="open" id="submenu-sports" x-transition.opacity.duration.200ms class="absolute left-0 mt-2 bg-white text-gray-700 rounded shadow w-44 py-2 text-sm z-50">
+              <ul>
                 <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block px-4 py-2 hover:bg-gray-100">Football</a></li>
                 <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block px-4 py-2 hover:bg-gray-100">Rugby</a></li>
                 <li><a href="{{ path('app_sport_show', { slug: 'volleyball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Volley</a></li>
                 <li><a href="{{ path('app_sport_show', { slug: 'hockey-sur-glace' }) }}" class="block px-4 py-2 hover:bg-gray-100">Hockey</a></li>
                 <li><a href="{{ path('app_sport_show', { slug: 'basketball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Basketball</a></li>
-            </ul>
+              </ul>
+            </div>
+          </div>
+
+          <a href="{{ path('app_calendar') }}" class="relative inline-block group">
+            <span class="relative z-10">CALENDRIER</span>
+            <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300 {% if app.request.attributes.get('_route') == 'app_calendar' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+          </a>
+
+          <a href="{{ path('app_about') }}" class="relative inline-block group">
+            <span class="relative z-10">À PROPOS</span>
+            <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300 {% if app.request.attributes.get('_route') == 'app_about' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+          </a>
+
         </div>
-    </div>
+      </div>
+    </nav>
+  </div>
 
-
-            <a href="{{ path('app_calendar') }}"
-               class="{% if app.request.attributes.get('_route') == 'app_calendar' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
-                CALENDRIER
-            </a>
-
-            <a href="{{ path('app_about') }}"
-               class="{% if app.request.attributes.get('_route') == 'app_about' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
-                À PROPOS
-            </a>
-        </div>
-    </div>
-  </nav>
-</div>
-
-
-
-
-    <!-- Menu Mobile -->
-    <div class="lg:hidden hidden px-4 pb-4" id="navbar" x-data="{ showSports: false }">
-        <ul class="flex flex-col space-y-2 text-sm font-semibold" aria-label="Navigation mobile">
-            <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-500">ACTUALITÉS</a></li>
-            <li><a href="{{ path('scoreandco') }}" class="hover:text-gray-500">RÉSULTATS</a></li>
-             <li><a href="{{ path('app_resultats_live') }}" class="hover:text-gray-500">LIVE</a></li>
-            <li>
-<button @click="showSports = !showSports"
-                        class="hover:text-gray-500 w-full text-left"
-                        aria-expanded="false"
-                        aria-controls="mobile-sports-submenu">
-                    SPORTS
-                </button>
-                <ul x-show="showSports" id="mobile-sports-submenu" x-transition.duration.200ms class="pl-4 mt-1 space-y-1 text-sm">
-                    <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block py-1 hover:text-gray-400">Football</a></li>
-                    <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block py-1 hover:text-gray-400">Rugby</a></li>
-                    <li><a href="{{ path('app_sport_show', { slug: 'volleyball' }) }}" class="block py-1 hover:text-gray-400">Volley</a></li>
-                    <li><a href="{{ path('app_sport_show', { slug: 'hockey-sur-glace' }) }}" class="block py-1 hover:text-gray-400">Hockey</a></li>
-                    <li><a href="{{ path('app_sport_show', { slug: 'basketball' }) }}" class="block py-1 hover:text-gray-400">Basketball</a></li>
-                </ul>
-            </li>
-            <li><a href="{{ path('app_calendar') }}" class="hover:text-gray-500">CALENDRIER</a></li>
-            <li><a href="{{ path('app_about') }}" class="hover:text-gray-500">À PROPOS</a></li>
-            <li class="flex items-center gap-2 text-xl">
-                <a href="https://www.instagram.com/bordeaux_sports_actu/" class="hover:opacity-75" aria-label="Instagram Bordeaux Sports Actu"><i class="fa-brands fa-instagram"></i></a>
-                <a href=" https://www.facebook.com/profile.php?id=61571981175133" class="hover:opacity-75" aria-label="Facebook Bordeaux Sports Actu"><i class="fa-brands fa-facebook"></i></a>
-                <a href="https://www.tiktok.com/@bordeauxsportsactu" class="hover:opacity-75" aria-label="TikTok Bordeaux Sports Actu"><i class="fa-brands fa-tiktok"></i></a>
-                <a href="https://www.youtube.com/@BordeauxSportsActu" class="hover:opacity-75" aria-label="YouTube Bordeaux Sports Actu"><i class="fa-brands fa-youtube"></i></a>
-                
-            </li>
+  <!-- Menu mobile -->
+  <div class="lg:hidden hidden px-4 pb-4" id="navbar" x-data="{ showSports: false }">
+    <ul class="flex flex-col space-y-2 text-sm font-semibold" aria-label="Navigation mobile">
+      <li><a href="{{ path('app_blog_index') }}" class="hover:text-gray-500">ACTUALITÉS</a></li>
+      <li><a href="{{ path('scoreandco') }}" class="hover:text-gray-500">RÉSULTATS</a></li>
+      <li><a href="{{ path('app_resultats_live') }}" class="hover:text-gray-500">LIVE</a></li>
+      <li>
+        <button @click="showSports = !showSports" class="hover:text-gray-500 w-full text-left" aria-controls="mobile-sports-submenu">
+          SPORTS
+        </button>
+        <ul x-show="showSports" id="mobile-sports-submenu" x-transition.duration.200ms class="pl-4 mt-1 space-y-1 text-sm">
+          <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block py-1 hover:text-gray-400">Football</a></li>
+          <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block py-1 hover:text-gray-400">Rugby</a></li>
+          <li><a href="{{ path('app_sport_show', { slug: 'volleyball' }) }}" class="block py-1 hover:text-gray-400">Volley</a></li>
+          <li><a href="{{ path('app_sport_show', { slug: 'hockey-sur-glace' }) }}" class="block py-1 hover:text-gray-400">Hockey</a></li>
+          <li><a href="{{ path('app_sport_show', { slug: 'basketball' }) }}" class="block py-1 hover:text-gray-400">Basketball</a></li>
         </ul>
-    </div>
+      </li>
+      <li><a href="{{ path('app_calendar') }}" class="hover:text-gray-500">CALENDRIER</a></li>
+      <li><a href="{{ path('app_about') }}" class="hover:text-gray-500">À PROPOS</a></li>
+      <li class="flex items-center gap-2 text-xl">
+        <a href="https://www.instagram.com/bordeaux_sports_actu/" class="hover:opacity-75"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61571981175133" class="hover:opacity-75"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.tiktok.com/@bordeauxsportsactu" class="hover:opacity-75"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.youtube.com/@BordeauxSportsActu" class="hover:opacity-75"><i class="fa-brands fa-youtube"></i></a>
+      </li>
+    </ul>
+  </div>
 </header>

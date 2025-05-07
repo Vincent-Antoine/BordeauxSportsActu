@@ -36,7 +36,7 @@
 
 <!-- Bannière -->
 <div class="relative w-full h-[100px] sm:h-[250px] mb-12"
-     style="background-image: url('{{ asset('uploads/teams/' ~ team.image) }}'); background-size: contain;">
+     style="background-image: url('{{ asset('uploads/teams/' ~ team.image) }}'); background-size: contain;background-repeat: no-repeat;background-position: right;">
     <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></div>
     <div class="relative z-10 h-full flex items-center justify-start w-full px-6">
         <h2 class="text-white text-3xl sm:text-4xl md:text-5xl">{{ team.name }}</h2>
