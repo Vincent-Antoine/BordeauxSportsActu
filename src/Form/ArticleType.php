@@ -21,10 +21,11 @@ class ArticleType extends AbstractType
             ->add('category', ChoiceType::class, [
                 'label' => 'Catégorie',
                 'choices' => [
-                    'Technologie' => 'technologie',
-                    'Sport' => 'sport',
-                    'Culture' => 'culture',
-                    'Autres' => 'autres',
+                    'Football' => 'football',
+                    'Basketball' => 'basketball',
+                    'Voleyball' => 'volleyball',
+                    'Rugby' => 'rugby',
+                    'Hockey sur Glace' => 'hockey-sur-glace',
                 ],
             ])
             ->add('imageFile', FileType::class, [

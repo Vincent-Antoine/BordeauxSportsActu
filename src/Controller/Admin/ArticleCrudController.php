@@ -43,10 +43,11 @@ class ArticleCrudController extends AbstractCrudController
                 ->setUnlockConfirmationMessage('Changer le slug n’est pas recommandé.'),
             ChoiceField::new('category', 'Catégorie')
                 ->setChoices([
-                    'Technologie' => 'technologie',
-                    'Sport' => 'sport',
-                    'Culture' => 'culture',
-                    'Autres' => 'autres',
+                     'Football' => 'football',
+                    'Basketball' => 'basketball',
+                    'Voleyball' => 'volleyball',
+                    'Rugby' => 'rugby',
+                    'Hockey sur Glace' => 'hockey-sur-glace',
                 ]),
             AssociationField::new('teams', 'Clubs associés')
                 ->setFormTypeOptions([
