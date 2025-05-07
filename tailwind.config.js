@@ -23,6 +23,9 @@ module.exports = {
         title: ['"Anton"', "cursive"],
         body: ['"Roboto Condensed"', "sans-serif"],
       },
+      inset: {
+        '-35': '-35px',
+      },
     },
   },
   plugins: [],

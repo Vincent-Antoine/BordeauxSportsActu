@@ -60,7 +60,7 @@
                         <h4 class="text-lg text-gray-800">{{ article.title }}</h4>
                         <p class="text-sm text-gray-600 mt-2">{{ article.content|striptags|slice(0, 100) ~ '...' }}</p>
                         <a href="{{ path('article_show', {'slug': article.slug}) }}"
-                           class="inline-block mt-3 text-blue-600 hover:underline text-sm">Lire l'article</a>
+                           class="inline-block mt-3 hover:underline text-sm text-[#669acc]">Lire l'article</a>
                     </div>
                 </div>
             {% endfor %}

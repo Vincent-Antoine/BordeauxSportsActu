@@ -50,10 +50,10 @@
 
     <!-- Réseaux sociaux -->
     <div class="flex items-center gap-4 text-2xl">
-        <a href="https://www.instagram.com/bordeaux_sports_actu/" class="hover:opacity-75" aria-label="Instagram Bordeaux Sports Actu"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.tiktok.com/@bordeauxsportsactu" class="hover:opacity-75" aria-label="TikTok Bordeaux Sports Actu"><i class="fa-brands fa-tiktok"></i></a>
-        <a href="https://www.facebook.com/profile.php?id=61571981175133" class="hover:opacity-75" aria-label="Facebook Bordeaux Sports Actu"><i class="fa-brands fa-facebook"></i></a>
-        <a href="https://www.youtube.com/@BordeauxSportsActu" class="hover:opacity-75" aria-label="YouTube Bordeaux Sports Actu"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://www.instagram.com/bordeaux_sports_actu/" class="hover:opacity-75" aria-label="Instagram Bordeaux Sports Actu"  target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@bordeauxsportsactu" class="hover:opacity-75" aria-label="TikTok Bordeaux Sports Actu" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61571981175133" class="hover:opacity-75" aria-label="Facebook Bordeaux Sports Actu" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.youtube.com/@BordeauxSportsActu" class="hover:opacity-75" aria-label="YouTube Bordeaux Sports Actu" target="_blank"><i class="fa-brands fa-youtube"></i></a>
     </div>
 </div>
 
@@ -94,31 +94,36 @@
 
             <!-- Sous-menu SPORTS -->
             <div class="relative" x-data="{ open: false, timeout: null }"
-                 @mouseenter="clearTimeout(timeout); open = true"
-                 @mouseleave="timeout = setTimeout(() => open = false, 150)">
-                <a href="{{ path('app_sports') }}">
-                    <button type="button"
-                            class="{% if app.request.attributes.get('_route') starts with 'app_sport_show' or app.request.attributes.get('_route') == 'app_sports' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %} focus:outline-none"
-                            aria-haspopup="true"
-                            :aria-expanded="open.toString()"
-                            aria-controls="submenu-sports">
-                        SPORTS
-                    </button>
-                </a>
-                <div x-show="open"
-                     id="submenu-sports"
-                     x-transition.opacity.duration.200ms
-                     class="absolute left-0 mt-2 bg-white text-gray-700 rounded shadow w-44 py-2 text-sm z-50"
-                     @keydown.escape.window="open = false">
-                    <ul>
-                        <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block px-4 py-2 hover:bg-gray-100">Football</a></li>
-                        <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block px-4 py-2 hover:bg-gray-100">Rugby</a></li>
-                        <li><a href="{{ path('app_sport_show', { slug: 'volleyball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Volley</a></li>
-                        <li><a href="{{ path('app_sport_show', { slug: 'hockey-sur-glace' }) }}" class="block px-4 py-2 hover:bg-gray-100">Hockey</a></li>
-                        <li><a href="{{ path('app_sport_show', { slug: 'basketball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Basketball</a></li>
-                    </ul>
-                </div>
-            </div>
+     @mouseenter="clearTimeout(timeout); open = true"
+     @mouseleave="timeout = setTimeout(() => open = false, 150)">
+    
+    <a href="{{ path('app_sports') }}">
+        <button type="button"
+                class="flex items-center gap-1 {% if app.request.attributes.get('_route') starts with 'app_sport_show' or app.request.attributes.get('_route') == 'app_sports' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %} focus:outline-none"
+                aria-haspopup="true"
+                :aria-expanded="open.toString()"
+                aria-controls="submenu-sports">
+            SPORTS
+            <i x-show="!open" class="fa-solid fa-chevron-down transition duration-200"></i>
+            <i x-show="open" class="fa-solid fa-chevron-up transition duration-200"></i>
+        </button>
+    </a>
+
+    <div x-show="open"
+         id="submenu-sports"
+         x-transition.opacity.duration.200ms
+         class="absolute left-0 mt-2 bg-white text-gray-700 rounded shadow w-44 py-2 text-sm z-50"
+         @keydown.escape.window="open = false">
+        <ul>
+            <li><a href="{{ path('app_sport_show', { slug: 'football' }) }}" class="block px-4 py-2 hover:bg-gray-100">Football</a></li>
+            <li><a href="{{ path('app_sport_show', { slug: 'rugby' }) }}" class="block px-4 py-2 hover:bg-gray-100">Rugby</a></li>
+            <li><a href="{{ path('app_sport_show', { slug: 'volleyball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Volley</a></li>
+            <li><a href="{{ path('app_sport_show', { slug: 'hockey-sur-glace' }) }}" class="block px-4 py-2 hover:bg-gray-100">Hockey</a></li>
+            <li><a href="{{ path('app_sport_show', { slug: 'basketball' }) }}" class="block px-4 py-2 hover:bg-gray-100">Basketball</a></li>
+        </ul>
+    </div>
+</div>
+
 
             <a href="{{ path('app_calendar') }}"
                class="{% if app.request.attributes.get('_route') == 'app_calendar' %}border-b-2 border-white{% else %}hover:text-gray-300{% endif %}">
