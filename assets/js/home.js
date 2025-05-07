@@ -30,7 +30,7 @@ export function sliderCategorie() {
       },
       {
         title: "Football",
-        image: "",
+        image: "/medias/girondins-de-bordeaux-home.webp",
         alt: "Match de football avec plusieurs joueurs sur le terrain",
         slug: "football",
       },
