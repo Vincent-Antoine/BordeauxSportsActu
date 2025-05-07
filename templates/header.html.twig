@@ -30,16 +30,34 @@
             </a>
         </div>
 
-        <!-- Réseaux + Connexion -->
-        <div class="hidden lg:flex flex-row items-center text-sm gap-4">
-            <!-- Réseaux sociaux -->
-            <div class="flex items-center gap-4 text-2xl">
-                <a href="https://www.instagram.com/bordeaux_sports_actu/" class="hover:opacity-75" aria-label="Instagram Bordeaux Sports Actu"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@bordeauxsportsactu" class="hover:opacity-75" aria-label="TikTok Bordeaux Sports Actu"><i class="fa-brands fa-tiktok"></i></a>
-                <a href=" https://www.facebook.com/profile.php?id=61571981175133" class="hover:opacity-75" aria-label="Facebook Bordeaux Sports Actu"><i class="fa-brands fa-facebook"></i></a>
-                <a href="https://www.youtube.com/@BordeauxSportsActu" class="hover:opacity-75" aria-label="YouTube Bordeaux Sports Actu"><i class="fa-brands fa-youtube"></i></a>
-            </div>
-        </div>
+        <!-- Réseaux + Connexion (visible uniquement à partir de 1024px) -->
+<div class="hidden lg:flex items-center text-sm gap-4">
+    <!-- Icône utilisateur -->
+    <div class="flex items-center text-sm">
+        {% if app.user %}
+            <a href="{{ path('app_profile') }}" class="hover:opacity-75 text-2xl" aria-label="Accéder à mon profil">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        {% else %}
+            <a href="{{ path('app_login') }}" class="hover:opacity-75 text-2xl" aria-label="Se connecter">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Séparateur vertical -->
+    <div class="h-6 w-px bg-black mx-2"></div>
+
+    <!-- Réseaux sociaux -->
+    <div class="flex items-center gap-4 text-2xl">
+        <a href="https://www.instagram.com/bordeaux_sports_actu/" class="hover:opacity-75" aria-label="Instagram Bordeaux Sports Actu"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@bordeauxsportsactu" class="hover:opacity-75" aria-label="TikTok Bordeaux Sports Actu"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61571981175133" class="hover:opacity-75" aria-label="Facebook Bordeaux Sports Actu"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.youtube.com/@BordeauxSportsActu" class="hover:opacity-75" aria-label="YouTube Bordeaux Sports Actu"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+</div>
+
+
 
         <!-- Hamburger -->
         <button data-collapse-toggle="navbar"
