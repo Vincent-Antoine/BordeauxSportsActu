@@ -48,7 +48,7 @@ export function sliderCategorie() {
       // },
       {
         title: "Hockey sur glace",
-        image: "/medias/hockey-sur-glace.webp",
+        image: "/medias/categorie-hockey.webp",
         alt: "Action de jeu lors d’un match de hockey sur glace",
         slug: "hockey-sur-glace",
       },
