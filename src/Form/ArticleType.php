@@ -26,6 +26,8 @@ class ArticleType extends AbstractType
                     'Voleyball' => 'volleyball',
                     'Rugby' => 'rugby',
                     'Hockey sur Glace' => 'hockey-sur-glace',
+                    'Tennis' => 'tennis',
+                    'Événement' => 'evenement',
                 ],
             ])
             ->add('imageFile', FileType::class, [
