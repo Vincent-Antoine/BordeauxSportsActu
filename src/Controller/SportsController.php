@@ -19,7 +19,7 @@ class SportsController extends AbstractController
             ['name' => 'Football', 'slug' => 'football', 'image' => '/medias/football-banner.webp'],
             ['name' => 'Rugby', 'slug' => 'rugby', 'image' => '/medias/rugby-banner.webp'],
             ['name' => 'Volleyball', 'slug' => 'volleyball', 'image' => '/medias/volleyball-banner.webp'],
-            ['name' => 'Hockey-Sur-Glace', 'slug' => 'hockey-sur-glace', 'image' => '/medias/hockey-sur-glace-banner.webp'],
+            ['name' => 'Hockey-Sur-Glace', 'slug' => 'hockey-sur-glace', 'image' => '/medias/categorie-hockey.webp'],
             ['name' => 'Basketball', 'slug' => 'basketball', 'image' => '/medias/basketball-banner.webp'],
         ];
 
@@ -120,7 +120,7 @@ class SportsController extends AbstractController
             ],
             'hockey-sur-glace' => [
                 'name' => 'Hockey-Sur-Glace',
-                'image' => '/medias/hockey-sur-glace-banner.webp',
+                'image' => '/medias/categorie-hockey.webp',
                 'db_keys' => ['hockey']
             ],
             'basketball' => [
