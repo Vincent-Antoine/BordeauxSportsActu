@@ -24,13 +24,13 @@ export function sliderCategorie() {
     items: [
       {
         title: "Volley",
-        image: "/medias/volley-merginac.webp",
+        image: "/medias/categorie-volley.webp",
         alt: "Match de volley à Mérignac",
         slug: "volleyball",
       },
       {
         title: "Football",
-        image: "/medias/girondins-de-bordeaux-home.webp",
+        image: "/medias/categorie-football.webp",
         alt: "Match de football avec plusieurs joueurs sur le terrain",
         slug: "football",
       },
