@@ -24,7 +24,7 @@ export function sliderCategorie() {
     items: [
       {
         title: "Volley",
-        image: "/medias/categorie-volley.webp",
+        image: "/medias/volley-categorie.webp",
         alt: "Match de volley à Mérignac",
         slug: "volleyball",
       },
