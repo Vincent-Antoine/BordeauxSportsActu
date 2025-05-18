@@ -45,7 +45,7 @@ class ForgotPasswordController extends AbstractController
 
                     // Prépare et envoie l'e-mail
                     $email = (new TemplatedEmail())
-                        ->from(new Address('no-reply@example.com', 'Support'))
+                        ->from(new Address('bordeauxsportsactu@gmail.com', 'Bordeaux Sports Actu'))
                         ->to($user->getEmail())
                         ->subject('Réinitialisation de votre mot de passe')
                         ->htmlTemplate('emails/reset_password.html.twig')
