@@ -49,6 +49,7 @@ class ArticleCrudController extends AbstractCrudController
                     'Rugby' => 'rugby',
                     'Hockey sur Glace' => 'hockey-sur-glace',
                     'Tennis' => 'tennis',
+                    'Événement' => 'evenement',
                 ]),
             AssociationField::new('teams', 'Clubs associés')
                 ->setFormTypeOptions([
